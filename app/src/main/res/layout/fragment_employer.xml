@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/profile_image"
+        android:background="@drawable/pic">
+
+    </ImageView>
+    <TextView
+        android:id="@+id/employer"
+        android:textStyle="bold"
+        android:text="Zeeshan Alam" android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:layout_toRightOf="@+id/profile_image"
+        android:layout_height="wrap_content" />
+
+    <Button android:id="@+id/update_profile_employer_button" style="?android:textAppearanceSmall"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" android:text="Edit Profile"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/search"
+        android:text="Search according to field" android:layout_width="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:textSize="20sp"
+        android:layout_below="@+id/profile_image"
+        android:layout_height="wrap_content" />
+
+
+    <SearchView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchView"
+        android:layout_below="@+id/search"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</LinearLayout>

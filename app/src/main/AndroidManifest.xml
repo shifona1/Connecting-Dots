@@ -28,13 +28,29 @@
             android:label="@string/title_activity_main" />
         <activity
             android:name=".fragment_employer"
-            android:label="fragment" />
+            android:label="fragment"
+            />
+
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2" />
         <activity
             android:name=".Update_Profile_Employer"
             android:label="@string/title_activity_update__profile__employer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewProfile"
+            android:label="@string/title_activity_view_profile"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".Employee_HOmePage"
+            android:label="@string/title_activity_employee__home_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Update_Profile_Employee"
+            android:label="@string/title_activity_update__profile__employee"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

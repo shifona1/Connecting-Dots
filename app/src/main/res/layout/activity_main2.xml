@@ -30,7 +30,8 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="View"
+        android:text="Pick"
+        android:visibility="gone"
         android:id="@+id/buttonViewImage" />
 
 

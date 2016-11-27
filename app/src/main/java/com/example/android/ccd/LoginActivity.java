@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -44,6 +45,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
+
+    public static String Email_id=" ";
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
@@ -281,7 +284,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
         private final String mEmail;
         private final String mPassword;
@@ -293,7 +296,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
 
@@ -303,27 +306,36 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                 String result = rh.sendPostRequest(UPLOAD_URL,data);
             Log.i("*********************", "doInBackground: "+result);
-                if(result.equals("Login")) return true;
+                return result;
 
 
 
-
-            return false;
             // TODO: register the new account here.
 
 
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final String success) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                Intent i = new Intent(LoginActivity.this, fragment_employer.class);
-                startActivity(i);
-                finish();
-            } else {
+            if (success.equals("Employee")||success.equals("Employer")) {
+                Email_id=mEmail;
+                SharedPreferences sp = getApplicationContext().getSharedPreferences("sp",MODE_PRIVATE);
+                sp.edit().putString("EM",mEmail).commit();
+                if(success.equals("Employer")) {
+                    Intent i = new Intent(LoginActivity.this, fragment_employer.class);
+                    startActivity(i);
+                    finish();
+                }
+                else
+                {
+                    Intent i = new Intent(LoginActivity.this, Employee_HOmePage.class);
+                    startActivity(i);
+                    finish();
+                }
+            } else{
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }

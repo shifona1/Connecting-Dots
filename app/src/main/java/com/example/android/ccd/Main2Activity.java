@@ -4,8 +4,10 @@ package com.example.android.ccd;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -20,7 +22,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -50,15 +54,33 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Intent intent = getIntent();
-        R_NAME = intent.getStringExtra("Name");
-        R_PASS=  intent.getStringExtra("Password");
-        R_ID=  intent.getStringExtra("id");
-        R_TYPE=intent.getBooleanExtra("ISEMPLOYER", false);
-
         buttonChoose = (Button) findViewById(R.id.buttonChoose);
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
         buttonView = (Button) findViewById(R.id.buttonViewImage);
 
+        if(intent.hasExtra("isEditPage")) {
+            buttonView.setVisibility(View.VISIBLE);
+            buttonUpload.setVisibility(View.GONE);
+            buttonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String str =  getStringImage(bitmap);
+                    SharedPreferences sp = getApplicationContext().getSharedPreferences("sp", MODE_PRIVATE);
+                    sp.edit().putString("img",str).commit();
+                    finish();
+
+                }
+            });
+        }
+        else {
+            R_NAME = intent.getStringExtra("Name");
+            R_PASS=  intent.getStringExtra("Password");
+            R_ID=  intent.getStringExtra("id");
+            R_TYPE=intent.getBooleanExtra("ISEMPLOYER", false);
+
+
+        }
         imageView = (ImageView) findViewById(R.id.imageView);
 
         buttonChoose.setOnClickListener(this);
@@ -89,11 +111,19 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     }
 
     public String getStringImage(Bitmap bmp){
+        if(bmp == null)
+            return "";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+    public static Bitmap getBitmapFromString(String str){
+        byte[] data =  Base64.decode(str, Base64.DEFAULT);
+        ByteArrayInputStream baos = new ByteArrayInputStream(data);
+        Bitmap bitmap = BitmapFactory.decodeStream(baos);
+        return bitmap;
     }
 
 
@@ -149,4 +179,6 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             uploadImage();
         }
     }
+
+
 }

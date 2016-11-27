@@ -47,30 +47,6 @@ import java.util.List;
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private static final String TAG = LoginActivity.class.getName();
-    private void testGPSData() {
-        LocationManager manager = (LocationManager) getSystemService( getApplicationContext().LOCATION_SERVICE );
-        boolean isGPSEnabled = manager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Log.e(TAG,"GPS Enabled : "+isGPSEnabled);
-        if(!isGPSEnabled) {
-            new MaterialDialog.Builder(this)
-                    .title("GPS not Enabled!")
-                    .content("Please Turn on GPS for full utilization")
-                    .positiveText("Ok")
-                    .negativeText("Dismiss")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Intent gpsSettings = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            gpsSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(gpsSettings);
-                        }
-                    })
-                    .show();
-
-            return;
-        }
-    }
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -98,7 +74,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        testGPSData();
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 

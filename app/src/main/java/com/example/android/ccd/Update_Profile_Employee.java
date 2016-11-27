@@ -9,6 +9,8 @@ import android.view.View;
 
 public class Update_Profile_Employee extends AppCompatActivity {
 
+
+    String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"employee_homepage.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

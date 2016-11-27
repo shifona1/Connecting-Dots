@@ -53,6 +53,7 @@ import java.util.List;
 public class LoginActivity extends Activity implements com.nineoldandroids.animation.Animator.AnimatorListener {
     private static final String TAG = LoginActivity.class.getName();
 
+
     private final String UPLOAD_URL=Main2Activity.BASE_URL +"/login.php";
     private TextView tv_wait;
     @Override
@@ -132,6 +133,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
                 data.put("IMEI",imei);
                 String result = rh.sendPostRequest(UPLOAD_URL,data).trim();
                 Log.e(TAG, "doInBackground: "+result);
+
                 return result;
 
         }

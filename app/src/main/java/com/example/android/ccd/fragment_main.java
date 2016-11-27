@@ -28,7 +28,7 @@ public class fragment_main extends Fragment {
     private String R_NAME,R_PASS,R_ID,R_IMAGE;
     private  Boolean R_TYPE;
     private View rootView;
-    public static final String UPLOAD_URL = Main2Activity.BASE_URL+"upload.php";
+    public static final String UPLOAD_URL = Main2Activity.BASE_URL+"Registration.php";
     public static final String UPLOAD_KEY = "image";
 
 
@@ -37,8 +37,8 @@ public class fragment_main extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         this.rootView = rootView;
-        Button mEmailSignInButton = (Button) rootView.findViewById(R.id.buttonLoadPicture);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+        Button pickPicture = (Button) rootView.findViewById(R.id.buttonLoadPicture);
+        pickPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), Main2Activity.class);

@@ -3,6 +3,8 @@ package com.example.android.ccd;
 /**
  * Created by shifona on 1/10/16.
  */
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -22,6 +24,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 
 public class RequestHandler {
+    private static final String TAG = RequestHandler.class.getName();
 
     public String sendGetRequest(String uri) {
         try {
@@ -50,14 +53,13 @@ public class RequestHandler {
         String response = "";
         try {
             url = new URL(requestURL);
-
+            Log.e(TAG, requestURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
-
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -68,17 +70,24 @@ public class RequestHandler {
             writer.close();
             os.close();
             int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
+            Log.e(TAG,"RC : "+responseCode);
+            if (responseCode == HttpsURLConnection.HTTP_OK)
+            {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                response = br.readLine();
+                String line = null;
+                StringBuffer sb = new StringBuffer();
+                while ((line = br.readLine()) != null)
+                    sb.append(line+"\n");
+                response = sb.toString();
             } else {
                 response = "Error Registering";
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(TAG,"Error "+e);
         }
 
+        Log.e(TAG,"Response : "+response);
         return response;
     }
 

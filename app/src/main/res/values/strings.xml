@@ -11,4 +11,8 @@
     <string name="title_activity_view_profile">ViewProfile</string>
     <string name="title_activity_employee__home_page">Employee_HOmePage</string>
     <string name="title_activity_update__profile__employee">Update_Profile_Employee</string>
+
+    <string name="title_activity_home">Home</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

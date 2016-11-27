@@ -30,9 +30,7 @@ import java.util.HashMap;
 
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String BASE_URL = "http://172.16.26.196/";
-    public static final String UPLOAD_URL = BASE_URL+"upload.php";
-    public static final String UPLOAD_KEY = "image";
+    public static final String BASE_URL = "http://10.42.0.176/";
     public static final String TAG = "MY MESSAGE";
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -58,7 +56,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
         buttonView = (Button) findViewById(R.id.buttonViewImage);
 
-        if(intent.hasExtra("isEditPage")) {
+        //if(intent.hasExtra("isEditPage")) {
             buttonView.setVisibility(View.VISIBLE);
             buttonUpload.setVisibility(View.GONE);
             buttonView.setOnClickListener(new View.OnClickListener() {
@@ -72,15 +70,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                 }
             });
-        }
-        else {
-            R_NAME = intent.getStringExtra("Name");
-            R_PASS=  intent.getStringExtra("Password");
-            R_ID=  intent.getStringExtra("id");
-            R_TYPE=intent.getBooleanExtra("ISEMPLOYER", false);
-
-
-        }
+//        }
+//        else {
+//            R_NAME = intent.getStringExtra("Name");
+//            R_PASS=  intent.getStringExtra("Password");
+//            R_ID=  intent.getStringExtra("id");
+//            R_TYPE=intent.getBooleanExtra("ISEMPLOYER", false);
+//
+//
+//        }
         imageView = (ImageView) findViewById(R.id.imageView);
 
         buttonChoose.setOnClickListener(this);
@@ -127,57 +125,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-    private void uploadImage(){
-        class UploadImage extends AsyncTask<Bitmap,Void,String>{
-
-            ProgressDialog loading;
-            RequestHandler rh = new RequestHandler();
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(Main2Activity.this, "Uploading Image", "Please wait...",true,true);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(Bitmap... params) {
-                Bitmap bitmap = params[0];
-                String uploadImage = getStringImage(bitmap);
-                String Type=R_TYPE?"Employer":"Employee";
-                HashMap<String,String> data = new HashMap<>();
-
-                data.put("username", R_NAME);
-                data.put("Email_Id",R_ID);
-                data.put("Password",R_PASS);
-                data.put("Type",Type);
-                data.put(UPLOAD_KEY, uploadImage);
-
-                String result = rh.sendPostRequest(UPLOAD_URL,data);
-
-                return result;
-            }
-        }
-
-        UploadImage ui = new UploadImage();
-        ui.execute(bitmap);
-    }
-
     @Override
     public void onClick(View v) {
-        if (v == buttonChoose) {
+       // if (v == buttonChoose) {
             showFileChooser();
-        }
-        if(v == buttonUpload){
-            uploadImage();
-        }
+//        }
+//        if(v == buttonUpload){
+//            uploadImage();
+//        }
     }
 
 

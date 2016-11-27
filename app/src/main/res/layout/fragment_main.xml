@@ -123,16 +123,25 @@
     </RadioGroup>
 
 
-    <Button
-        android:id="@+id/buttonLoadPicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/photo"
-        android:text="Next"
-        android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/buttonLoadPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/photo"
+                android:text="Pick Image"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/photo"
+                android:text="Register"
+                android:layout_gravity="center"/>
 
 
-</LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

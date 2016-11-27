@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static com.example.android.ccd.fragment_main.UPLOAD_URL;
+
 public class Update_Profile_Employer extends AppCompatActivity {
 
     String FETCH_URL=Main2Activity.BASE_URL+"fetch.php";
@@ -144,7 +146,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
                 data.put("Password", password);
                 data.put("Email_Id",email);
 
-                String result = rh.sendPostRequest(Main2Activity.UPLOAD_URL,data);
+                String result = rh.sendPostRequest(UPLOAD_URL,data);
                 data.put("img",img);
                 data.put("profession",profession);
                 //data.put("image", uploadImage);

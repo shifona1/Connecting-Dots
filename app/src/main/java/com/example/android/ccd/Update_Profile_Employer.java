@@ -32,7 +32,6 @@ public class Update_Profile_Employer extends AppCompatActivity {
         setContentView(R.layout.activity_update__profile__employer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ((TextView)findViewById(R.id.email)).setText(LoginActivity.Email_id);
         fetchData();
         Button Save=(Button)findViewById(R.id.Save_Details);
         Save.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +81,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
             protected String doInBackground(Bitmap... params) {
 
                 HashMap data=new HashMap();
-                data.put("Email_id",LoginActivity.Email_id);
+                data.put("Email_id","++++++++++++++++++_");
 
                 String result = rh.sendPostRequest(FETCH_URL,data);
 

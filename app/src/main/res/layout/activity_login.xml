@@ -8,15 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin" tools:context=".LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone" />
-
-    <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical">
+    <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:orientation="vertical">
 
             <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -25,39 +18,30 @@
                 android:gravity="center_vertical"
                 android:background="@drawable/logo"
                 android:id="@+id/logo"/>
-
-            <AutoCompleteTextView android:id="@+id/email" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress" android:maxLines="1"
-                android:paddingTop="30dp"
-                android:singleLine="true" />
-
-            <EditText android:id="@+id/password" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified" android:inputType="textPassword"
-                android:maxLines="1" android:singleLine="true" />
-
-
-            <Button android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
-                android:layout_width="165dp" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="@string/action_sign_in"
-                android:background="@drawable/oval_background"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:textColor="#ff4e1dfa" />
+                android:layout_marginBottom="8dp" android:visibility="visible" />
 
-            <Button android:id="@+id/email_register_button" style="?android:textAppearanceSmall"
-                android:layout_width="165dp" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="OR Register"
-                android:background="@drawable/oval_background"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:textColor="#ff4e1dfa" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Please Wait!!!"
+                android:id="@+id/pleasewait"
+                android:textColor="@color/colorPrimary"/>
         </LinearLayout>
-    </ScrollView>
+        </RelativeLayout>
+        </LinearLayout>
 
 </LinearLayout>
 

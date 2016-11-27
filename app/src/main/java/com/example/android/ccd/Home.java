@@ -166,6 +166,7 @@ public class Home extends Activity {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             startActivity(nextIntent);
+                            finish();
                         }
                     })
                     .show();
@@ -185,8 +186,9 @@ public class Home extends Activity {
     }
 
     private void moveNext() {
-
-        if(testGPSData())
+        if(testGPSData()) {
             startActivity(nextIntent);
+            finish();
+        }
     }
 }

@@ -84,7 +84,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private final String UPLOAD_URL=Main2Activity.BASE_URL +"extract.php";
+    private final String LOGIN_URL=Main2Activity.BASE_URL +"extract.php";
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -335,7 +335,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 data.put("id",mEmail);
                 data.put("password",mPassword);
 
-                String result = rh.sendPostRequest(UPLOAD_URL,data);
+                String result = rh.sendPostRequest(LOGIN_URL,data);
             Log.i("*********************", "doInBackground: "+result);
                 return result;
 

@@ -1,4 +1,5 @@
 .gradle
+app.iml
 .idea
 ccd.iml
 /local.properties

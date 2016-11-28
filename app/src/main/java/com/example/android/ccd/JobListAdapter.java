@@ -79,7 +79,7 @@ class Job {
             return o;
 
         final Job job = new Job(id,null);
-        Picasso.with(context).load(Main2Activity.BASE_URL+ "url").into(iv, new com.squareup.picasso.Callback() {
+        Picasso.with(context).load(Main2Activity.BASE_URL+ "/skills/"+id+".jpg").into(iv, new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
                 Bitmap bmp = ((BitmapDrawable)iv.getDrawable()).getBitmap();

@@ -38,7 +38,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         ImageView img=(ImageView)findViewById(R.id.profile_image);
         RequestHandler rh=new RequestHandler();
         HashMap<String,String> data = new HashMap<>();
-        data.put("IMEI","+++++++++++++++++++++++++++++");
+        data.put("IMEI",((MyApplication)getApplication()).getID());
 
         String url=rh.sendPostRequest(PIC_URL,data);
         Picasso.with(getApplicationContext()).load(url).into(img);

@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class Employee_HOmePage extends AppCompatActivity {
 
-    public static final String PIC_URL = Main2Activity.BASE_URL+"getImage.php";
+    public static final String PIC_URL = Main2Activity.BASE_URL+"/getImage.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +36,8 @@ public class Employee_HOmePage extends AppCompatActivity {
         });
 
         ImageView img=(ImageView)findViewById(R.id.profile_image);
-        RequestHandler rh=new RequestHandler();
-        HashMap<String,String> data = new HashMap<>();
-        data.put("IMEI",((MyApplication)getApplication()).getID());
-
-        String url=rh.sendPostRequest(PIC_URL,data);
-        Picasso.with(getApplicationContext()).load(url).into(img);
+        String imei = ((MyApplication)getApplication()).getID();
+        Picasso.with(getApplicationContext()).load(PIC_URL+"?IMEI="+imei).into(img);
 
         Button update_button=(Button)findViewById(R.id.update_profile_employee_button);
         update_button.setOnClickListener(new View.OnClickListener() {

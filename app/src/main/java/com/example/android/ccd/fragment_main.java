@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 public class fragment_main extends Fragment {
 
 
+    private static final String TAG = fragment_main.class.getName();
     private String R_NAME,R_PASS,R_ID,R_IMAGE;
     private  Boolean R_TYPE;
     private View rootView;
@@ -63,7 +65,7 @@ public class fragment_main extends Fragment {
         R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
 
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");
-
+        Log.e(TAG,"ImageLength : "+R_IMAGE);
         doRegister();
     }
 

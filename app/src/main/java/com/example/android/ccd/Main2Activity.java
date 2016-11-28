@@ -31,7 +31,7 @@ import java.util.HashMap;
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String BASE_URL = "http://172.16.26.196/ccd";
-    public static final String TAG = "MY MESSAGE";
+    private static final String TAG = Main2Activity.class.getName();
 
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -65,6 +65,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                     String str =  getStringImage(bitmap);
                     SharedPreferences sp = getApplicationContext().getSharedPreferences("sp", MODE_PRIVATE);
+                    Log.e(TAG,"ImagePusingInSP : "+str.length());
                     sp.edit().putString("img",str).commit();
                     finish();
 
@@ -114,7 +115,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
+
+        Log.e(TAG,"OriginalImageLength : "+imageBytes.length);
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        Log.e(TAG,"EncodeImageLength : "+encodedImage.length());
         return encodedImage;
     }
     public static Bitmap getBitmapFromString(String str){

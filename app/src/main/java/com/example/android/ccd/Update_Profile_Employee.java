@@ -15,7 +15,7 @@ import com.afollestad.materialdialogs.util.DialogUtils;
 public class Update_Profile_Employee extends AppCompatActivity {
 
     private JobListAdapter adapt;
-    private String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"employee_homepage.php";
+    private String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"/employee_homepage.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +35,7 @@ public class Update_Profile_Employee extends AppCompatActivity {
         for (int i=0;i<5;i++)adapt.add(i);
         final ListView lv = new ListView(this);
         lv.setAdapter(adapt);
-        findViewById(R.id.skills).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button_job_image_select).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(getApplicationContext())

@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String BASE_URL = "http://10.42.0.176/ccd";
+    public static final String BASE_URL = "http://172.16.26.196/ccd";
     public static final String TAG = "MY MESSAGE";
 
     private int PICK_IMAGE_REQUEST = 1;

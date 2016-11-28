@@ -6,11 +6,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.util.DialogUtils;
 
 public class Update_Profile_Employee extends AppCompatActivity {
 
-
-    String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"employee_homepage.php";
+    private JobListAdapter adapt;
+    private String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"employee_homepage.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +29,19 @@ public class Update_Profile_Employee extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+        adapt = new JobListAdapter(this);
+        for (int i=0;i<5;i++)adapt.add(i);
+        final ListView lv = new ListView(this);
+        lv.setAdapter(adapt);
+        findViewById(R.id.skills).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getApplicationContext())
+                        .title("Pick Skills")
+                        .customView(lv,true)
+                        .show();
             }
         });
     }

@@ -79,7 +79,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
     }
 
     private void gotoActivity(String type) {
-
+        Log.e(TAG,"Activity Open : "+type);
         if(type.equals(MyApplication.LOG_TYPE_EMPLOYER)) {
             Intent i = new Intent(LoginActivity.this, fragment_employer.class);
             startActivity(i);
@@ -94,6 +94,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
     }
 
     public void attemptLogin() {
+        Log.e("TAG","Attempt Login");
         String imei = ((MyApplication)(getApplication())).getID();
         new UserLoginTask(imei).execute((Void) null);
     }
@@ -131,6 +132,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
         protected String doInBackground(Void... params) {
                 HashMap<String,String> data = new HashMap<>();
                 data.put("IMEI",imei);
+
                 String result = rh.sendPostRequest(UPLOAD_URL,data).trim();
                 Log.e(TAG, "doInBackground: "+result);
 
@@ -146,7 +148,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
 
                 gotoActivity(success);
             } else if(success.equals("Invalid")){
-                Intent i = new Intent(LoginActivity.this, LoginActivity.class);
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();
             } else {

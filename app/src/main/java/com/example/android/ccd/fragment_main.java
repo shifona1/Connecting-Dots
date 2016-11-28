@@ -28,7 +28,7 @@ public class fragment_main extends Fragment {
     private String R_NAME,R_PASS,R_ID,R_IMAGE;
     private  Boolean R_TYPE;
     private View rootView;
-    public static final String UPLOAD_URL = Main2Activity.BASE_URL+"Registration.php";
+    public static final String UPLOAD_URL = Main2Activity.BASE_URL+"/Registration.php";
     public static final String UPLOAD_KEY = "image";
 
 
@@ -59,16 +59,8 @@ public class fragment_main extends Fragment {
 
     }
     void registerNow() {
-        Intent i = new Intent(getContext(), Main2Activity.class);
-        i.putExtra("Name", ((EditText) rootView.findViewById(R.id.name)).getText().toString());
-        i.putExtra("Password", ((EditText) rootView.findViewById(R.id.password)).getText().toString());
-        i.putExtra("id", ((EditText) rootView.findViewById(R.id.email)).getText().toString());
-        i.putExtra("ISEMPLOYER", ((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked());
-
-        R_NAME = i.getStringExtra("Name");
-        R_PASS=  i.getStringExtra("Password");
-        R_ID=  i.getStringExtra("id");
-        R_TYPE=i.getBooleanExtra("ISEMPLOYER", false);
+        R_NAME = ((EditText) rootView.findViewById(R.id.name)).getText().toString();
+        R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
 
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");
 
@@ -102,8 +94,7 @@ public class fragment_main extends Fragment {
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put("username", R_NAME);
-                data.put("Email_Id",R_ID);
-                data.put("Password",R_PASS);
+                data.put("IMEI",((MyApplication)(getActivity().getApplication())).getID());
                 data.put("Type",Type);
                 data.put(UPLOAD_KEY, R_IMAGE);
 

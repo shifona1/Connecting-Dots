@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -59,12 +66,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //if(intent.hasExtra("isEditPage")) {
             buttonView.setVisibility(View.VISIBLE);
             buttonUpload.setVisibility(View.GONE);
-            buttonView.setOnClickListener(new View.OnClickListener() {
+        
+
+        buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     String str =  getStringImage(bitmap);
-                    SharedPreferences sp = getApplicationContext().getSharedPreferences("sp", MODE_PRIVATE);
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     Log.e(TAG,"ImagePusingInSP : "+str.length());
                     sp.edit().putString("img",str).commit();
                     finish();
@@ -96,16 +105,42 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        bitmap = null;
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
             filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                            imageView.setImageBitmap(bitmap);
+                            Log.e(TAG,"Direct Image Set");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+
+            Glide.with(this)
+                    .load(imageBytes)
+                    .centerCrop()
+                    .crossFade()
+                    .override(150,150)
+                    .placeholder(android.R.drawable.progress_horizontal)
+                    .listener(new RequestListener<byte[], GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, byte[] model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            Log.e(TAG, "Image Load from File Excpetion\n" + e);
+                            Toast.makeText(getApplicationContext(), "Image Load Failed!", Toast.LENGTH_SHORT).show();
+                            bitmap = null;
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, byte[] model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    ;
         }
     }
 

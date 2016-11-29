@@ -65,7 +65,8 @@ public class fragment_main extends Fragment {
         R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
 
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");
-        Log.e(TAG,"ImageLength : "+R_IMAGE);
+        Log.e(TAG,"ImageLength : "+R_IMAGE.length());
+        Toast.makeText(getContext(),"ImageLength : "+R_IMAGE.length(),Toast.LENGTH_SHORT).show();
         doRegister();
     }
 
@@ -101,7 +102,7 @@ public class fragment_main extends Fragment {
                 data.put(UPLOAD_KEY, R_IMAGE);
 
                 String result = rh.sendPostRequest(UPLOAD_URL,data);
-
+                Log.e(TAG,"DIB : "+result);
                 return result;
             }
         }

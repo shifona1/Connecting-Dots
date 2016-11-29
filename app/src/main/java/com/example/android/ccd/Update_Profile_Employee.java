@@ -5,17 +5,29 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.util.DialogUtils;
 
-public class Update_Profile_Employee extends AppCompatActivity {
+public class Update_Profile_Employee extends AppCompatActivity  implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    private static final String TAG = Update_Profile_Employee.class.getName();
     private JobListAdapter adapt;
     private String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"/employee_homepage.php";
+    private ListView lv;
+    private MaterialDialog dialog;
+
+    private String R_NAME;
+    private String R_TYPE;
+    private int R_ID;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,18 +44,60 @@ public class Update_Profile_Employee extends AppCompatActivity {
             }
         });
         adapt = new JobListAdapter(this);
-        for (int i=0;i<5;i++)adapt.add(i);
-        final ListView lv = new ListView(this);
+
+        for (int i = 0; i < 5; i++) adapt.add(i);
+        lv = new ListView(this);
         lv.setAdapter(adapt);
+        lv.setOnItemClickListener(this);
+
         findViewById(R.id.button_job_image_select).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(getApplicationContext())
+                dialog = new MaterialDialog.Builder(Update_Profile_Employee.this)
                         .title("Pick Skills")
-                        .customView(lv,true)
-                        .show();
+                        .customView(lv, true).show();
+
+
             }
         });
+
+
+
+
+        /************* INITLIZE VARIABLE R_ANYTHING,, from server ******/
+
+
+        /** then on click update button, send to server ****************/
+        Log.e(TAG,"To Send Server");
+        Log.e(TAG,"NAME : "+R_NAME);
+        Log.e(TAG,"TYPE : "+R_TYPE);
+        Log.e(TAG,"JID : "+R_ID);
+
+
+
+
+
+
+
+
+
+
     }
 
+
+    @Override
+    public void onClick(View view) {
+
+        R_ID = (int) view.getTag();
+        Log.e(TAG,"NEW ID : "+R_ID);
+        dialog.dismiss();
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        R_ID = (int) view.getTag();
+        Log.e(TAG,"> NEW ID : "+R_ID);
+        dialog.dismiss();
+    }
 }

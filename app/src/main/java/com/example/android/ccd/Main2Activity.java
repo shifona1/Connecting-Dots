@@ -66,7 +66,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //if(intent.hasExtra("isEditPage")) {
             buttonView.setVisibility(View.VISIBLE);
             buttonUpload.setVisibility(View.GONE);
-        
+
 
         buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,7 +129,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     .listener(new RequestListener<byte[], GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, byte[] model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            Log.e(TAG, "Image Load from File Excpetion\n" + e);
+                            Log.e(TAG, "Image Load from File Exception\n" + e);
                             Toast.makeText(getApplicationContext(), "Image Load Failed!", Toast.LENGTH_SHORT).show();
                             bitmap = null;
                             return false;

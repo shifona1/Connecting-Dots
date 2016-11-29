@@ -32,6 +32,9 @@ public class MyApplication extends Application {
     public static String LOG_TYPE_EMPLOYER =   "Employer";
     public static String LOG_TYPE_EMPLOYEE =   "Employee";
 
+    public static String PREF_USERNAME =   "username";
+
+
     private TelephonyManager telephonyManager;
     private String IMEI;
     @Override
@@ -84,6 +87,10 @@ public class MyApplication extends Application {
         return "";
     }
 
+
+    public String getUsername() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_USERNAME,"unnamed");
+    }
 
 
 }

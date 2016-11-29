@@ -43,6 +43,7 @@ public class Home extends Activity {
                     .withListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
+
                             findViewById(R.id.home_internet).setVisibility(View.VISIBLE);
 
                         }

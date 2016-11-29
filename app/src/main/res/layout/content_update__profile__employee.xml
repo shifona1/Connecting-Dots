@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/nat"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.android.ccd.Update_Profile_Employee"
     tools:showIn="@layout/activity_update__profile__employee">
@@ -19,6 +20,9 @@
         android:textStyle="bold"
         android:layout_marginTop="40dp"
         android:paddingTop="8dp"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:textColor="@color/text"
         android:text="IMEI NO" android:layout_width="wrap_content"
         android:layout_below="@+id/name"
         android:layout_height="wrap_content" />
@@ -28,14 +32,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imei_text"
+        android:textColor="@color/text"
         android:paddingLeft="8dp"
         android:paddingTop="8dp"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/name_text"
-        android:text="Name"
+        android:text="  Name"
         android:paddingTop="8dp"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:paddingLeft="8dp"
+        android:drawableLeft="@drawable/name_icon"
         android:layout_width="wrap_content"
         android:textStyle="bold"
         android:layout_height="wrap_content" />
@@ -43,6 +52,7 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/text"
         android:paddingLeft="8dp"
         android:paddingTop="8dp"
         android:layout_below="@+id/name_text"
@@ -51,23 +61,34 @@
 
     <TextView
         android:id="@+id/type_text"
-        android:text=" You are registered as" android:layout_width="wrap_content"
+        android:text="You are registered as" android:layout_width="wrap_content"
         android:paddingTop="8dp"
         android:textStyle="bold"
+        android:textColor="@color/text"
+        android:paddingLeft="8dp"
+        android:textSize="16sp"
         android:layout_height="wrap_content" />
 
     <TextView android:id="@+id/type" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeActionId="@+id/login"
         android:imeActionLabel="@string/action_sign_in_short"
+        android:textColor="@color/text"
+        android:paddingLeft="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:imeOptions="actionUnspecified"
         />
 
     <TextView
         android:id="@+id/job_text"
-        android:text="Your Profession"
+        android:text=" Your Profession"
         android:textStyle="bold"
+        android:textColor="@color/text"
         android:layout_below="@+id/buttonLoadPicture"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:drawableLeft="@drawable/profession"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <EditText
@@ -75,16 +96,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/job"
+        android:textColor="@color/text"
         android:hint="Type Here"
         android:paddingLeft="8dp"
         android:textSize="16sp"
+        android:textStyle="bold"
         android:inputType="textMultiLine" />
 
     <TextView
         android:id="@+id/job_image_select_text"
+        android:layout_marginTop="8dp"
         android:text="Select Any Relevant Photo of Your Skill"
         android:textStyle="bold"
+        android:textColor="@color/text"
+        android:paddingLeft="8dp"
         android:layout_below="@+id/job_text"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -93,6 +120,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/skills"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/oval"
         android:text="Load Pictures"
         android:layout_gravity="center"/>
 
@@ -120,6 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@drawable/oval"
         android:layout_below="@+id/photo"
         android:text="Save"
         android:layout_gravity="center"/>

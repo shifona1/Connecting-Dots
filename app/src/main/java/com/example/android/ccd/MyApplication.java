@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
@@ -24,6 +25,9 @@ public class MyApplication extends Application {
     public static String PREF_LOGGED_IN =   "LOGGEDIN";
     public static String LOG_TYPE_EMPLOYER =   "Employer";
     public static String LOG_TYPE_EMPLOYEE =   "Employee";
+
+    public static String PREF_USERNAME =   "username";
+
 
     private TelephonyManager telephonyManager;
     private String IMEI;
@@ -47,6 +51,10 @@ public class MyApplication extends Application {
 
     public String getID() {
         return IMEI;
+    }
+
+    public String getUsername() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_USERNAME,"unnamed");
     }
 
 

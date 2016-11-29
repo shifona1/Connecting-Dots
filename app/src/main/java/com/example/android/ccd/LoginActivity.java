@@ -42,6 +42,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +123,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
 
     }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, String> {
+    public class UserLoginTask extends AsyncTask<Void, Void, JSONArray> {
 
         private final String imei;
         RequestHandler rh = new RequestHandler();
@@ -129,32 +133,51 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
         }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected JSONArray doInBackground(Void... params) {
                 HashMap<String,String> data = new HashMap<>();
-                data.put("IMEI",imei);
+                data.put("IMEI", imei);
 
-                String result = rh.sendPostRequest(UPLOAD_URL,data).trim();
-                Log.e(TAG, "doInBackground: "+result);
+            JSONArray result = null;
+            try {
+                result = new JSONArray(rh.sendPostRequest(UPLOAD_URL,data).trim());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e(TAG, "doInBackground: "+result);
 
                 return result;
 
         }
 
         @Override
-        protected void onPostExecute(final String success) {
-            if (success.equals(MyApplication.LOG_TYPE_EMPLOYEE)||success.equals(MyApplication.LOG_TYPE_EMPLOYER)) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                sp.edit().putString(MyApplication.PREF_LOGGED_IN,success).commit();
+        protected void onPostExecute(final JSONArray success) {
+            try {
+                if (success.getInt(0)==0){
+                    JSONObject jsonObject = success.getJSONObject(1);
+                    String name = jsonObject.getString("username");
+                    String type = jsonObject.getString("type");
 
-                gotoActivity(success);
-            } else if(success.equals("Invalid")){
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            } else {
-                Toast.makeText(getApplicationContext(),"Please Check Internet Connectivity",Toast.LENGTH_LONG).show();
-                tv_wait.setText("Please Connect to Internet!");
-                LoginActivity.this.findViewById(R.id.login_progress).setVisibility(View.GONE);
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(MyApplication.PREF_LOGGED_IN,type);
+                    editor.putString(MyApplication.PREF_USERNAME,name);
+                    editor.commit();
+
+                    //Use this to get Username
+                    //((MyApplication)getApplication()).getUsername();
+
+                    gotoActivity(type);
+                } else if(success.getInt(0)==1){
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(),"Please Check Internet Connectivity",Toast.LENGTH_LONG).show();
+                    tv_wait.setText("Please Connect to Internet!");
+                    LoginActivity.this.findViewById(R.id.login_progress).setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 

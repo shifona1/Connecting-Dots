@@ -101,7 +101,7 @@ public class GPSTracker extends Service {
             SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
             pref.putFloat(PREF_LOCATION_LAT,(float)location.getLatitude());
             pref.putFloat(PREF_LOCATION_LONG,(float)location.getLongitude());
-            checkZip((float)location.getLatitude()+","+(float)location.getLongitude());
+            checkZip((float)location.getLatitude()+","+(float)location.getLongitude(),(float)location.getLatitude(),(float)location.getLongitude());
         }
 
         @Override
@@ -120,7 +120,7 @@ public class GPSTracker extends Service {
         }
     }
 
-    private void checkZip(final String longNlat) {
+    private void checkZip(final String longNlat, final float lat, final float lon) {
         new AsyncTask<Void,Void,Integer>(){
 
             @Override
@@ -186,6 +186,9 @@ public class GPSTracker extends Service {
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("IMEI", ((MyApplication) getApplication()).getID());
                     map.put("zip", "" + found);
+                    map.put("lat", "" + lat);
+                    map.put("lon", "" + lon);
+
 
                     new RequestHandler().sendPostRequest(Main2Activity.BASE_URL + "/updatelocation.php", map);
                 }

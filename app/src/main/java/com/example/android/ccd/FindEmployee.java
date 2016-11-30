@@ -1,19 +1,26 @@
 package com.example.android.ccd;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class FindEmployee extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String TAG = FindEmployee.class.getName();
     private GoogleMap mMap;
-
+    private ArrayList<Employee> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +29,9 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Intent intent = getIntent();
+        String data = intent.getStringExtra("data");
+        list = Employee.getDecoded(data);
     }
 
 
@@ -38,9 +48,39 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Log.e(TAG,"Employee List");
+
+        String[] pos;
+        float lat;
+        float lon;
+        ArrayList<LatLng> markers = new ArrayList<>();
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
+        for (int i=0;i<list.size();i++) {
+            Employee emp = list.get(i);
+            pos = emp.getPos().split(",");
+            lat = Float.parseFloat(pos[0]);
+            lon = Float.parseFloat(pos[1]);
+
+            LatLng location = new LatLng(lat,lon);
+            String name = emp.getName();
+            String contact = emp.getContact();
+            MarkerOptions marker = new MarkerOptions().position(location).title(name+'\n'+contact);
+            markers.add(marker.getPosition());
+            mMap.addMarker(marker);
+
+        }
+
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng marker : markers) {
+            builder.include(marker);
+        }
+        LatLngBounds bounds = builder.build();
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds,0));
+        mMap.setMyLocationEnabled(true);
     }
+
+
+
 }

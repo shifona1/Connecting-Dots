@@ -101,6 +101,7 @@ public class GPSTracker extends Service {
             SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
             pref.putFloat(PREF_LOCATION_LAT,(float)location.getLatitude());
             pref.putFloat(PREF_LOCATION_LONG,(float)location.getLongitude());
+            pref.commit();
             checkZip((float)location.getLatitude()+","+(float)location.getLongitude(),(float)location.getLatitude(),(float)location.getLongitude());
         }
 
@@ -202,6 +203,7 @@ public class GPSTracker extends Service {
                     return;
                 SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 pref.putFloat(PREF_ZIP,integer);
+                pref.commit();
                 Log.e(TAG,"SP "+PREF_ZIP+" > "+integer);
 
 

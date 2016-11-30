@@ -155,8 +155,8 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
         @Override
         protected void onPostExecute(final JSONArray success) {
             try {
-                Log.e(TAG,"LoginCode : "+success.getInt(0));
-                if (success.getInt(0)==0){
+
+                if (success!=null && success.getInt(0)==0){
                     JSONObject jsonObject = success.getJSONObject(1);
                     String name = jsonObject.getString("username");
                     String type = jsonObject.getString("type");
@@ -173,7 +173,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
                     //((MyApplication)getApplication()).getUsername();
 
                     gotoActivity(type);
-                } else if(success.getInt(0)==1){
+                } else if(success!=null && success.getInt(0)==1){
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();

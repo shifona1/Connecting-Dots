@@ -36,7 +36,7 @@
         android:paddingTop="8dp"
         android:layout_below="@+id/name_text"
         android:textSize="16sp"
-        android:inputType="textMultiLine" />
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/type_text"

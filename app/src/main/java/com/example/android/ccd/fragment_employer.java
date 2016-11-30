@@ -1,10 +1,13 @@
 package com.example.android.ccd;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Button;
@@ -21,13 +24,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LAT;
+import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LONG;
 
 public class fragment_employer extends ActionBarActivity {
     private final String Log_Tag = fragment_employer.class.getSimpleName();
@@ -36,14 +44,18 @@ public class fragment_employer extends ActionBarActivity {
     public static final String PIC_URL = Main2Activity.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
 
+    private String R_NAME,R_PHONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(Log_Tag, "Forecast entry: ");
         setContentView(R.layout.fragment_employer);
+        R_NAME = ((MyApplication)getApplication()).getUsername();
+        R_PHONE = ((MyApplication)getApplication()).getPhoneNo();
 
-      //  if (savedInstanceState == null) {
+
+        //  if (savedInstanceState == null) {
        //     getSupportFragmentManager().beginTransaction()
       //              .add(R.id.container, new SearchFragment())
       //              .commit();
@@ -65,8 +77,8 @@ public class fragment_employer extends ActionBarActivity {
             }
         });
 
-        TextView textView = (TextView) findViewById(R.id.employee_name);
-        textView.setText(((MyApplication) getApplication()).getUsername());
+        //TextView textView = (TextView) findViewById(R.id.employee_name);
+        //textView.setText(((MyApplication) getApplication()).getUsername());
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
         String imei = ((MyApplication) getApplication()).getID();
         String url = PIC_URL + "?IMEI=" + imei;
@@ -101,6 +113,37 @@ public class fragment_employer extends ActionBarActivity {
 
         Log.v("**************<<<<", ":::::::::::::::::::::::;;");
         ((ListView)findViewById(R.id.listView)).setAdapter(adapt);
+
+
+        findViewById(R.id.findemployee).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /********************* SAMPLEDATA ***********/
+                ArrayList<Employee> list = new ArrayList<Employee>();
+                SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if(!pm.contains(PREF_LOCATION_LAT)) {
+                    Toast.makeText(getApplicationContext(),"GPS Not working!",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+//                float minelat = pm.getFloat(PREF_LOCATION_LAT,0);
+//                float minelong = pm.getFloat(PREF_LOCATION_LONG,0);
+//                list.add(new Employee((minelat+","+minelong),"ME : "+R_NAME,R_PHONE));
+
+
+                //Other Employees
+                list.add(new Employee((25.5282709+","+84.8541815),"Shifona","9006742501"));
+                list.add(new Employee((25.5394474+","+84.8586603),"Abhishek","---------"));
+                list.add(new Employee((25.5583262+","+84.8683597),"Zeeshan","+++++++"));
+
+
+
+
+                Intent intent = new Intent(getApplicationContext(),FindEmployee.class);
+                intent.putExtra("data",Employee.getEncoded(list));
+                startActivity(intent);
+            }
+        });
 
     }
 

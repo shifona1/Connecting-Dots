@@ -17,7 +17,7 @@
 
     </ImageView>
     <TextView
-        android:id="@+id/employer"
+        android:id="@+id/employer_name"
         android:textStyle="bold"
         android:text="Zeeshan Alam" android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"

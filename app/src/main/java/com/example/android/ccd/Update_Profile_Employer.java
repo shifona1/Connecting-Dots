@@ -26,34 +26,43 @@ public class Update_Profile_Employer extends AppCompatActivity {
 
     String FETCH_URL=Main2Activity.BASE_URL+"/fetch.php";
     String UPLOAD_URL_EMPLOYER=Main2Activity.BASE_URL+"/update_employer.php";
+    private String name,phone,profession;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update__profile__employer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        fetchData();
+        ((EditText)findViewById(R.id.name)).setText(((MyApplication) getApplication()).getUsername());
+        ((EditText)findViewById(R.id.phone)).setText(((MyApplication) getApplication()).getPhoneNo());
+
+        TextView typeView = (TextView) findViewById(R.id.type);
+        typeView.setText(((MyApplication) getApplication()).getType());
+
+
+        //fetchData();
         Button Save=(Button)findViewById(R.id.Save_Details);
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name=((EditText)findViewById(R.id.name)).getText().toString();
-                String phone="+++++++++++++++++";//((EditText)findViewById(R.id.name)).getText().toString();
-                String profession=((EditText)findViewById(R.id.job)).getText().toString();
-                        uploadImage(name,phone, profession);
+                name=((EditText)findViewById(R.id.name)).getText().toString();
+                phone=((EditText)findViewById(R.id.phone)).getText().toString();
+                profession=((EditText)findViewById(R.id.job)).getText().toString();
+                uploadData();
+                        //uploadImage(name,phone, profession);
 
             }
         });
-        findViewById(R.id.buttonSkills).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(getBaseContext(), Main2Activity.class);
-                in.putExtra("isEditPage",true);
-                startActivity(in);
-            }
-        });
-        SharedPreferences sp = getApplicationContext().getSharedPreferences("sp", MODE_PRIVATE);
-        sp.edit().putString("img", "").commit();
+//        findViewById(R.id.buttonSkills).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent in = new Intent(getBaseContext(), Main2Activity.class);
+//                in.putExtra("isEditPage",true);
+//                startActivity(in);
+//            }
+//        });
+//        SharedPreferences sp = getApplicationContext().getSharedPreferences("sp", MODE_PRIVATE);
+//        sp.edit().putString("img", "").commit();
 
 
     }
@@ -62,8 +71,8 @@ public class Update_Profile_Employer extends AppCompatActivity {
 
 
 
-    private void fetchData(){
-        class FetchData extends AsyncTask<Bitmap,Void,String> {
+    private void uploadData(){
+        class updateProfile extends AsyncTask<Bitmap,Void,String> {
 
             ProgressDialog loading;
             RequestHandler rh = new RequestHandler();
@@ -72,6 +81,8 @@ public class Update_Profile_Employer extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                loading = ProgressDialog.show(Update_Profile_Employer.this, "Updating the profile ", "Please wait...",true,true);
+
 
             }
 
@@ -82,76 +93,70 @@ public class Update_Profile_Employer extends AppCompatActivity {
 
                 HashMap data=new HashMap();
                 data.put("IMEI",((MyApplication)getApplication()).getID());
-
-                String result = rh.sendPostRequest(FETCH_URL,data);
-
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-//                loading.dismiss();
-                try {
-                    JSONObject obj = new JSONObject(s);
-                    String name = obj.getString("name");
-                    ((EditText)findViewById(R.id.name)).setText(name);
-                    String password = obj.getString("pass");
-                    ((EditText)findViewById(R.id.name)).setText(password);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-            }
-        }
-        FetchData fetch=new FetchData();
-        fetch.execute();
-
-    }
-
-    private void uploadImage(final String name,final String phone, final String profession){
-        class UploadImage extends AsyncTask<Bitmap,Void,String>{
-
-            ProgressDialog loading;
-            RequestHandler rh = new RequestHandler();
-            String img;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-//                loading.dismiss();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            protected String doInBackground(Bitmap... params) {
-             //   Bitmap bitmap = params[0];
-                //String uploadImage = getStringImage(bitmap);
-                HashMap<String,String> data = new HashMap<>();
-
-                //String img = PreferenceManager.getDefaultSharedPreferences(Update_Profile_Employer.this).getString("img","");
-
-                data.put("username", name);
-                data.put("IMEI",((MyApplication)getApplication()).getID());
-                //data.put("img",img);
+                data.put("name",name);
                 data.put("phone",phone);
-                data.put("profession",profession);
+                data.put("job",profession);
 
                 String result = rh.sendPostRequest(UPLOAD_URL_EMPLOYER,data);
+
                 return result;
             }
-        }
 
-        UploadImage ui = new UploadImage();
-        ui.execute();
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                   loading.dismiss();
+
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+            }
+        };
+        updateProfile up=new updateProfile();
+        up.execute();
+
     }
+
+//    private void uploadImage(final String name,final String phone, final String profession){
+//        class UploadImage extends AsyncTask<Bitmap,Void,String>{
+//
+//            ProgressDialog loading;
+//            RequestHandler rh = new RequestHandler();
+//            String img;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+////                loading.dismiss();
+//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+//
+//            }
+//
+//            @Override
+//            protected String doInBackground(Bitmap... params) {
+//             //   Bitmap bitmap = params[0];
+//                //String uploadImage = getStringImage(bitmap);
+//                HashMap<String,String> data = new HashMap<>();
+//
+//                //String img = PreferenceManager.getDefaultSharedPreferences(Update_Profile_Employer.this).getString("img","");
+//
+//                data.put("username", name);
+//                data.put("IMEI",((MyApplication)getApplication()).getID());
+//                //data.put("img",img);
+//                data.put("phone",phone);
+//                data.put("profession",profession);
+//
+//                String result = rh.sendPostRequest(UPLOAD_URL_EMPLOYER,data);
+//                return result;
+//            }
+//        }
+//
+//        UploadImage ui = new UploadImage();
+//        ui.execute();
+//    }
 
 //    @Override
 //    public void onClick(View v) {

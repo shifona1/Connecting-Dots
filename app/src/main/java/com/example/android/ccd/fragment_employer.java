@@ -65,8 +65,9 @@ public class fragment_employer extends ActionBarActivity {
             }
         });
 
-        TextView textView = (TextView) findViewById(R.id.employee_name);
+        TextView textView = (TextView) findViewById(R.id.employer_name);
         textView.setText(((MyApplication) getApplication()).getUsername());
+
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
         String imei = ((MyApplication) getApplication()).getID();
         String url = PIC_URL + "?IMEI=" + imei;

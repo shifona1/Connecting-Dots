@@ -68,6 +68,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if(sp.contains(MyApplication.PREF_LOGGED_IN) && !sp.getString(MyApplication.PREF_LOGGED_IN,"").isEmpty()) {
             gotoActivity(sp.getString(MyApplication.PREF_LOGGED_IN,""));
+            return;
         }
         tv_wait = (TextView) findViewById(R.id.pleasewait);
 
@@ -140,18 +141,21 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
             JSONArray result = null;
             try {
                 result = new JSONArray(rh.sendPostRequest(UPLOAD_URL,data).trim());
+                Log.e(TAG,"LoginCode >  : "+result.getInt(0));
+                return result;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             Log.e(TAG, "doInBackground: "+result);
 
-                return result;
+            return result;
 
         }
 
         @Override
         protected void onPostExecute(final JSONArray success) {
             try {
+                Log.e(TAG,"LoginCode : "+success.getInt(0));
                 if (success.getInt(0)==0){
                     JSONObject jsonObject = success.getJSONObject(1);
                     String name = jsonObject.getString("username");

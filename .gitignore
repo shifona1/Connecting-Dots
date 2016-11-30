@@ -7,3 +7,4 @@ ccd.iml
 /.idea/libraries
 .DS_Store
 /build
+Credentials.java

@@ -71,13 +71,17 @@ public class RequestHandler {
             os.close();
             int responseCode = conn.getResponseCode();
             Log.e(TAG,"RC : "+responseCode);
-            if (true || responseCode == HttpsURLConnection.HTTP_OK)
+            if (responseCode == HttpsURLConnection.HTTP_OK)
             {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line = null;
                 StringBuffer sb = new StringBuffer();
-                while ((line = br.readLine()) != null)
-                    sb.append(line+"\n");
+                sb.append(br.readLine());
+                while ((line = br.readLine()) != null) {
+                    sb.append('\n');
+                    sb.append(line);
+                //    Log.e(TAG,"> "+line);
+                }
                 response = sb.toString();
             } else {
                 response = "Error Registering";
@@ -92,6 +96,9 @@ public class RequestHandler {
     }
 
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+        if (params == null)
+            params = new HashMap<>();
+
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, String> entry : params.entrySet()) {

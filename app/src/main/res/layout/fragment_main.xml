@@ -5,26 +5,51 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:background="@drawable/nat"
     tools:context=".MainActivity$PlaceholderFragment">
     <ScrollView android:id="@+id/registeration_form" android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent" android:orientation="vertical"
             android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/name_text"
-        android:text="Name" android:layout_width="wrap_content"
-        android:textStyle="bold"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Type Here"
-        android:paddingLeft="8dp"
-        android:layout_below="@+id/name_text"
-        android:textSize="16sp"
-        android:inputType="textMultiLine" />
+            <TextView
+                android:id="@+id/name_text"
+                android:text="Name" android:layout_width="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                android:paddingLeft="8dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type Here"
+                android:textColorHint="@color/text"
+                android:drawableLeft="@drawable/name_icon"
+                android:paddingLeft="8dp"
+                android:layout_below="@+id/name_text"
+                android:textSize="16sp"
+                android:inputType="textPersonName" />
+            <TextView
+                android:id="@+id/phone_text"
+                android:text="Phone" android:layout_width="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                android:paddingLeft="8dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:textColorHint="@color/text"
+                android:drawableLeft="@android:drawable/ic_menu_call"
+                android:paddingLeft="8dp"
+                android:layout_below="@+id/name_text"
+                android:textSize="16sp"
+                android:inputType="phone" />
 
 <!--    <TextView
         android:id="@+id/photo"
@@ -71,6 +96,8 @@
         android:text="How would you like to Register"
         android:paddingTop="8dp"
         android:textStyle="bold"
+        android:paddingLeft="8dp"
+        android:textColor="@color/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -82,10 +109,14 @@
         <RadioButton android:id="@+id/radio_employee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/text"
+            android:textStyle="bold"
             android:checked="true"
             android:text="Employee"/>
         <RadioButton android:id="@+id/radio_employer"
             android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/text"
             android:layout_height="wrap_content"
             android:text="Employer"/>
     </RadioGroup>
@@ -93,12 +124,20 @@
 
             <Button
                 android:id="@+id/buttonLoadPicture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/photo"
-                android:text="Pick Image"
+                android:background="@drawable/camera"
                 android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/photo"
+                android:text="PICK IMAGE" android:layout_width="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/register"
@@ -106,7 +145,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/photo"
+                android:background="@drawable/oval_background"
                 android:text="Register"
+                android:textColor="@color/text"
                 android:layout_gravity="center"/>
 
 

@@ -67,7 +67,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //if(intent.hasExtra("isEditPage")) {
             buttonView.setVisibility(View.VISIBLE);
             buttonUpload.setVisibility(View.GONE);
-        
+
 
         buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,40 +108,63 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         bitmap = null;
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                            imageView.setImageBitmap(bitmap);
-                            Log.e(TAG,"Direct Image Set");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-
+//            filePath = data.getData();
+//                        try {
+//                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+//                            imageView.setImageBitmap(bitmap);
+//                            Log.e(TAG,"Direct Image Set");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            byte[] imageBytes = baos.toByteArray();
+//
+//            Glide.with(this)
+//                    .load(imageBytes)
+//                    .centerCrop()
+//                    .crossFade()
+//                    .override(150,150)
+//                    .placeholder(android.R.drawable.progress_horizontal)
+//                    .listener(new RequestListener<byte[], GlideDrawable>() {
+//                        @Override
+//                        public boolean onException(Exception e, byte[] model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                            Log.e(TAG, "Image Load from File Exception\n" + e);
+//                            Toast.makeText(getApplicationContext(), "Image Load Failed!", Toast.LENGTH_SHORT).show();
+//                            bitmap = null;
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onResourceReady(GlideDrawable resource, byte[] model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//                            bitmap = ((GlideBitmapDrawable)(resource.getCurrent())).getBitmap();
+//                            Log.e(TAG,"Got Short Image");
+//                            return true;
+//                        }
+//                    });
+            bitmap = null;
             Glide.with(this)
-                    .load(imageBytes)
+                    .load(data.getData())
                     .centerCrop()
                     .crossFade()
-                    .override(150,150)
                     .placeholder(android.R.drawable.progress_horizontal)
-                    .listener(new RequestListener<byte[], GlideDrawable>() {
+                    .listener(new RequestListener<Uri, GlideDrawable>() {
                         @Override
-                        public boolean onException(Exception e, byte[] model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            Log.e(TAG, "Image Load from File Excpetion\n" + e);
-                            Toast.makeText(getApplicationContext(), "Image Load Failed!", Toast.LENGTH_SHORT).show();
-                            bitmap = null;
+                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, byte[] model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            return false;
+                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            bitmap = ((GlideBitmapDrawable)resource.getCurrent()).getBitmap();
+                            imageView.setImageBitmap(bitmap);
+                            Log.e(TAG,"new short image : "+getStringImage(bitmap).length());
+                            return true;
                         }
                     })
-                    ;
+                    .into(450,450);
+
         }
     }
 

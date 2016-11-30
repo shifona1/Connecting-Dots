@@ -64,13 +64,13 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        tv_wait = (TextView) findViewById(R.id.pleasewait);
         attemptLogin();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if(sp.contains(MyApplication.PREF_LOGGED_IN) && !sp.getString(MyApplication.PREF_LOGGED_IN,"").isEmpty()) {
             gotoActivity(sp.getString(MyApplication.PREF_LOGGED_IN,""));
             return;
         }
-        tv_wait = (TextView) findViewById(R.id.pleasewait);
 
         animatePW();
     }

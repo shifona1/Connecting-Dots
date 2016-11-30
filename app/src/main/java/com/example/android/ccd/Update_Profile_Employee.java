@@ -1,9 +1,11 @@
 package com.example.android.ccd;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -12,16 +14,19 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.util.DialogUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.example.android.ccd.fragment_main.UPLOAD_URL;
 
 
-public class Update_Profile_Employee extends AppCompatActivity  implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class Update_Profile_Employee extends AppCompatActivity  {
 
 
     private static final String TAG = Update_Profile_Employee.class.getName();
@@ -33,7 +38,10 @@ public class Update_Profile_Employee extends AppCompatActivity  implements View.
 
     private String R_NAME;
     private String R_TYPE;
-    private int R_ID;
+    private String R_JOBIDs;
+    private int MAX_JOBS = 5;
+
+    private ArrayList<Integer> jobs;
 
 
 
@@ -41,6 +49,7 @@ public class Update_Profile_Employee extends AppCompatActivity  implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update__profile__employee);
+        jobs = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,18 +71,35 @@ public class Update_Profile_Employee extends AppCompatActivity  implements View.
 
         adapt = new JobListAdapter(this);
 
-        for (int i = 0; i < 5; i++) adapt.add(i);
-        lv = new ListView(this);
-        lv.setAdapter(adapt);
-        lv.setOnItemClickListener(this);
+        /////////////////////////////////// ADDDED job in ADAPTED USING THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS ////////////////////////
+        //FETCH MAX_JOBS
+        R_JOBIDs = ".2.4.";
 
         findViewById(R.id.button_job_image_select).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = new MaterialDialog.Builder(Update_Profile_Employee.this)
+                adapt.setCSV(R_JOBIDs,MAX_JOBS);
+                new MaterialDialog.Builder(Update_Profile_Employee.this)
+                        .limitIconToDefaultSize()
                         .title("Pick Skills")
+                        .positiveText("Save")
+                        .negativeText("Cancel")
+                        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
 
-                        .customView(lv, true)
+                                return true;
+                            }
+                        })
+                        .adapter(adapt,new LinearLayoutManager(getApplicationContext()))
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                R_JOBIDs = adapt.getCSV();
+
+                            }
+                        })
+
                         .show();
 
             }
@@ -101,31 +127,10 @@ public class Update_Profile_Employee extends AppCompatActivity  implements View.
         Log.e(TAG,"To Send Server");
         Log.e(TAG,"NAME : "+R_NAME);
         Log.e(TAG,"TYPE : "+R_TYPE);
-        Log.e(TAG,"JID : "+R_ID);
-
-
-
-
-
-
+        Log.e(TAG,"JID : "+R_JOBIDs);
 
 
     }
 
 
-    @Override
-    public void onClick(View view) {
-
-        R_ID = (int) view.getTag();
-        Log.e(TAG,"NEW ID : "+R_ID);
-        dialog.dismiss();
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        R_ID = (int) view.getTag();
-        Log.e(TAG,"> NEW ID : "+R_ID);
-        dialog.dismiss();
-    }
 }

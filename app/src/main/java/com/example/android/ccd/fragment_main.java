@@ -27,7 +27,7 @@ public class fragment_main extends Fragment {
 
 
     private static final String TAG = fragment_main.class.getName();
-    private String R_NAME,R_PASS,R_ID,R_IMAGE;
+    private String R_NAME,R_PASS,R_ID,R_IMAGE,R_PHONE;
     private  Boolean R_TYPE;
     private View rootView;
     public static final String UPLOAD_URL = Main2Activity.BASE_URL+"/Registration.php";
@@ -62,6 +62,7 @@ public class fragment_main extends Fragment {
     }
     void registerNow() {
         R_NAME = ((EditText) rootView.findViewById(R.id.name)).getText().toString();
+        R_PHONE = ((EditText) rootView.findViewById(R.id.phone)).getText().toString();
         R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
 
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");
@@ -89,6 +90,8 @@ public class fragment_main extends Fragment {
                 super.onPostExecute(s);
                 loading.dismiss();
                 Toast.makeText(getActivity(),s,Toast.LENGTH_LONG).show();
+                if(s.contains("Success"))
+                    getActivity().finish();
             }
 
             @Override
@@ -99,6 +102,7 @@ public class fragment_main extends Fragment {
                 data.put("username", R_NAME);
                 data.put("IMEI",((MyApplication)(getActivity().getApplication())).getID());
                 data.put("Type",Type);
+                data.put("phone",R_PHONE);
                 data.put(UPLOAD_KEY, R_IMAGE);
 
                 String result = rh.sendPostRequest(UPLOAD_URL,data);

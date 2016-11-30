@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.multidex.MultiDexApplication;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -24,7 +25,7 @@ import static com.example.android.ccd.GPSTracker.PREF_ZIP;
  * Created by scopeinfinity on 26/11/16.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     private final static String TAG = MyApplication.class.getName();
 

@@ -5,7 +5,7 @@ package com.example.android.ccd;
  */
 
 public class Credentials {
-    private final static String GEOCODING_API = "";
+    private final static String GEOCODING_API = "AIzaSyC7n1FwT7meAoTzdTXSHjB-GlTL36OfK-s";
 
     public static String getGeocodingApi() {
         return GEOCODING_API;

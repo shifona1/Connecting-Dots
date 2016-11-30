@@ -28,7 +28,7 @@ import java.util.Map;
 public class GPSTracker extends Service {
     private final static String TAG = GPSTracker.class.getName();
     private LocationManager manager;
-    private long INTERVAL = 10000;
+    private long INTERVAL = 1000*60*30;
     private float DISTANCE = 10f;
 
     public static String PREF_LOCATION_LAT = "Latitude";

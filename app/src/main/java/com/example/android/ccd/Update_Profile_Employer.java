@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,9 +24,8 @@ import static com.example.android.ccd.fragment_main.UPLOAD_URL;
 
 public class Update_Profile_Employer extends AppCompatActivity {
 
-    String FETCH_URL=Main2Activity.BASE_URL+"fetch.php";
-    String UPLOAD_URL_EMPLOYER=Main2Activity.BASE_URL+"home_page.php";
-    String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"employee_homepage.php";
+    String FETCH_URL=Main2Activity.BASE_URL+"/fetch.php";
+    String UPLOAD_URL_EMPLOYER=Main2Activity.BASE_URL+"/update_employer.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +38,9 @@ public class Update_Profile_Employer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name=((EditText)findViewById(R.id.name)).getText().toString();
-                String password=((EditText)findViewById(R.id.password)).getText().toString();
+                String phone="+++++++++++++++++";//((EditText)findViewById(R.id.name)).getText().toString();
                 String profession=((EditText)findViewById(R.id.job)).getText().toString();
-                        uploadImage(name, password, profession);
+                        uploadImage(name,phone, profession);
 
             }
         });
@@ -97,7 +97,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
                     String name = obj.getString("name");
                     ((EditText)findViewById(R.id.name)).setText(name);
                     String password = obj.getString("pass");
-                    ((EditText)findViewById(R.id.password)).setText(password);
+                    ((EditText)findViewById(R.id.name)).setText(password);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -110,7 +110,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
 
     }
 
-    private void uploadImage(final String name, final String password, final String profession){
+    private void uploadImage(final String name,final String phone, final String profession){
         class UploadImage extends AsyncTask<Bitmap,Void,String>{
 
             ProgressDialog loading;
@@ -120,8 +120,6 @@ public class Update_Profile_Employer extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                img =  getApplicationContext().getSharedPreferences("sp",MODE_PRIVATE).getString("img","");
-
             }
 
             @Override
@@ -138,24 +136,16 @@ public class Update_Profile_Employer extends AppCompatActivity {
                 //String uploadImage = getStringImage(bitmap);
                 HashMap<String,String> data = new HashMap<>();
 
-                SharedPreferences sp = getApplicationContext().getSharedPreferences("sp", MODE_PRIVATE);
-                String email = sp.getString("EM", "a@B.COM");
+                //String img = PreferenceManager.getDefaultSharedPreferences(Update_Profile_Employer.this).getString("img","");
 
                 data.put("username", name);
-                data.put("Password", password);
-                data.put("Email_Id",email);
+                data.put("IMEI",((MyApplication)getApplication()).getID());
+                //data.put("img",img);
+                data.put("phone",phone);
+                data.put("profession",profession);
 
                 String result = rh.sendPostRequest(UPLOAD_URL_EMPLOYER,data);
-                data.put("img",img);
-                data.put("profession",profession);
-                //data.put("image", uploadImage);
-
-                String result2 ;
-                if(Update_Profile_Employer.this.getIntent().hasExtra("isEmployer")) result2 = rh.sendPostRequest(UPLOAD_URL_EMPLOYER,data);
-                else
-                result2 = rh.sendPostRequest(UPLOAD_URL_EMPLOYEE,data);
-
-                return result2;
+                return result;
             }
         }
 

@@ -145,7 +145,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
                 data.put("Password", password);
                 data.put("Email_Id",email);
 
-                String result = rh.sendPostRequest(UPLOAD_URL,data);
+                String result = rh.sendPostRequest(UPLOAD_URL_EMPLOYER,data);
                 data.put("img",img);
                 data.put("profession",profession);
                 //data.put("image", uploadImage);

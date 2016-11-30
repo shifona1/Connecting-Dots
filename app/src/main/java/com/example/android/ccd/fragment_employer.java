@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +33,10 @@ public class fragment_employer extends ActionBarActivity {
     private final String Log_Tag = fragment_employer.class.getSimpleName();
     private ProfessionListAdapter adapt;
     private String UPLOAD_URL=Main2Activity.BASE_URL+"search.php";
+    public static final String PIC_URL = Main2Activity.PIC_URL;
+    private static final String TAG = Employee_HOmePage.class.getSimpleName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,15 @@ public class fragment_employer extends ActionBarActivity {
                 finish();
             }
         });
+
+        TextView textView = (TextView) findViewById(R.id.employee_name);
+        textView.setText(((MyApplication) getApplication()).getUsername());
+        final ImageView img = (ImageView) findViewById(R.id.profile_image);
+        String imei = ((MyApplication) getApplication()).getID();
+        String url = PIC_URL + "?IMEI=" + imei;
+        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+
         adapt = new ProfessionListAdapter(this);
         final SearchView searchView = (SearchView) findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

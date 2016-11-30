@@ -25,6 +25,7 @@ public class MyApplication extends Application {
     public static String PREF_LOGGED_IN =   "LOGGEDIN";
     public static String LOG_TYPE_EMPLOYER =   "Employer";
     public static String LOG_TYPE_EMPLOYEE =   "Employee";
+    public static String PREF_PHONE="123456789";
 
     public static String PREF_USERNAME =   "username";
 
@@ -55,6 +56,15 @@ public class MyApplication extends Application {
 
     public String getUsername() {
         return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_USERNAME,"unnamed");
+    }
+
+    public String getType() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_LOGGED_IN,"unnamed");
+    }
+
+    public String getPhoneNo()
+    {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_PHONE,"unnamed");
     }
 
 

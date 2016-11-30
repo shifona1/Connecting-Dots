@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 public class Employee_HOmePage extends AppCompatActivity {
 
-    public static final String PIC_URL = Main2Activity.BASE_URL + "/getImage.php";
+    public static final String PIC_URL = Main2Activity.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
 
     @Override
@@ -49,12 +49,12 @@ public class Employee_HOmePage extends AppCompatActivity {
             }
         });
 
-        TextView textView=(TextView) findViewById(R.id.employee_name);
-        textView.setText(((MyApplication)getApplication()).getUsername());
+        TextView textView = (TextView) findViewById(R.id.employee_name);
+        textView.setText(((MyApplication) getApplication()).getUsername());
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
         String imei = ((MyApplication) getApplication()).getID();
-        String url  = PIC_URL + "?IMEI=" + imei;
-        Log.e(TAG,"Attempt Load Img "+url+" on "+img);
+        String url = PIC_URL + "?IMEI=" + imei;
+        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
         Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
 
         Button update_button = (Button) findViewById(R.id.update_profile_employee_button);

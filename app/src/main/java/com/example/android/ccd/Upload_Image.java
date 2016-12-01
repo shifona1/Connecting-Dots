@@ -29,7 +29,8 @@ public class Upload_Image extends AppCompatActivity implements View.OnClickListe
     public static final String BASE_URL = "http://172.16.26.196/ccd";
     private static final String TAG = Upload_Image.class.getName();
     public static final String PIC_URL = Upload_Image.BASE_URL + "/getImage.php";
-    public static final String UPDATE_PIC_URL = Upload_Image.BASE_URL + "/uploadDp.php";
+    public static final String UPDATE_PIC_URL_EMPLOYEE = Upload_Image.BASE_URL + "/uploadDpEmployee.php";
+    public static final String UPDATE_PIC_URL_EMPLOYER = Upload_Image.BASE_URL + "/uploadDpEmployer.php";
 
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -65,8 +66,9 @@ public class Upload_Image extends AppCompatActivity implements View.OnClickListe
 
                     String str =  getStringImage(bitmap);
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    Log.e(TAG,"ImagePusingInSP : "+str.length());
+                    Log.e(TAG, "ImagePusingInSP : " + str.length());
                     sp.edit().putString("img",str).commit();
+                    setResult(RESULT_OK);
                     finish();
 
                 }

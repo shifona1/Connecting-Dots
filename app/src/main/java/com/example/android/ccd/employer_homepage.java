@@ -29,14 +29,15 @@ import java.util.HashMap;
 
 import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LAT;
 
-public class employer_homepage_frag extends ActionBarActivity {
-    private final String Log_Tag = employer_homepage_frag.class.getSimpleName();
+public class employer_homepage extends ActionBarActivity {
+    private final String Log_Tag = employer_homepage.class.getSimpleName();
     private ProfessionListAdapter adapt;
     private String UPLOAD_URL= Upload_Image.BASE_URL+"search.php";
     public static final String PIC_URL = Upload_Image.PIC_URL;
+    public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYER;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
 
-    private String R_NAME,R_PHONE;
+    private String R_NAME,R_PHONE,R_IMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class employer_homepage_frag extends ActionBarActivity {
         update_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(employer_homepage_frag.this, Update_Profile_Employer.class);
+                Intent i = new Intent(employer_homepage.this, Update_Profile_Employer.class);
                 i.putExtra("isEmployer", true);
                 startActivity(i);
                 finish();
@@ -80,6 +81,20 @@ public class employer_homepage_frag extends ActionBarActivity {
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
         Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putString("img", "").commit();
+
+        Button upload_dp = (Button) findViewById(R.id.Update_dp);
+        upload_dp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(employer_homepage.this, Upload_Image.class);
+                startActivityForResult(i, 101);
+                finish();
+
+            }
+        });
+
         adapt = new ProfessionListAdapter(this);
         final SearchView searchView = (SearchView) findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -89,7 +104,7 @@ public class employer_homepage_frag extends ActionBarActivity {
 
                 Log.v("**************<<<<", search);
                 updateList(query, adapt);
-                // Intent i = new Intent(employer_homepage_frag.this, SearchFragment.class);
+                // Intent i = new Intent(employer_homepage.this, SearchFragment.class);
                 //startActivity(i);
                 return true;
             }
@@ -144,6 +159,18 @@ public class employer_homepage_frag extends ActionBarActivity {
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 101) {
+            if(requestCode == RESULT_OK) {
+                final ImageView img = (ImageView) findViewById(R.id.profile_image);
+                updateImage(((MyApplication)getApplication()).getID(), img);
+            }
+        }
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -172,7 +199,22 @@ public class employer_homepage_frag extends ActionBarActivity {
      */
 
 
+    private void updateImage(String imei,ImageView img)
+    {
+        // Uploading DP
+        R_IMAGE = PreferenceManager.getDefaultSharedPreferences(this).getString("img","");
+        RequestHandler rh = new RequestHandler();
+        HashMap<String,String> data = new HashMap<String,String>();
+        data.put("imei",imei);
+        data.put("img", R_IMAGE);
+        String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
+        Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+        // Showing Dp on Homepage
+        String url = PIC_URL + "?IMEI=" + imei;
+        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        Picasso.with(this).load(url).skipMemoryCache().error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
 
+    }
 
 
 
@@ -190,7 +232,7 @@ public class employer_homepage_frag extends ActionBarActivity {
               @Override
               protected void onPreExecute() {
                   super.onPreExecute();
-                  loading = ProgressDialog.show(employer_homepage_frag.this, "Searching","Please wait...",true,true);
+                  loading = ProgressDialog.show(employer_homepage.this, "Searching","Please wait...",true,true);
               }
 
               @Override
@@ -212,7 +254,7 @@ public class employer_homepage_frag extends ActionBarActivity {
                   } catch (JSONException e) {
                       e.printStackTrace();
                   }
-                  Toast.makeText(employer_homepage_frag.this, s, Toast.LENGTH_LONG).show();
+                  Toast.makeText(employer_homepage.this, s, Toast.LENGTH_LONG).show();
               }
 
               @Override

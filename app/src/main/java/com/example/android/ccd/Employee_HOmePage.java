@@ -24,7 +24,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     public static final String PIC_URL = Upload_Image.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
     private String R_IMAGE;
-    public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL;
+    public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +59,13 @@ public class Employee_HOmePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Employee_HOmePage.this, Upload_Image.class);
-                startActivity(i);
+                startActivityForResult(i,101);
                 finish();
+
             }
         });
 
-        updateImage(imei,img);
+
 
 
         Button update_button = (Button) findViewById(R.id.update_profile_employee_button);
@@ -77,6 +78,17 @@ public class Employee_HOmePage extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 101) {
+            if(requestCode == RESULT_OK) {
+                final ImageView img = (ImageView) findViewById(R.id.profile_image);
+                updateImage(((MyApplication)getApplication()).getID(), img);
+            }
+        }
     }
 
     private void updateImage(String imei,ImageView img)
@@ -92,7 +104,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         // Showing Dp on Homepage
         String url = PIC_URL + "?IMEI=" + imei;
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
-        Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+        Picasso.with(this).load(url).skipMemoryCache().error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
 
     }
 

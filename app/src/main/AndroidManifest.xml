@@ -27,7 +27,7 @@ package="com.example.android.ccd">
     </activity>
     <activity android:name=".LoginActivity" android:label="@string/app_name"></activity>
     <activity android:name=".MainActivity" android:label="@string/title_activity_main" />
-    <activity android:name=".employer_homepage_frag" android:label="fragment" />
+    <activity android:name=".employer_homepage" android:label="fragment" />
     <activity android:name=".Upload_Image" android:label="@string/title_activity_main2" />
     <activity android:name=".Update_Profile_Employer" android:label="@string/title_activity_update__profile__employer"
         android:theme="@style/AppTheme.NoActionBar" />

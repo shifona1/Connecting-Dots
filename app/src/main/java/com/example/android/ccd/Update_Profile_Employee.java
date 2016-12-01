@@ -112,7 +112,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
             return;
         }
         if(phone.isEmpty()) {
-            etname.setError("Phone Number is Required!");
+            etphone.setError("Phone Number is Required!");
             return;
         }
 

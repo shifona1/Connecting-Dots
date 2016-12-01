@@ -75,7 +75,7 @@ public class Registration_fragment extends Fragment {
             return;
         }
         if(R_PHONE.isEmpty()) {
-            etname.setError("Phone Number is Required!");
+            etphone.setError("Phone Number is Required!");
             return;
         }
 

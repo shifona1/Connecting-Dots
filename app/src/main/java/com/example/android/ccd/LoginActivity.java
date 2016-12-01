@@ -61,7 +61,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
     private void gotoActivity(String type) {
         Log.e(TAG,"Activity Open : "+type);
         if(type.equals(MyApplication.LOG_TYPE_EMPLOYER)) {
-            Intent i = new Intent(LoginActivity.this, employer_homepage_frag.class);
+            Intent i = new Intent(LoginActivity.this, employer_homepage.class);
             startActivity(i);
             finish();
         }

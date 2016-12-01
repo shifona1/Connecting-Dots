@@ -37,9 +37,21 @@ public class Update_Profile_Employer extends AppCompatActivity {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                name=((EditText)findViewById(R.id.name)).getText().toString();
-                phone=((EditText)findViewById(R.id.phone)).getText().toString();
+                EditText etname = ((EditText) findViewById(R.id.name));
+                name=etname.getText().toString();
+                EditText etphone=((EditText) findViewById(R.id.phone));
+                phone=etphone.getText().toString();
                 profession=((EditText)findViewById(R.id.job)).getText().toString();
+                if(name.isEmpty()) {
+                    etname.setError("Name is Required!");
+                    return;
+                }
+                if(phone.isEmpty()) {
+                    etphone.setError("Phone Number is Required!");
+                    return;
+                }
+
+
                 uploadData();
                         //uploadImage(name,phone, profession);
 

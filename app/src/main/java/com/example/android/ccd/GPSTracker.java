@@ -180,7 +180,7 @@ public class GPSTracker extends Service {
                 Log.e(TAG, "Final ZIP CODE : "+found);
 
                 if(found!=null) {
-                    if(((MyApplication)getApplication()).getZIP()==found)
+                    if(((MyApplication)getApplication()).getZIP().equals(""+found))
                         return found;
 
                     //Pushing ZIP to server
@@ -202,7 +202,7 @@ public class GPSTracker extends Service {
                 if(integer == null)
                     return;
                 SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                pref.putFloat(PREF_ZIP,integer);
+                pref.putString(PREF_ZIP,""+integer);
                 pref.commit();
                 Log.e(TAG,"SP "+PREF_ZIP+" > "+integer);
 

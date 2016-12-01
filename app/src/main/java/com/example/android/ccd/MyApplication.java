@@ -64,13 +64,13 @@ public class MyApplication extends MultiDexApplication {
         return IMEI;
     }
 
-    public Integer getZIP() {
+    public String getZIP() {
         SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(this);
         if(pm.contains(PREF_ZIP)) {
-            return pm.getInt(PREF_LOGGED_IN,-1);
+            return pm.getString(PREF_LOGGED_IN,"");
         }
 
-        return -1;
+        return "";
     }
 
     private String md5(String s) {

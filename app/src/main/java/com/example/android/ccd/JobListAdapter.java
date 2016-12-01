@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,32 +23,130 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by shifona on 28/11/16.
  */
-public class JobListAdapter extends ArrayAdapter<Integer> {
+public class JobListAdapter extends RecyclerView.Adapter<ImageViewHolder> implements JobCallback {
+    private static final String TAG = JobListAdapter.class.getName();
     private Update_Profile_Employee activity;
-    private LayoutInflater inflater;
+    private ArrayList<Integer> jobs;
+    private ArrayList<Boolean> jobsSelected;
 
     public JobListAdapter(Update_Profile_Employee activity) {
-        super(activity, R.layout.job_list_images);
         this.activity = activity;
-        inflater = LayoutInflater.from(activity);
+        jobs = new ArrayList<>();
+        jobsSelected = new ArrayList<>();
+    }
+
+    public void addJobId(int id, boolean isselected) {
+        jobs.add(id);
+        jobsSelected.add(isselected);
+
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
-        if (v == null) v = inflater.inflate(R.layout.job_list_images, null);
-        v.setOnClickListener( activity);
-        Job.fromId(activity, (ImageButton) v.findViewById(R.id.img), getItem(position));
-        v.setTag(getItem(position));
-
-        return v;
+    public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.job_list_images, parent, false);
+        return new ImageViewHolder(view, this);
     }
 
+    @Override
+    public void onBindViewHolder(ImageViewHolder holder, int position) {
+        holder.setPosition(position);
+        Job.fromId(activity, holder.getImageView(), jobs.get(position));
+        holder.setSelected(jobsSelected.get(position));
+        //v.setTag(getItem(position));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return jobs.size();
+    }
+
+    public Context getContext() {
+        return activity;
+    }
+
+
+    public Boolean getJobsSelected(int pos) {
+        return jobsSelected.get(pos);
+    }
+
+    public void setJobSelected(int pos, boolean val) {
+        jobsSelected.set(pos, val);
+        notifyDataSetChanged();
+    }
+
+    public String getCSV() {
+        String data = ".";
+        for (int i=0;i<jobs.size();i++) {
+            if(jobsSelected.get(i))
+                data+=jobs.get(i)+".";
+        }
+        return data;
+    }
+
+    public void setCSV(String data,int maxjobs) {
+        jobsSelected = new ArrayList<>();
+        jobs = new ArrayList<>();
+        for (int i=0;i<maxjobs;i++) {
+            jobs.add(i);
+            jobsSelected.add(false);
+
+        }
+        String[] datas = data.substring(1,data.length()-1).split("\\.");
+        for (int i=0;i<datas.length;i++) {
+            Log.e(TAG,"JOB Enabled  > "+i);
+            jobsSelected.set(Integer.parseInt(datas[i]), true);
+        }
+        notifyDataSetChanged();
+        for (int i=0;i<jobsSelected.size();i++) {
+            Log.e(TAG,"JOB pos "+i+" > "+jobsSelected.get(i));
+        }
+    }
 }
+
+interface JobCallback{
+    void setJobSelected(int pos,boolean val);
+}
+class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private ImageView iv;
+    private JobListAdapter adapter;
+    private int position;
+    public ImageViewHolder(View itemView, JobListAdapter jobListAdapter) {
+        super(itemView);
+        iv = (ImageView) itemView.findViewById(R.id.img);
+        iv.setOnClickListener(this);
+        adapter = jobListAdapter;
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        adapter.setJobSelected(position,!adapter.getJobsSelected(position));
+    }
+
+    public ImageView getImageView() {
+        return iv;
+    }
+
+    public void setSelected(boolean istrue) {
+        if(istrue)
+            iv.setBackgroundColor(adapter.getContext().getResources().getColor(android.R.color.holo_blue_light));
+        else
+            iv.setBackgroundColor(adapter.getContext().getResources().getColor(android.R.color.white));
+
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+}
+
 
 class Job {
     private static final String TAG = Job.class.getName();
@@ -83,7 +182,7 @@ class Job {
         return null;
     }
 
-    static Job fromId(final Context context, final ImageButton iv, final int id) {
+    static Job fromId(final Context context, final ImageView iv, final int id) {
 //        Job o = getInstance(context, id);
 //        if (o != null)
 //            return o;

@@ -2,40 +2,29 @@ package com.example.android.ccd;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.Target;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class Employee_HOmePage extends AppCompatActivity {
 
-    public static final String PIC_URL = Main2Activity.PIC_URL;
+    public static final String PIC_URL = Upload_Image.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
     private String R_IMAGE;
-    public static final String UPDATE_PIC_URL=Main2Activity.UPDATE_PIC_URL;
+    public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +58,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         upload_dp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Employee_HOmePage.this, Main2Activity.class);
+                Intent i = new Intent(Employee_HOmePage.this, Upload_Image.class);
                 startActivity(i);
                 finish();
             }

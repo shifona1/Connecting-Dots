@@ -1,6 +1,5 @@
 package com.example.android.ccd;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,17 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -188,7 +182,7 @@ class Job {
 //            return o;
 
         final Job job = new Job(id, null);
-        final String url = Main2Activity.BASE_URL + "/skills/" + id + ".jpg";
+        final String url = Upload_Image.BASE_URL + "/skills/" + id + ".jpg";
         Picasso.with(context).load(url).into(iv, new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {

@@ -4,11 +4,8 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,10 +16,10 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import static com.example.android.ccd.Main2Activity.getBitmapFromString;
+import static com.example.android.ccd.Upload_Image.getBitmapFromString;
 
 public class ViewProfile extends AppCompatActivity {
-    String FETCH_URL=Main2Activity.BASE_URL+"fetch2.php";
+    String FETCH_URL= Upload_Image.BASE_URL+"fetch2.php";
     String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,27 +1,19 @@
 package com.example.android.ccd;
 
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
@@ -32,15 +24,12 @@ import com.bumptech.glide.request.target.Target;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
+public class Upload_Image extends AppCompatActivity implements View.OnClickListener {
 
     public static final String BASE_URL = "http://172.16.26.196/ccd";
-    private static final String TAG = Main2Activity.class.getName();
-    public static final String PIC_URL = Main2Activity.BASE_URL + "/getImage.php";
-    public static final String UPDATE_PIC_URL = Main2Activity.BASE_URL + "/uploadDp.php";
+    private static final String TAG = Upload_Image.class.getName();
+    public static final String PIC_URL = Upload_Image.BASE_URL + "/getImage.php";
+    public static final String UPDATE_PIC_URL = Upload_Image.BASE_URL + "/uploadDp.php";
 
     private int PICK_IMAGE_REQUEST = 1;
 

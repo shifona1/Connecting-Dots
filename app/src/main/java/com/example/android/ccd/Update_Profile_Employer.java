@@ -1,12 +1,9 @@
 package com.example.android.ccd;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,17 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
-
-import static com.example.android.ccd.fragment_main.UPLOAD_URL;
 
 public class Update_Profile_Employer extends AppCompatActivity {
 
-    String FETCH_URL=Main2Activity.BASE_URL+"/fetch.php";
-    String UPLOAD_URL_EMPLOYER=Main2Activity.BASE_URL+"/update_employer.php";
+    String FETCH_URL= Upload_Image.BASE_URL+"/fetch.php";
+    String UPLOAD_URL_EMPLOYER= Upload_Image.BASE_URL+"/update_employer.php";
     private String name,phone,profession;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +48,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
 //        findViewById(R.id.buttonSkills).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent in = new Intent(getBaseContext(), Main2Activity.class);
+//                Intent in = new Intent(getBaseContext(), Upload_Image.class);
 //                in.putExtra("isEditPage",true);
 //                startActivity(in);
 //            }

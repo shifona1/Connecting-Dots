@@ -10,20 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.util.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.example.android.ccd.fragment_main.UPLOAD_URL;
 
 
 public class Update_Profile_Employee extends AppCompatActivity  {
@@ -31,7 +25,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
 
     private static final String TAG = Update_Profile_Employee.class.getName();
     private JobListAdapter adapt;
-    private String UPLOAD_URL_EMPLOYEE=Main2Activity.BASE_URL+"/employee_homepage.php";
+    private String UPLOAD_URL_EMPLOYEE= Upload_Image.BASE_URL+"/employee_homepage.php";
 
     private ListView lv;
     private MaterialDialog dialog;
@@ -106,18 +100,30 @@ public class Update_Profile_Employee extends AppCompatActivity  {
         });
 
 
+        EditText etname = ((EditText) findViewById(R.id.name));
+        String name=etname.getText().toString();
 
-        String name=((EditText)findViewById(R.id.name)).getText().toString();
         String profession=((EditText)findViewById(R.id.job)).getText().toString();
-        String phone=((EditText)findViewById(R.id.phone)).getText().toString();
+        EditText etphone=((EditText) findViewById(R.id.phone));
+        String phone=etphone.getText().toString();
+
+        if(name.isEmpty()) {
+            etname.setError("Name is Required!");
+            return;
+        }
+        if(phone.isEmpty()) {
+            etname.setError("Phone Number is Required!");
+            return;
+        }
 
         HashMap<String,String> data = new HashMap<>();
         data.put("username", name);
+        data.put("phone",phone);
         data.put("Profession",profession);
         //data.put("Prof_Image",kkkkkkkk);
         RequestHandler rh = new RequestHandler();
 
-        String result = rh.sendPostRequest(UPLOAD_URL_EMPLOYEE,data);
+        //String result = rh.sendPostRequest(UPLOAD_URL_EMPLOYEE,data);
 
 
         /************* INITLIZE VARIABLE R_ANYTHING,, from server ******/

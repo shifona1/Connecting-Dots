@@ -9,29 +9,24 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.android.ccd.R;
 
 import java.util.HashMap;
 
-public class fragment_main extends Fragment {
+public class Registration_fragment extends Fragment {
 
 
-    private static final String TAG = fragment_main.class.getName();
+    private static final String TAG = Registration_fragment.class.getName();
     private String R_NAME,R_PASS,R_ID,R_IMAGE,R_PHONE;
     private  Boolean R_TYPE;
     private View rootView;
-    public static final String UPLOAD_URL = Main2Activity.BASE_URL+"/Registration.php";
+    public static final String UPLOAD_URL = Upload_Image.BASE_URL+"/Registration.php";
     public static final String UPLOAD_KEY = "image";
 
 
@@ -47,7 +42,7 @@ public class fragment_main extends Fragment {
         pickPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), Main2Activity.class);
+                Intent i = new Intent(getContext(), Upload_Image.class);
 
                 startActivity(i);
                 //getActivity().finish();
@@ -68,7 +63,7 @@ public class fragment_main extends Fragment {
         EditText etname = ((EditText) rootView.findViewById(R.id.name));
         R_NAME = etname.getText().toString();
         EditText etphone=((EditText) rootView.findViewById(R.id.phone));
-        R_PHONE = ((EditText) rootView.findViewById(R.id.phone)).getText().toString();
+        R_PHONE = etphone.getText().toString();
 
         R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");

@@ -1,30 +1,23 @@
 package com.example.android.ccd;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -35,13 +28,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LAT;
-import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LONG;
 
-public class fragment_employer extends ActionBarActivity {
-    private final String Log_Tag = fragment_employer.class.getSimpleName();
+public class employer_homepage_frag extends ActionBarActivity {
+    private final String Log_Tag = employer_homepage_frag.class.getSimpleName();
     private ProfessionListAdapter adapt;
-    private String UPLOAD_URL=Main2Activity.BASE_URL+"search.php";
-    public static final String PIC_URL = Main2Activity.PIC_URL;
+    private String UPLOAD_URL= Upload_Image.BASE_URL+"search.php";
+    public static final String PIC_URL = Upload_Image.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
 
     private String R_NAME,R_PHONE;
@@ -70,7 +62,7 @@ public class fragment_employer extends ActionBarActivity {
         update_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(fragment_employer.this, Update_Profile_Employer.class);
+                Intent i = new Intent(employer_homepage_frag.this, Update_Profile_Employer.class);
                 i.putExtra("isEmployer", true);
                 startActivity(i);
                 finish();
@@ -97,7 +89,7 @@ public class fragment_employer extends ActionBarActivity {
 
                 Log.v("**************<<<<", search);
                 updateList(query, adapt);
-                // Intent i = new Intent(fragment_employer.this, SearchFragment.class);
+                // Intent i = new Intent(employer_homepage_frag.this, SearchFragment.class);
                 //startActivity(i);
                 return true;
             }
@@ -198,7 +190,7 @@ public class fragment_employer extends ActionBarActivity {
               @Override
               protected void onPreExecute() {
                   super.onPreExecute();
-                  loading = ProgressDialog.show(fragment_employer.this, "Searching","Please wait...",true,true);
+                  loading = ProgressDialog.show(employer_homepage_frag.this, "Searching","Please wait...",true,true);
               }
 
               @Override
@@ -220,7 +212,7 @@ public class fragment_employer extends ActionBarActivity {
                   } catch (JSONException e) {
                       e.printStackTrace();
                   }
-                  Toast.makeText(fragment_employer.this, s, Toast.LENGTH_LONG).show();
+                  Toast.makeText(employer_homepage_frag.this, s, Toast.LENGTH_LONG).show();
               }
 
               @Override

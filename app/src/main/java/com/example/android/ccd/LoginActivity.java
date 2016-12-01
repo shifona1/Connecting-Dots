@@ -1,45 +1,19 @@
 package com.example.android.ccd;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
@@ -47,9 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 /**
@@ -61,7 +33,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    private final String UPLOAD_URL=Main2Activity.BASE_URL +"/login.php";
+    private final String UPLOAD_URL= Upload_Image.BASE_URL +"/login.php";
     private TextView tv_wait;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +61,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
     private void gotoActivity(String type) {
         Log.e(TAG,"Activity Open : "+type);
         if(type.equals(MyApplication.LOG_TYPE_EMPLOYER)) {
-            Intent i = new Intent(LoginActivity.this, fragment_employer.class);
+            Intent i = new Intent(LoginActivity.this, employer_homepage_frag.class);
             startActivity(i);
             finish();
         }

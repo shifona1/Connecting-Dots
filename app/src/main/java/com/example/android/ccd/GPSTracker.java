@@ -11,19 +11,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.util.Log;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class GPSTracker extends Service {
     private final static String TAG = GPSTracker.class.getName();
@@ -191,7 +185,7 @@ public class GPSTracker extends Service {
                     map.put("lon", "" + lon);
 
 
-                    new RequestHandler().sendPostRequest(Main2Activity.BASE_URL + "/updatelocation.php", map);
+                    new RequestHandler().sendPostRequest(Upload_Image.BASE_URL + "/updatelocation.php", map);
                 }
                 return  found;
             }

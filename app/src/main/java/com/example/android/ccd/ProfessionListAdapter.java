@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.example.android.ccd.Main2Activity.getBitmapFromString;
+import static com.example.android.ccd.Upload_Image.getBitmapFromString;
 
 public class ProfessionListAdapter extends ArrayAdapter<Person> {
 

@@ -25,7 +25,7 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Type Here"
+                android:hint="Please Enter Your Username"
                 android:textColorHint="@color/text"
                 android:paddingLeft="8dp"
                 android:layout_below="@+id/name_text"
@@ -45,7 +45,7 @@
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Type Here"
+                android:hint="Please Enter Your Username"
                 android:textColorHint="@color/text"
                 android:paddingLeft="8dp"
                 android:layout_below="@+id/name_text"
@@ -123,6 +123,7 @@
     </RadioGroup>
 
 
+
             <Button
                 android:id="@+id/buttonLoadPicture"
                 android:layout_width="80dp"
@@ -131,14 +132,18 @@
                 android:layout_below="@+id/photo"
                 android:background="@drawable/camera"
                 android:layout_gravity="center"/>
+
+
             <TextView
                 android:id="@+id/photo"
-                android:text="PICK IMAGE" android:layout_width="wrap_content"
+                android:text="Pick Your Profile Picture" android:layout_width="wrap_content"
                 android:textColor="@color/text"
                 android:textSize="16sp"
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
 
             <Button
                 android:id="@+id/register"

@@ -1,6 +1,7 @@
 package com.example.android.ccd;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class fragment_main extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         this.rootView = rootView;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.edit().putString("img","").commit();
+
         Button pickPicture = (Button) rootView.findViewById(R.id.buttonLoadPicture);
         pickPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +65,27 @@ public class fragment_main extends Fragment {
 
     }
     void registerNow() {
-        R_NAME = ((EditText) rootView.findViewById(R.id.name)).getText().toString();
+        EditText etname = ((EditText) rootView.findViewById(R.id.name));
+        R_NAME = etname.getText().toString();
+        EditText etphone=((EditText) rootView.findViewById(R.id.phone));
         R_PHONE = ((EditText) rootView.findViewById(R.id.phone)).getText().toString();
-        R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
 
+        R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");
-        Log.e(TAG,"ImageLength : "+R_IMAGE.length());
+        Log.e(TAG, "ImageLength : " + R_IMAGE.length());
         Toast.makeText(getContext(),"ImageLength : "+R_IMAGE.length(),Toast.LENGTH_SHORT).show();
+
+        if(R_NAME.isEmpty()) {
+            etname.setError("Name is Required!");
+            return;
+        }
+        if(R_PHONE.isEmpty()) {
+            etname.setError("Phone Number is Required!");
+            return;
+        }
+
+
+
         doRegister();
     }
 

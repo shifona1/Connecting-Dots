@@ -1,17 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.3'
+    compileSdkVersion 23
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.example.android.ccd"
         minSdkVersion 14
-        targetSdkVersion 24
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

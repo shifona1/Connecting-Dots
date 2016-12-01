@@ -40,6 +40,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     public static final String BASE_URL = "http://172.16.26.196/ccd";
     private static final String TAG = Main2Activity.class.getName();
     public static final String PIC_URL = Main2Activity.BASE_URL + "/getImage.php";
+    public static final String UPDATE_PIC_URL = Main2Activity.BASE_URL + "/uploadDp.php";
 
     private int PICK_IMAGE_REQUEST = 1;
 

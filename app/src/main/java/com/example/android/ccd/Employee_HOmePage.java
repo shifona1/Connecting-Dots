@@ -5,18 +5,24 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -28,12 +34,60 @@ public class Employee_HOmePage extends AppCompatActivity {
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
     private String R_IMAGE;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
+    private boolean justShow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee__home_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        justShow = false;
+        Intent intent = getIntent();
+        int person_id = -1;
+        justShow = intent.getBooleanExtra("JUSTSHOW",false);
+        String name = ((MyApplication) getApplication()).getUsername();
+        String joblist = "";
+        String contact = "";
+        ListView lv = (ListView) findViewById(R.id.list_jobs);
+        if(justShow) {
+            findViewById(R.id.update_profile_employee_button).setVisibility(View.GONE);
+            findViewById(R.id.Update_dp).setVisibility(View.GONE);
+            person_id = intent.getIntExtra("person_id",-1);
+            name = intent.getStringExtra("name");
+            joblist = intent.getStringExtra("jobs");
+            contact = intent.getStringExtra("contact");
+            findViewById(R.id.contact).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.contact)).setText(contact);
+            ArrayAdapter adapter = new ArrayAdapter<Integer>(this,0){
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    if(convertView == null)
+                        convertView = new ImageView(parent.getContext());
+                    Job.fromId(getContext(), (ImageView) convertView, getItem(position));
+
+                    return convertView;
+                }
+            };
+            String[] datas = joblist.substring(1,joblist.length()-1).split("\\.");
+            for (int i=0;i<datas.length;i++) {
+                Log.e(TAG,"JOB List  > "+i);
+                adapter.add(Integer.parseInt(datas[i]));
+            }
+
+
+            lv.setAdapter(adapter);
+            lv.setVisibility(View.VISIBLE);
+            if(person_id==-1)
+            {
+                finish();return;
+            }
+
+        } else  {
+            findViewById(R.id.list_jobs).setVisibility(View.GONE);
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -45,11 +99,15 @@ public class Employee_HOmePage extends AppCompatActivity {
         });
 
         TextView textView = (TextView) findViewById(R.id.employee_name);
-        textView.setText(((MyApplication) getApplication()).getUsername());
+        textView.setText(name);
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
 
         String imei = ((MyApplication) getApplication()).getID();
-        String url = PIC_URL + "?IMEI=" + imei;
+        String url;
+        if(justShow)
+            url = PIC_URL + "?id="+person_id;
+        else
+            url = PIC_URL + "?IMEI=" + imei;
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
         Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
 
@@ -62,7 +120,6 @@ public class Employee_HOmePage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Employee_HOmePage.this, Upload_Image.class);
                 startActivityForResult(i,101);
-                finish();
 
             }
         });

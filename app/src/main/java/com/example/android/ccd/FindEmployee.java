@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,7 +66,8 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
             LatLng location = new LatLng(lat,lon);
             String name = emp.getName();
             String contact = emp.getContact();
-            MarkerOptions marker = new MarkerOptions().position(location).title(name+'\n'+contact);
+            int id = emp.getID();
+            MarkerOptions marker = new MarkerOptions().position(location).title(name).snippet(contact+"\n"+"ID :"+id);
             markers.add(marker.getPosition());
             mMap.addMarker(marker);
 
@@ -79,6 +81,29 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
         LatLngBounds bounds = builder.build();
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds,0));
         mMap.setMyLocationEnabled(true);
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                //Toast.makeText(FindEmployee.this,"Contact : "+marker.getSnippet(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FindEmployee.this,Employee_HOmePage.class);
+                int id = Integer.parseInt(marker.getSnippet().split(":")[1]);
+                intent.putExtra("person_id",id);
+                intent.putExtra("JUSTSHOW",true);
+                for (int i=0;i<list.size();i++) {
+                    if(list.get(i).getID() == id) {
+
+                        intent.putExtra("name",list.get(i).getName());
+                        intent.putExtra("jobs",list.get(i).getJobs());
+                        intent.putExtra("contact",list.get(i).getContact());
+                        startActivity(intent);
+                        return;
+
+                    }
+                }
+                Toast.makeText(FindEmployee.this,"Sorry! Can't Open Profile",Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 

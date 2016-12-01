@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.util.Log;
@@ -85,13 +86,12 @@ public class employer_homepage extends ActionBarActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putString("img", "").commit();
 
-        Button upload_dp = (Button) findViewById(R.id.Update_dp);
+        ImageButton upload_dp = (ImageButton) findViewById(R.id.Update_dp);
         upload_dp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(employer_homepage.this, Upload_Image.class);
                 startActivityForResult(i, 101);
-                finish();
 
             }
         });
@@ -143,9 +143,9 @@ public class employer_homepage extends ActionBarActivity {
 
 
                 //Other Employees
-                list.add(new Employee((25.5282709+","+84.8541815),"Shifona","9006742501"));
-                list.add(new Employee((25.5394474+","+84.8586603),"Abhishek","---------"));
-                list.add(new Employee((25.5583262+","+84.8683597),"Zeeshan","+++++++"));
+                list.add(new Employee((25.5282709+","+84.8541815),"Shifona","9006742501",1,".1.2.4."));
+                list.add(new Employee((25.5394474+","+84.8586603),"Abhishek","9005236215",2,".3."));
+                list.add(new Employee((25.5583262+","+84.8683597),"Zeeshan","7855221456",3,".3.4."));
 
 
 

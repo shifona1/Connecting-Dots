@@ -14,19 +14,27 @@
     tools:context="com.example.android.ccd.Employee_HOmePage"
     tools:showIn="@layout/activity_employee__home_page">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="250dp">
 
-        android:id="@+id/profile_image">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
 
-    </ImageView>
+            android:id="@+id/profile_image">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Update_dp"
-        />
+        </ImageView>
+
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:drawable/ic_menu_camera"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/Update_dp"
+            />
+    </RelativeLayout>
     <TextView
         android:id="@+id/employee_name"
         android:textStyle="bold"

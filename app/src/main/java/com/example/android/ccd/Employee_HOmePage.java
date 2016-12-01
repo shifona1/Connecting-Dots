@@ -2,6 +2,7 @@ package com.example.android.ccd;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -19,13 +20,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
+import static com.example.android.ccd.Upload_Image.goingforimageupdate;
+
 public class Employee_HOmePage extends AppCompatActivity {
 
     public static final String PIC_URL = Upload_Image.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
     private String R_IMAGE;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,30 +83,43 @@ public class Employee_HOmePage extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 101) {
-            if(requestCode == RESULT_OK) {
-                final ImageView img = (ImageView) findViewById(R.id.profile_image);
-                updateImage(((MyApplication)getApplication()).getID(), img);
-            }
+    protected void onResume() {
+        super.onResume();
+        if(goingforimageupdate) {
+            goingforimageupdate = false;
+            final ImageView img = (ImageView) findViewById(R.id.profile_image);
+            updateImage(((MyApplication) getApplication()).getID(), img);
+
         }
     }
 
-    private void updateImage(String imei,ImageView img)
+    private void updateImage(final String imei, final ImageView img)
     {
-        // Uploading DP
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img","");
-        RequestHandler rh = new RequestHandler();
-        HashMap<String,String> data = new HashMap<String,String>();
-        data.put("imei",imei);
-        data.put("img", R_IMAGE);
-        String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
-        Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
-        // Showing Dp on Homepage
-        String url = PIC_URL + "?IMEI=" + imei;
-        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
-        Picasso.with(this).load(url).skipMemoryCache().error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+        new AsyncTask<Void,Void,String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                RequestHandler rh = new RequestHandler();
+                HashMap<String,String> data = new HashMap<String,String>();
+                data.put("imei",imei);
+                data.put("img", R_IMAGE);
+                // Uploading DP
+                String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                // Showing Dp on Homepage
+                String url = PIC_URL + "?IMEI=" + imei;
+                Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+                Picasso.with(Employee_HOmePage.this).load(url).skipMemoryCache().error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+
+            }
+        }.execute();
+
 
     }
 

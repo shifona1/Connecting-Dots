@@ -24,6 +24,7 @@ import com.bumptech.glide.request.target.Target;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+
 public class Upload_Image extends AppCompatActivity implements View.OnClickListener {
 
     public static final String BASE_URL = "http://172.16.26.196/ccd";
@@ -33,6 +34,7 @@ public class Upload_Image extends AppCompatActivity implements View.OnClickListe
     public static final String UPDATE_PIC_URL_EMPLOYER = Upload_Image.BASE_URL + "/uploadDpEmployer.php";
 
     private int PICK_IMAGE_REQUEST = 1;
+    public static boolean goingforimageupdate = false;
 
     private Button buttonChoose;
     private Button buttonUpload;
@@ -69,6 +71,8 @@ public class Upload_Image extends AppCompatActivity implements View.OnClickListe
                     Log.e(TAG, "ImagePusingInSP : " + str.length());
                     sp.edit().putString("img",str).commit();
                     setResult(RESULT_OK);
+                    Log.e(TAG,"RESULT OK");
+                    goingforimageupdate = true;
                     finish();
 
                 }

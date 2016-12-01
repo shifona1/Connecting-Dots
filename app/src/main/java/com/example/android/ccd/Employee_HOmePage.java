@@ -1,9 +1,11 @@
 package com.example.android.ccd;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -32,6 +34,8 @@ public class Employee_HOmePage extends AppCompatActivity {
 
     public static final String PIC_URL = Main2Activity.PIC_URL;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
+    private String R_IMAGE;
+    public static final String UPDATE_PIC_URL=Main2Activity.UPDATE_PIC_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +56,27 @@ public class Employee_HOmePage extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.employee_name);
         textView.setText(((MyApplication) getApplication()).getUsername());
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
+
         String imei = ((MyApplication) getApplication()).getID();
         String url = PIC_URL + "?IMEI=" + imei;
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
         Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putString("img", "").commit();
+
+        Button upload_dp = (Button) findViewById(R.id.Update_dp);
+        upload_dp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Employee_HOmePage.this, Main2Activity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        updateImage(imei,img);
+
 
         Button update_button = (Button) findViewById(R.id.update_profile_employee_button);
         update_button.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +87,23 @@ public class Employee_HOmePage extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    private void updateImage(String imei,ImageView img)
+    {
+        // Uploading DP
+        R_IMAGE = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img","");
+        RequestHandler rh = new RequestHandler();
+        HashMap<String,String> data = new HashMap<String,String>();
+        data.put("imei",imei);
+        data.put("img", R_IMAGE);
+        String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
+        Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+        // Showing Dp on Homepage
+        String url = PIC_URL + "?IMEI=" + imei;
+        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
 
     }
 

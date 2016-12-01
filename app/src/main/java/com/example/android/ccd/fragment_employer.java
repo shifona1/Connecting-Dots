@@ -211,10 +211,10 @@ public class fragment_employer extends ActionBarActivity {
                       for (int i=0;i<arr.length();i++) {
                           JSONObject  obj = arr.getJSONObject(i);
                           String name = obj.getString("name");
-                          String email = obj.getString("email");
+                          String phone = obj.getString("phone");
                            String prof = obj.getString("prof");
-                              String img = obj.getString("img");
-                          Person p = new Person(name,email,prof,img);
+                              String dp = obj.getString("img");
+                          Person p = new Person(name,phone,prof,dp);
                           adapt.add(p);
                       }
                   } catch (JSONException e) {

@@ -38,18 +38,18 @@ public class ProfessionListAdapter extends ArrayAdapter<Person> {
 
 
 class Person {
-    private String name, email,prof;
+    private String name, phone,prof;
     private Bitmap img;
 
-    public Person(String name, String email, String prof,String img) {
+    public Person(String name, String phone, String prof,String img) {
         this.name = name;
-        this.email = email;
+        this.phone = phone;
         this.prof = prof;
         this.img = getBitmapFromString(img);
     }
 
     public String getEmail() {
-        return email;
+        return phone;
     }
 
     public String getName() {

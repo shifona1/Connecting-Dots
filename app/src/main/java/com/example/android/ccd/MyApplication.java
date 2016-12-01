@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -26,7 +27,9 @@ import static com.example.android.ccd.GPSTracker.PREF_ZIP;
  */
 
 public class MyApplication extends MultiDexApplication {
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     private final static String TAG = MyApplication.class.getName();
 
     public static String PREF_LOGGED_IN =   "LOGGEDIN";

@@ -17,6 +17,7 @@
                 android:text="Name" android:layout_width="wrap_content"
                 android:textColor="@color/text"
                 android:textSize="16sp"
+                android:drawableLeft="@drawable/name_icon"
                 android:paddingLeft="8dp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
@@ -26,26 +27,26 @@
                 android:layout_height="wrap_content"
                 android:hint="Please Enter Your Username"
                 android:textColorHint="@color/text"
-                android:drawableLeft="@drawable/name_icon"
                 android:paddingLeft="8dp"
                 android:layout_below="@+id/name_text"
                 android:textSize="16sp"
                 android:inputType="textPersonName" />
             <TextView
                 android:id="@+id/phone_text"
-                android:text="Phone" android:layout_width="wrap_content"
+                android:text="Phone"
                 android:textColor="@color/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:paddingLeft="8dp"
                 android:textStyle="bold"
-                android:layout_height="wrap_content" />
+                android:drawableLeft="@android:drawable/ic_menu_call" />
             <EditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Please Enter Your Username"
                 android:textColorHint="@color/text"
-                android:drawableLeft="@android:drawable/ic_menu_call"
                 android:paddingLeft="8dp"
                 android:layout_below="@+id/name_text"
                 android:textSize="16sp"
@@ -148,7 +149,7 @@
                 android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="48dp"
                 android:layout_below="@+id/photo"
                 android:background="@drawable/oval_background"
                 android:text="Register"

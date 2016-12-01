@@ -62,14 +62,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/text"
         android:text="Phone_Number"
+        android:drawableLeft="@drawable/phone_icon"
         android:id="@+id/Phone_text"
             />
 
     <EditText
         android:layout_width="match_parent"
+        android:paddingLeft="8dp"
         android:layout_height="wrap_content"
-        android:id="@+id/phone" />
+        android:hint="Type Here"
+        android:textSize="16sp"
+        android:id="@+id/phone"
+        android:inputType="textMultiLine" />
 
     <TextView
         android:id="@+id/job_text"
@@ -91,7 +99,6 @@
         android:hint="Type Here"
         android:paddingLeft="8dp"
         android:textSize="16sp"
-        android:textStyle="bold"
         android:inputType="textMultiLine" />
 
     <TextView

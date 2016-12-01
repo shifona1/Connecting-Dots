@@ -2,6 +2,7 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/nat"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -30,13 +31,19 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/oval"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"
         android:text="Edit Profile"
         android:textStyle="bold" />
 
 
     <TextView
         android:id="@+id/search"
-        android:text="Search according to field" android:layout_width="wrap_content"
+        android:text="Search according to field"
+        android:textColor="@color/text"
+        android:layout_width="wrap_content"
+        android:paddingLeft="8dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:textSize="20sp"
@@ -60,6 +67,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:background="@drawable/oval"
         android:text="Find Employee"
         android:id="@+id/findemployee"/>
 

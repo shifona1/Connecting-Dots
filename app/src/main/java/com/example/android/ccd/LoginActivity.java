@@ -22,6 +22,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -57,7 +58,9 @@ import java.util.List;
 public class LoginActivity extends Activity implements com.nineoldandroids.animation.Animator.AnimatorListener {
     private static final String TAG = LoginActivity.class.getName();
 
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     private final String UPLOAD_URL=Main2Activity.BASE_URL +"/login.php";
     private TextView tv_wait;
     @Override

@@ -116,16 +116,19 @@ public class MyApplication extends MultiDexApplication {
     public static void saveToSP(Context context,String type,String name,String phone, String profession) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
-        if(type!=null)
-            editor.putString(MyApplication.PREF_LOGGED_IN,type);
-        if(name!=null)
-            editor.putString(MyApplication.PREF_USERNAME,name);
-        if(phone!=null)
-            editor.putString(MyApplication.PREF_PHONE,phone);
-        if(profession!=null)
-            editor.putString(MyApplication.PREF_PROFESSION,profession);
+            putStringSP(editor,MyApplication.PREF_LOGGED_IN, type);
+            putStringSP(editor,MyApplication.PREF_USERNAME,name);
+            putStringSP(editor,MyApplication.PREF_PHONE,phone);
+            putStringSP(editor,MyApplication.PREF_PROFESSION,profession);
         editor.commit();
 
+    }
+
+    public static void putStringSP( SharedPreferences.Editor editor,String key,String val) {
+        if(val!=null) {
+            Log.e(TAG,key+" > "+val);
+            editor.putString(key,val);
+        }
     }
 
 

@@ -28,6 +28,7 @@ public class RequestHandler {
 
     public String sendGetRequest(String uri) {
         try {
+            Log.e(TAG,"Call to "+uri);
             URL url = new URL(uri);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));

@@ -18,9 +18,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -106,6 +110,8 @@ public class Employee_HOmePage extends AppCompatActivity {
             url = PIC_URL + "?IMEI=" + imei;
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
         Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+        //final ImageView iv = new ImageView(this);
+        Picasso.with(this).load(url).transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putString("img", "").commit();
@@ -132,10 +138,12 @@ public class Employee_HOmePage extends AppCompatActivity {
                 finish();
             }
         });
-        final ImageButton sugg = (ImageButton) findViewById(R.id.job_sug);
-        Log.e(TAG,"Calling AsyncTask ");
-        Toast.makeText(this,"Calling",Toast.LENGTH_SHORT).show();
 
+        refreshSuggestion();
+    }
+
+    private void refreshSuggestion() {
+        final ImageButton sugg = (ImageButton) findViewById(R.id.job_sug);
         new AsyncTask<Void,Void,String>(){
 
             @Override
@@ -144,8 +152,11 @@ public class Employee_HOmePage extends AppCompatActivity {
                 RequestHandler rh = new RequestHandler();
                 String jobs = ((MyApplication)getApplication()).getProfession();
                 Log.e(TAG,"JOBS \t"+jobs);
+                if(jobs.length()<2)
+                    jobs="-1";
+                else
+                    jobs = jobs.substring(1,jobs.length()-1);
 
-                jobs = jobs.substring(1,jobs.length()-1);
                 String jobs_[] = jobs.split("\\.");
                 JSONArray param = null;
                 ArrayList<Integer> list = new ArrayList<>();
@@ -163,30 +174,47 @@ public class Employee_HOmePage extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                    try{
+                try{
+
+                    Log.e(TAG,"Suggesting PE ");
+                    final int id = Integer.parseInt(s.trim());
+
+                    Log.e(TAG,"Suggested Job : "+id);
+                    if(id>=0) {
                         findViewById(R.id.job_sug_card).setVisibility(View.VISIBLE);
+                        Job.fromId(Employee_HOmePage.this, sugg, id);
+                        sugg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new MaterialDialog.Builder(Employee_HOmePage.this)
+                                        .title("Job Selection")
+                                        .content("Can you also do '"+id+"' as a Job?")
+                                        .positiveText("Yes")
+                                        .negativeText("No")
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Toast.makeText(Employee_HOmePage.this,"Picked "+id,Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    refreshSuggestion();
+                                            }
+                                        }).show();
 
-                        Log.e(TAG,"Suggesting PE ");
-                        final int id = Integer.parseInt(s.trim());
-
-                        Log.e(TAG,"Suggested Job : "+id);
-                        if(id>=0) {
-                            Job.fromId(Employee_HOmePage.this, sugg, id);
-                            sugg.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Toast.makeText(Employee_HOmePage.this,"Picked "+id,Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
-                            sugg.setVisibility(View.VISIBLE);
-                        }
-                    }catch (Exception e) {
-
+                            }
+                        });
+                        sugg.setVisibility(View.VISIBLE);
                     }
+                }catch (Exception e) {
+
+                }
             }
         }.execute();
     }
+
 
     @Override
     protected void onResume() {

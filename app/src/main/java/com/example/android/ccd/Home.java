@@ -28,7 +28,7 @@ public class Home extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        nextIntent = new Intent(this,LoginActivity.class);
+        nextIntent = new Intent(this,ScreenSlidePagerActivity.class);
         boolean networkGood = false;
         if(isNetworkAvailable())
             networkGood= true;

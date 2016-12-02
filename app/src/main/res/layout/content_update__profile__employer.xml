@@ -20,30 +20,34 @@
         android:text="  Name"
         android:paddingTop="8dp"
         android:paddingLeft="8dp"
-        android:textSize="16sp"
         android:gravity="center_vertical"
         android:drawableLeft="@drawable/name_icon"
         android:textColor="@color/text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingTop="8dp"
-        android:hint="        Type Here"
+        android:textColor="@color/text"
         android:layout_below="@+id/name_text"
-        android:textSize="16sp"
-        android:inputType="textPersonName" />
+        android:textSize="20sp"
+        android:inputType="textPersonName"
+        android:hint="Please Enter your Username"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:text=" Phone_Number"
+        android:textStyle="bold"
         android:drawableLeft="@android:drawable/ic_menu_call"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:gravity="center_vertical"
         android:drawableTint="@color/colorPrimaryDark"
         android:textColor="@color/text"
@@ -55,7 +59,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/phone"
         android:paddingLeft="8dp"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textColor="@color/text"
         android:inputType="phone" />
 
@@ -63,7 +67,8 @@
         android:id="@+id/job_text"
         android:text="  Your Profession"
         android:drawableLeft="@drawable/profession"
-        android:textSize="16sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:paddingLeft="8dp"
         android:textColor="@color/text"
         android:layout_below="@+id/buttonLoadPicture"
@@ -76,7 +81,7 @@
         android:layout_below="@+id/job"
         android:hint="        Type Here"
         android:paddingLeft="8dp"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textColor="@color/text"
         android:inputType="textMultiLine" />
 
@@ -87,7 +92,7 @@
         android:textStyle="bold"
         android:textColor="@color/text"
         android:paddingLeft="8dp"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:layout_height="wrap_content" />
 
     <TextView android:id="@+id/type" android:layout_width="match_parent"
@@ -97,6 +102,7 @@
         android:textColor="@color/text"
         android:paddingLeft="8dp"
         android:paddingBottom="8dp"
+        android:textStyle="bold"
         android:layout_marginBottom="4dp"
         android:imeOptions="actionUnspecified"
         />
@@ -105,6 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/text"
         android:background="@drawable/oval"
         android:layout_below="@+id/photo"
         android:text="Save"

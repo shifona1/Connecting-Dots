@@ -40,8 +40,11 @@ import static com.example.android.ccd.Upload_Image.goingforimageupdate;
 
 public class employer_homepage extends ActionBarActivity {
     private final String Log_Tag = employer_homepage.class.getSimpleName();
+
     private ProfessionListAdapter adapt;
     private String SEARCH_URL= Upload_Image.BASE_URL+"/search.php";
+
+
     public static final String PIC_URL = Upload_Image.PIC_URL;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYER;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
@@ -67,7 +70,7 @@ public class employer_homepage extends ActionBarActivity {
 
         Intent intent = getIntent();
         //final String data[] = new String[]{"A","Hello","Hi","Gagan","Gassss"};
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,data);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
         AutoCompleteTextView sr = (AutoCompleteTextView)findViewById(R.id.searchView);
         sr.setAdapter(adapter);
         sr.setThreshold(0);
@@ -148,34 +151,34 @@ public class employer_homepage extends ActionBarActivity {
             }
         });
 
-        adapt = new ProfessionListAdapter(this);
-        final SearchView searchView = (SearchView) findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String search = query;
+//        adapt = new ProfessionListAdapter(this);
+//        final SearchView searchView = (SearchView) findViewById(R.id.searchView);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                String search = query;
+//
+//                Log.v("**************<<<<", search);
+//                updateList(query, adapt);
+//                // Intent i = new Intent(employer_homepage.this, SearchFragment.class);
+//                //startActivity(i);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                String search = newText;
+//
+////                    TextView quantityTextView = (TextView) P.rootView.findViewById(
+////                            R.id.search);
+////                    quantityTextView.setText(search);
+//
+//                return true;
+//            }
+//        });
 
-                Log.v("**************<<<<", search);
-                updateList(query, adapt);
-                // Intent i = new Intent(employer_homepage.this, SearchFragment.class);
-                //startActivity(i);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                String search = newText;
-
-//                    TextView quantityTextView = (TextView) P.rootView.findViewById(
-//                            R.id.search);
-//                    quantityTextView.setText(search);
-
-                return true;
-            }
-        });
-
-        Log.v("**************<<<<", ":::::::::::::::::::::::;;");
-        ((ListView)findViewById(R.id.listView)).setAdapter(adapt);
+//        Log.v("**************<<<<", ":::::::::::::::::::::::;;");
+//        ((ListView)findViewById(R.id.listView)).setAdapter(adapt);
 
 
         findViewById(R.id.findemployee).setOnClickListener(new View.OnClickListener() {

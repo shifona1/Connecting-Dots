@@ -21,7 +21,6 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-
             android:id="@+id/profile_image">
 
         </ImageView>
@@ -41,7 +40,9 @@
         android:text="Zeeshan Alam" android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="10dp"
-        android:textSize="20sp"
+        android:fontFamily="casual"
+        android:textColor="@color/text"
+        android:textSize="22sp"
         android:layout_toRightOf="@+id/profile_image"
         android:layout_height="wrap_content" />
 
@@ -53,9 +54,5 @@
         android:textColor="@color/white"
         android:text="Edit Profile"
         android:textStyle="bold" />
-
-
-
-
 </LinearLayout>
 

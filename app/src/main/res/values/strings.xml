@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Connecting Dots</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Registration</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_label">ccd</string>
+    <string name="app_label">Connecting Dots</string>
     <string name="search_hint">Search by</string>
     <string name="title_activity_fragment_main">fragment_main</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_activity_update__profile__employer">Update_Profile_Employer</string>
-    <string name="title_activity_view_profile">ViewProfile</string>
-    <string name="title_activity_employee__home_page">Employee_HOmePage</string>
-    <string name="title_activity_update__profile__employee">Update_Profile_Employee</string>
+    <string name="title_activity_main2">Upload Photo</string>
+    <string name="title_activity_update__profile__employer">Update Profile</string>
+    <string name="title_activity_view_profile">View Profile</string>
+    <string name="title_activity_employee__home_page">Employee HOmePage</string>
+    <string name="title_activity_update__profile__employee">Update Profile</string>
 
     <string name="title_activity_home">Home</string>
     <string name="dummy_button">Dummy Button</string>

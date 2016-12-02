@@ -183,7 +183,7 @@ class Job {
 
         final Job job = new Job(id, null);
         final String url = Upload_Image.BASE_URL + "/skills/" + id + ".jpg";
-        Picasso.with(context).load(url).into(iv, new com.squareup.picasso.Callback() {
+        Picasso.with(context).load(url).resize(320,320).into(iv, new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
                 Bitmap bmp = ((BitmapDrawable) iv.getDrawable()).getBitmap();

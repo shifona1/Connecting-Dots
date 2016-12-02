@@ -23,11 +23,16 @@ public class Employee implements Serializable{
     private static final String TAG = Employee.class.getName();
     private String pos;
     private String name;
+    private int ID;
+    private String jobs;
     private String contact;
 
-    Employee(String pos,String name,String contact) {
+
+    Employee(String pos,String name,String contact,int ID,String jobs) {
         this.pos = pos;
         this.name = name;
+        this.ID = ID;
+        this.jobs = jobs;
         this.contact = contact;
     }
 
@@ -77,5 +82,13 @@ public class Employee implements Serializable{
             Log.e(TAG,"ERROR "+e);
         }
         return null;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getJobs() {
+        return jobs;
     }
 }

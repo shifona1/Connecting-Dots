@@ -38,7 +38,7 @@
     <TextView
         android:id="@+id/employee_name"
         android:textStyle="bold"
-        android:text="Zeeshan Alam" android:layout_width="wrap_content"
+        android:text="Name" android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="10dp"
         android:textSize="20sp"
@@ -53,6 +53,27 @@
         android:textColor="@color/white"
         android:text="Edit Profile"
         android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Number"
+        android:autoLink="phone"
+        android:id="@+id/contact"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:visibility="gone"
+        android:drawableLeft="@android:drawable/ic_menu_call"
+
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/list_jobs">
+
+    </ListView>
 
 
 

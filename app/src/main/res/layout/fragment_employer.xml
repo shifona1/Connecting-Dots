@@ -36,7 +36,11 @@
         android:paddingLeft="4dp"
         android:text="Edit Profile"
         android:textStyle="bold" />
-
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Update_dp"
+       android:src="@android:drawable/ic_menu_camera" />
 
     <TextView
         android:id="@+id/search"
@@ -51,8 +55,8 @@
         android:layout_height="wrap_content" />
 
 
-    <SearchView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/searchView"
         android:layout_below="@+id/search"

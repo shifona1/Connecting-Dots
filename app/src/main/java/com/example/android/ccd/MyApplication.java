@@ -32,10 +32,11 @@ public class MyApplication extends MultiDexApplication {
     }
     private final static String TAG = MyApplication.class.getName();
 
-    public static String PREF_LOGGED_IN =   "LOGGEDIN";
-    public static String LOG_TYPE_EMPLOYER =   "Employer";
-    public static String LOG_TYPE_EMPLOYEE =   "Employee";
-    public static String PREF_PHONE="123456789";
+    public static String PREF_LOGGED_IN     =   "LOGGEDIN";
+    public static String LOG_TYPE_EMPLOYER  =   "Employer";
+    public static String LOG_TYPE_EMPLOYEE  =   "Employee";
+    public static String PREF_PROFESSION    =   "Profession";
+    public static String PREF_PHONE         =   "phone";
 
     public static String PREF_USERNAME =   "username";
 
@@ -104,6 +105,27 @@ public class MyApplication extends MultiDexApplication {
     public String getPhoneNo()
     {
         return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_PHONE,"unnamed");
+    }
+
+
+
+    public String getProfession() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_PROFESSION,".");
+    }
+
+    public static void saveToSP(Context context,String type,String name,String phone, String profession) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        if(type!=null)
+            editor.putString(MyApplication.PREF_LOGGED_IN,type);
+        if(name!=null)
+            editor.putString(MyApplication.PREF_USERNAME,name);
+        if(phone!=null)
+            editor.putString(MyApplication.PREF_PHONE,phone);
+        if(profession!=null)
+            editor.putString(MyApplication.PREF_PROFESSION,profession);
+        editor.commit();
+
     }
 
 

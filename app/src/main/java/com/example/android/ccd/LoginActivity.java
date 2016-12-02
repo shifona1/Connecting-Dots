@@ -136,14 +136,9 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
                     String name = jsonObject.getString("username");
                     String type = jsonObject.getString("type");
                     String phone = jsonObject.getString("phone");
+                    String profes = jsonObject.getString("profes");
 
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString(MyApplication.PREF_LOGGED_IN,type);
-                    editor.putString(MyApplication.PREF_USERNAME,name);
-                    editor.putString(MyApplication.PREF_PHONE,phone);
-                    editor.commit();
-
+                    MyApplication.saveToSP(LoginActivity.this, type,name,phone,profes);
                     //Use this to get Username
                     //((MyApplication)getApplication()).getUsername();
 

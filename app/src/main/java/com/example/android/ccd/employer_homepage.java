@@ -41,10 +41,11 @@ import static com.example.android.ccd.Upload_Image.goingforimageupdate;
 public class employer_homepage extends ActionBarActivity {
     private final String Log_Tag = employer_homepage.class.getSimpleName();
     private ProfessionListAdapter adapt;
-    private String UPLOAD_URL= Upload_Image.BASE_URL+"/search.php";
+    private String SEARCH_URL= Upload_Image.BASE_URL+"/search.php";
     public static final String PIC_URL = Upload_Image.PIC_URL;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYER;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
+    private static final String JobList_URL=Upload_Image.BASE_URL+"/jobList.php";
 
     private String R_NAME,R_PHONE,R_IMAGE;
 
@@ -65,24 +66,52 @@ public class employer_homepage extends ActionBarActivity {
 
 
         Intent intent = getIntent();
-        final String data[] = new String[]{"A","Hello","Hi","Gagan","Gassss"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,data);
+        //final String data[] = new String[]{"A","Hello","Hi","Gagan","Gassss"};
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,data);
         AutoCompleteTextView sr = (AutoCompleteTextView)findViewById(R.id.searchView);
         sr.setAdapter(adapter);
         sr.setThreshold(0);
         sr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(employer_homepage.this, ">> " +  data[position]  ,Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(employer_homepage.this, ">> " +position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(employer_homepage.this, "Not Seleceted"  ,Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(employer_homepage.this, "Not Selected", Toast.LENGTH_SHORT).show();
             }
         });
+        new AsyncTask<Void,Void,ArrayList<String> >(){
+
+            @Override
+            protected ArrayList<String> doInBackground(Void... params) {
+                RequestHandler rf = new RequestHandler();
+                String data =rf.sendPostRequest(JobList_URL, new HashMap<String, String>());
+                try {
+                    JSONArray arr = new JSONArray(data);
+                    ArrayList<String> a = new ArrayList<String>();
+                    for(int i=0;i<arr.length();i++) {
+                        a.add(arr.getString(i));
+                    }
+                    return a;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<String> strings) {
+                super.onPostExecute(strings);
+                if(strings==null)
+                    return;
+                adapter.clear();
+                adapter.addAll(strings);
+                adapter.notifyDataSetChanged();
+            }
+        }.execute();
+
 
         Button update_button=(Button)findViewById(R.id.update_profile_employer_button);
         update_button.setOnClickListener(new View.OnClickListener() {
@@ -301,7 +330,7 @@ public class employer_homepage extends ActionBarActivity {
 
                   data.put("job", params[0]);
 
-                  String result = rh.sendPostRequest(UPLOAD_URL,data);
+                  String result = rh.sendPostRequest(SEARCH_URL,data);
 
                   return result;
               }

@@ -59,7 +59,8 @@ public class ScreenSlidePageFragment extends Fragment {
 
 
         // Set the title view to show the page number.
-        ((ImageView) rootView.findViewById(R.id.slides)).setImageDrawable(getResources().getDrawable(image[getPageNumber()]));
+        if(getPageNumber()<image.length)
+            ((ImageView) rootView.findViewById(R.id.slides)).setImageDrawable(getResources().getDrawable(image[getPageNumber()]));
 
 
         return rootView;

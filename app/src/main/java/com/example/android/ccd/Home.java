@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +24,16 @@ public class Home extends Activity {
 
     private static final String TAG = Home.class.getName();
     private Intent nextIntent;
+    public static String ONE_TIME_PREF = "ONETIME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        nextIntent = new Intent(this,ScreenSlidePagerActivity.class);
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ONE_TIME_PREF,false))
+            nextIntent = new Intent(this,LoginActivity.class);
+        else
+            nextIntent = new Intent(this,ScreenSlidePagerActivity.class);
         boolean networkGood = false;
         if(isNetworkAvailable())
             networkGood= true;

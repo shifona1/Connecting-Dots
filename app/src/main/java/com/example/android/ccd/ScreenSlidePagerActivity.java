@@ -6,12 +6,15 @@ package com.example.android.ccd;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import static com.example.android.ccd.Home.ONE_TIME_PREF;
 
 public class ScreenSlidePagerActivity extends FragmentActivity {
     /**
@@ -73,6 +76,9 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
             if(position==NUM_PAGES){
                 Intent i = new Intent(ScreenSlidePagerActivity.this, LoginActivity.class);
                 startActivity(i);
+                finish();
+                PreferenceManager.getDefaultSharedPreferences(ScreenSlidePagerActivity.this)
+                        .edit().putBoolean(ONE_TIME_PREF,true).commit();
             }
 
             return ScreenSlidePageFragment.create(position);

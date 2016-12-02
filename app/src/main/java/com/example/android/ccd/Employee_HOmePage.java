@@ -26,6 +26,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,8 @@ public class Employee_HOmePage extends AppCompatActivity {
     private String R_IMAGE;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
     private boolean justShow;
+    private  int person_id = -1;
+    private String imei,contact,name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +55,16 @@ public class Employee_HOmePage extends AppCompatActivity {
         setContentView(R.layout.activity_employee__home_page);
         justShow = false;
         Intent intent = getIntent();
-        int person_id = -1;
         justShow = intent.getBooleanExtra("JUSTSHOW",false);
-        String name = ((MyApplication) getApplication()).getUsername();
+        refreshText();
         String joblist = "";
-        String contact = "";
         ListView lv = (ListView) findViewById(R.id.list_jobs);
         if(justShow) {
             findViewById(R.id.update_profile_employee_button).setVisibility(View.GONE);
             findViewById(R.id.Update_dp).setVisibility(View.GONE);
             person_id = intent.getIntExtra("person_id",-1);
-            name = intent.getStringExtra("name");
             joblist = intent.getStringExtra("jobs");
-            contact = intent.getStringExtra("contact");
             findViewById(R.id.contact).setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.contact)).setText(contact);
             ArrayAdapter adapter = new ArrayAdapter<Integer>(this,0){
                 @NonNull
                 @Override
@@ -98,20 +96,9 @@ public class Employee_HOmePage extends AppCompatActivity {
 
 
 
-        TextView textView = (TextView) findViewById(R.id.employee_name);
-        textView.setText(name);
-        final ImageView img = (ImageView) findViewById(R.id.profile_image);
 
-        String imei = ((MyApplication) getApplication()).getID();
-        String url;
-        if(justShow)
-            url = PIC_URL + "?id="+person_id;
-        else
-            url = PIC_URL + "?IMEI=" + imei;
-        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
-        Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
-        //final ImageView iv = new ImageView(this);
-        Picasso.with(this).load(url).transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
+
+        imei = ((MyApplication) getApplication()).getID();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putString("img", "").commit();
@@ -138,10 +125,45 @@ public class Employee_HOmePage extends AppCompatActivity {
                 finish();
             }
         });
-
+        loadDP(false);
         refreshSuggestion();
+   }
+
+    private void refreshText() {
+        Intent intent = getIntent();
+
+        name = ((MyApplication) getApplication()).getUsername();
+        contact = ((MyApplication) getApplication()).getPhoneNo();
+        if(justShow) {
+            name = intent.getStringExtra("name");
+            contact = intent.getStringExtra("contact");
+
+        }
+        TextView textView = (TextView) findViewById(R.id.employee_name);
+        textView.setText(name);
+        ((TextView)findViewById(R.id.contact)).setText(contact);
     }
 
+    private  void loadDP(boolean skipcache) {
+        //.skipMemoryCache();
+        final ImageView img = (ImageView) findViewById(R.id.profile_image);
+        String url;
+        if(justShow)
+            url = PIC_URL + "?id="+person_id;
+        else
+            url = PIC_URL + "?IMEI=" + imei;
+        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        RequestCreator t = Picasso.with(this).load(url).error(R.drawable.pic);
+        if(skipcache)
+            t=t.skipMemoryCache();
+        t.placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+        //final ImageView iv = new ImageView(this);
+
+
+        t = Picasso.with(this).load(url);
+        t.transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
+
+    }
     private void refreshSuggestion() {
         final ImageButton sugg = (ImageButton) findViewById(R.id.job_sug);
         new AsyncTask<Void,Void,String>(){
@@ -219,6 +241,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refreshText();
         if(goingforimageupdate) {
             goingforimageupdate = false;
             final ImageView img = (ImageView) findViewById(R.id.profile_image);
@@ -249,8 +272,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                 // Showing Dp on Homepage
                 String url = PIC_URL + "?IMEI=" + imei;
                 Log.e(TAG, "Attempt Load Img " + url + " on " + img);
-                Picasso.with(Employee_HOmePage.this).load(url).skipMemoryCache().error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
-
+                loadDP(true);
             }
         }.execute();
 

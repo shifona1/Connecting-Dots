@@ -92,7 +92,12 @@ public class JobListAdapter extends RecyclerView.Adapter<ImageViewHolder> implem
             jobsSelected.add(false);
 
         }
-        String[] datas = data.substring(1,data.length()-1).split("\\.");
+
+        String[] datas;
+        if(data.length()<2)
+            datas = new String[0];
+        else
+            datas = data.substring(1,data.length()-1).split("\\.");
         for (int i=0;i<datas.length;i++) {
             Log.e(TAG,"JOB Enabled  > "+i);
             jobsSelected.set(Integer.parseInt(datas[i]), true);

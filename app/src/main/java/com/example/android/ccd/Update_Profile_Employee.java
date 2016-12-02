@@ -50,17 +50,8 @@ public class Update_Profile_Employee extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update__profile__employee);
         jobs = new ArrayList<>();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         ((EditText)findViewById(R.id.name)).setText(((MyApplication) getApplication()).getUsername());
         ((EditText)findViewById(R.id.phone)).setText(((MyApplication) getApplication()).getPhoneNo());
@@ -83,6 +74,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
                         .limitIconToDefaultSize()
                         .title("Pick Skills")
                         .positiveText("Save")
+                        .iconRes(R.drawable.profession)
                         .negativeText("Cancel")
                         .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
@@ -165,6 +157,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 if(result.contains("Success")) {
                     MyApplication.saveToSP(Update_Profile_Employee.this, null,name,phone,profession);
+                    finish();
                 }
 
             }

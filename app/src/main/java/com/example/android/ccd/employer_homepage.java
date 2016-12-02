@@ -1,13 +1,20 @@
 package com.example.android.ccd;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.util.Log;
@@ -33,7 +40,7 @@ import static com.example.android.ccd.Upload_Image.goingforimageupdate;
 public class employer_homepage extends ActionBarActivity {
     private final String Log_Tag = employer_homepage.class.getSimpleName();
     private ProfessionListAdapter adapt;
-    private String UPLOAD_URL= Upload_Image.BASE_URL+"search.php";
+    private String UPLOAD_URL= Upload_Image.BASE_URL+"/search.php";
     public static final String PIC_URL = Upload_Image.PIC_URL;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYER;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
@@ -57,8 +64,24 @@ public class employer_homepage extends ActionBarActivity {
 
 
         Intent intent = getIntent();
+        final String data[] = new String[]{"A","Hello","Hi","Gagan","Gassss"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,data);
+        AutoCompleteTextView sr = (AutoCompleteTextView)findViewById(R.id.searchView);
+        sr.setAdapter(adapter);
+        sr.setThreshold(0);
+        sr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(employer_homepage.this, ">> " +  data[position]  ,Toast.LENGTH_SHORT).show();
 
-        SearchView sr = (SearchView)findViewById(R.id.searchView);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(employer_homepage.this, "Not Seleceted"  ,Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         Button update_button=(Button)findViewById(R.id.update_profile_employer_button);
         update_button.setOnClickListener(new View.OnClickListener() {

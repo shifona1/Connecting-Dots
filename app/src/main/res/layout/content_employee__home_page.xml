@@ -67,6 +67,14 @@
 
         />
 
+    <ImageButton
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/job_sug"
+        android:visibility="visible"
+        android:src="#000"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

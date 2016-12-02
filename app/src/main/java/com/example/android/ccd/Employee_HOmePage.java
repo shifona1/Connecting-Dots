@@ -46,8 +46,6 @@ public class Employee_HOmePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee__home_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         justShow = false;
         Intent intent = getIntent();
         int person_id = -1;
@@ -95,14 +93,6 @@ public class Employee_HOmePage extends AppCompatActivity {
         }
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         TextView textView = (TextView) findViewById(R.id.employee_name);
         textView.setText(name);
@@ -120,7 +110,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putString("img", "").commit();
 
-        Button upload_dp = (Button) findViewById(R.id.Update_dp);
+        ImageButton upload_dp = (ImageButton) findViewById(R.id.Update_dp);
         upload_dp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +123,7 @@ public class Employee_HOmePage extends AppCompatActivity {
 
 
 
-        Button update_button = (Button) findViewById(R.id.update_profile_employee_button);
+        View update_button = (View) findViewById(R.id.update_profile_employee_button);
         update_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,14 +143,20 @@ public class Employee_HOmePage extends AppCompatActivity {
                 Log.e(TAG,"Suggesting DIB ");
                 RequestHandler rh = new RequestHandler();
                 String jobs = ((MyApplication)getApplication()).getProfession();
+                Log.e(TAG,"JOBS \t"+jobs);
+
                 jobs = jobs.substring(1,jobs.length()-1);
                 String jobs_[] = jobs.split("\\.");
                 JSONArray param = null;
                 ArrayList<Integer> list = new ArrayList<>();
-                for (String _job:jobs_)
+                for (String _job:jobs_) try{
                     list.add(Integer.parseInt(_job));
+                }catch (Exception e) {
+                    Log.e(TAG,"ERROR PARSE INT "+_job+" > "+e);
+                }
                 param = new JSONArray(list);
                 String result = rh.sendGetRequest(URL_SUGGESTION+"?jobs="+param.toString());
+                Log.e(TAG,"SUG R\t"+result);
                 return result;
             }
 
@@ -168,6 +164,7 @@ public class Employee_HOmePage extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                     try{
+                        findViewById(R.id.job_sug_card).setVisibility(View.VISIBLE);
 
                         Log.e(TAG,"Suggesting PE ");
                         final int id = Integer.parseInt(s.trim());

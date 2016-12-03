@@ -29,16 +29,15 @@
         android:textColor="@color/cardview_dark_background"
         android:paddingLeft="8dp"
         android:paddingTop="12dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:paddingBottom="12dp"
         android:elevation="200dp"
         android:background="@color/white"
         android:drawableLeft="@drawable/name_icon"
         android:layout_below="@+id/name_text"
         android:textSize="16sp"
-
         android:inputType="textPersonName"
-        android:hint=" Username"/>
+        android:hint=" Name"/>
     <EditText
         android:layout_width="match_parent"
         android:paddingLeft="8dp"
@@ -50,7 +49,7 @@
         android:paddingBottom="12dp"
         android:textColor="@color/cardview_dark_background"
         android:layout_height="wrap_content"
-        android:hint=" PhoneNumber"
+        android:hint=" Phone Number"
         android:textSize="16sp"
         android:id="@+id/phone"
         android:inputType="textMultiLine"
@@ -91,11 +90,12 @@
 
     <TextView
         android:id="@+id/job_image_select_text"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:text="Your Profession: Select By Images "
         android:textStyle="bold"
         android:textColor="@color/white"
         android:paddingLeft="8dp"
+        android:layout_gravity="center"
         android:layout_below="@+id/job_text"
         android:textSize="20sp"
         android:layout_width="wrap_content"

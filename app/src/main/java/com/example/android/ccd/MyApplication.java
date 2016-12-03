@@ -58,7 +58,6 @@ public class MyApplication extends MultiDexApplication {
             System.exit(0);
             return;
         }
-        Toast.makeText(this,IMEI,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
         startService(intent);
 

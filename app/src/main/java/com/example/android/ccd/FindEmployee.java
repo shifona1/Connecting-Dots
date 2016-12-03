@@ -1,5 +1,6 @@
 package com.example.android.ccd;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -85,27 +86,36 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 //Toast.makeText(FindEmployee.this,"Contact : "+marker.getSnippet(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(FindEmployee.this,Employee_HOmePage.class);
                 int id = Integer.parseInt(marker.getSnippet().split(":")[1]);
-                intent.putExtra("person_id",id);
-                intent.putExtra("JUSTSHOW",true);
+
                 for (int i=0;i<list.size();i++) {
                     if(list.get(i).getID() == id) {
+                        openEmployee(FindEmployee.this,
+                                id,
+                                list.get(i).getName(),
+                                list.get(i).getJobs(),
+                                list.get(i).getContact()
+                                );
 
-                        intent.putExtra("name",list.get(i).getName());
-                        intent.putExtra("jobs",list.get(i).getJobs());
-                        intent.putExtra("contact",list.get(i).getContact());
-                        startActivity(intent);
-                        return;
 
                     }
                 }
-                Toast.makeText(FindEmployee.this,"Sorry! Can't Open Profile",Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
+    public static void openEmployee(Context context, int empid,String name,String jobs,String contact) {
+        Intent intent = new Intent(context,Employee_HOmePage.class);
+        int id = empid;
+        intent.putExtra("person_id",id);
+        intent.putExtra("JUSTSHOW",true);
+
+        intent.putExtra("name",name);
+        intent.putExtra("jobs",jobs);
+        intent.putExtra("contact",contact);
+        context.startActivity(intent);
+    }
 
 
 }

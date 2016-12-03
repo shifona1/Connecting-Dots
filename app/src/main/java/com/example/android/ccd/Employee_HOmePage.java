@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -58,40 +60,57 @@ public class Employee_HOmePage extends AppCompatActivity {
         justShow = intent.getBooleanExtra("JUSTSHOW",false);
         refreshText();
         String joblist = "";
-        ListView lv = (ListView) findViewById(R.id.list_jobs);
         if(justShow) {
             findViewById(R.id.update_profile_employee_button).setVisibility(View.GONE);
             findViewById(R.id.Update_dp).setVisibility(View.GONE);
             person_id = intent.getIntExtra("person_id",-1);
             joblist = intent.getStringExtra("jobs");
             findViewById(R.id.contact).setVisibility(View.VISIBLE);
-            ArrayAdapter adapter = new ArrayAdapter<Integer>(this,0){
-                @NonNull
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    if(convertView == null)
-                        convertView = new ImageView(parent.getContext());
-                    Job.fromId(getContext(), (ImageView) convertView, getItem(position));
 
-                    return convertView;
-                }
-            };
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_jobs);
+
+
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView.setLayoutManager(layoutManager);
+
             String[] datas = joblist.substring(1,joblist.length()-1).split("\\.");
+            final ArrayList<Integer> jobs = new ArrayList<>();
             for (int i=0;i<datas.length;i++) {
                 Log.e(TAG,"JOB List  > "+i);
-                adapter.add(Integer.parseInt(datas[i]));
+                jobs.add(Integer.parseInt(datas[i]));
             }
-
-
-            lv.setAdapter(adapter);
-            lv.setVisibility(View.VISIBLE);
             if(person_id==-1)
             {
                 finish();return;
             }
 
+            RecyclerView.Adapter<MyViewHolder> adapter = new RecyclerView.Adapter<MyViewHolder> (){
+               @Override
+                public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    ImageView v = new ImageView(Employee_HOmePage.this);
+                    return new MyViewHolder(v);
+                }
+
+                @Override
+                public void onBindViewHolder(MyViewHolder holder, int position) {
+                    Job.fromId(Employee_HOmePage.this, holder.v, jobs.get(position));
+
+                }
+
+                @Override
+                public int getItemCount() {
+                    return jobs.size();
+                }
+            };
+
+
+
+            recyclerView.setAdapter(adapter);
+
+
         } else  {
-            findViewById(R.id.list_jobs).setVisibility(View.GONE);
+            findViewById(R.id.card_jobs).setVisibility(View.GONE);
         }
 
 
@@ -145,6 +164,14 @@ public class Employee_HOmePage extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.employee_name);
         textView.setText(name);
         ((TextView)findViewById(R.id.contact)).setText(contact);
+    }
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public ImageView v;
+        public MyViewHolder(ImageView v) {
+            super(v);
+            this.v = v;
+        }
     }
 
     private  void loadDP(boolean skipcache) {

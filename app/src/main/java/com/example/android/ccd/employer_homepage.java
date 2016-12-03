@@ -79,7 +79,6 @@ public class employer_homepage extends ActionBarActivity {
         sr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(employer_homepage.this, ">> " +i, Toast.LENGTH_SHORT).show();
                 updateList(i,adapt);
             }
         });
@@ -156,7 +155,6 @@ public class employer_homepage extends ActionBarActivity {
 
 //        Log.v("**************<<<<", ":::::::::::::::::::::::;;");
         ((ListView)findViewById(R.id.listView)).setAdapter(adapt);
-
 
         findViewById(R.id.findemployee).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -327,14 +325,22 @@ public class employer_homepage extends ActionBarActivity {
                               JSONObject obj = data_.getJSONObject(i);
                               String name = obj.getString("name");
                               String phone = obj.getString("phone");
+                              String profession = obj.getString("prof");
+                              float lat = (float) obj.getDouble("lat");
+                              float lon = (float) obj.getDouble("lon");
+                              String zip =  obj.getString("zip");
+                              int eid =  obj.getInt("id");
+                              //Actually Small One
                               String dp = obj.getString("img");
-                              Person p = new Person(name, phone, dp);
+                              Person p = new Person(eid,name, phone, dp,profession,lat,lon,zip);
                               list.add(p);
-                              Log.e(TAG, "Added Employee" + name);
+                              Log.e(TAG, "Added Employee : " + name);
                           }
                           return list;
                       }
+                      Log.e(TAG,"Error in Search");
                   } catch (JSONException e) {
+                      Log.e(TAG,e.toString());
                       e.printStackTrace();
                   }
                   return null;

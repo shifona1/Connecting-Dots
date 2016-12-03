@@ -13,12 +13,10 @@ import static com.example.android.ccd.Upload_Image.getBitmapFromString;
 
 public class ProfessionListAdapter extends ArrayAdapter<Person> {
 
-    private Context context;
     private LayoutInflater inflater;
 
     public ProfessionListAdapter(Context context){
         super(context,R.layout.list_item);
-        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -26,9 +24,8 @@ public class ProfessionListAdapter extends ArrayAdapter<Person> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if(v==null) v= inflater.inflate(R.layout.list_item,null);
-        ((TextView)v.findViewById(R.id.email)).setText(getItem(position).getEmail());
+        ((TextView)v.findViewById(R.id.phone)).setText(getItem(position).getPhone());
         ((TextView)v.findViewById(R.id.name)).setText(getItem(position).getName());
-        ((TextView)v.findViewById(R.id.prof)).setText(getItem(position).getProf());
         ((ImageView)v.findViewById(R.id.img)).setImageBitmap(getItem(position).getImg());
         return v;
     }
@@ -38,26 +35,21 @@ public class ProfessionListAdapter extends ArrayAdapter<Person> {
 
 
 class Person {
-    private String name, phone,prof;
+    private String name, phone;
     private Bitmap img;
 
-    public Person(String name, String phone, String prof,String img) {
+    public Person(String name, String phone,String img) {
         this.name = name;
         this.phone = phone;
-        this.prof = prof;
         this.img = getBitmapFromString(img);
     }
 
-    public String getEmail() {
+    public String getPhone() {
         return phone;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getProf() {
-        return prof;
     }
 
     public Bitmap getImg() {

@@ -43,7 +43,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     public static final String PIC_URL = Upload_Image.PIC_URL;
     public static final String URL_SUGGESTION = BASE_URL+"/job_sugg.php";
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
-    private String R_IMAGE;
+    private String R_IMAGE,R_IMAGE_SMALL;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
     private boolean justShow;
     private  int person_id = -1;
@@ -101,7 +101,10 @@ public class Employee_HOmePage extends AppCompatActivity {
         imei = ((MyApplication) getApplication()).getID();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString("img", "").commit();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("img","");
+        editor.putString("img_small","");
+        editor.commit();
 
         ImageButton upload_dp = (ImageButton) findViewById(R.id.Update_dp);
         upload_dp.setOnClickListener(new View.OnClickListener() {
@@ -147,12 +150,21 @@ public class Employee_HOmePage extends AppCompatActivity {
     private  void loadDP(boolean skipcache) {
         //.skipMemoryCache();
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
-        String url;
+        final String url;
         if(justShow)
             url = PIC_URL + "?id="+person_id;
         else
             url = PIC_URL + "?IMEI=" + imei;
+
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Employee_HOmePage.this, DisplayPic.class);
+                intent.putExtra("url",url);
+                startActivity(intent);
+            }
+        });
         RequestCreator t = Picasso.with(this).load(url).error(R.drawable.pic);
         if(skipcache)
             t=t.skipMemoryCache();
@@ -161,6 +173,8 @@ public class Employee_HOmePage extends AppCompatActivity {
 
 
         t = Picasso.with(this).load(url);
+        if(skipcache)
+            t=t.skipMemoryCache();
         t.transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
 
     }
@@ -246,13 +260,13 @@ public class Employee_HOmePage extends AppCompatActivity {
             goingforimageupdate = false;
             final ImageView img = (ImageView) findViewById(R.id.profile_image);
             updateImage(((MyApplication) getApplication()).getID(), img);
-
         }
     }
 
     private void updateImage(final String imei, final ImageView img)
     {
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img","");
+        R_IMAGE_SMALL = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img_small","");
         new AsyncTask<Void,Void,String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -260,6 +274,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                 HashMap<String,String> data = new HashMap<String,String>();
                 data.put("imei",imei);
                 data.put("img", R_IMAGE);
+                data.put("img_small", R_IMAGE_SMALL);
                 // Uploading DP
                 String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
                 return result;

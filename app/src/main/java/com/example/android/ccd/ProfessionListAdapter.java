@@ -92,4 +92,16 @@ class Person {
     public String getProfession() {
         return profession;
     }
+
+    public float getLat() {
+        return lat;
+    }
+
+    public float getLon() {
+        return lon;
+    }
+
+    public String getZip() {
+        return zip;
+    }
 }

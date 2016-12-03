@@ -52,13 +52,14 @@ public class employer_homepage extends ActionBarActivity {
     private static final String JobList_URL=Upload_Image.BASE_URL+"/jobList.php";
 
     private String R_NAME,R_PHONE,R_IMAGE,R_IMAGE_SMALL;
-    private String imei;
+    private String imei,zip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(Log_Tag, "Forecast entry: ");
         setContentView(R.layout.fragment_employer);
+        zip = ((MyApplication)getApplication()).getZIP();
         R_NAME = ((MyApplication)getApplication()).getUsername();
         R_PHONE = ((MyApplication)getApplication()).getPhoneNo();
 
@@ -173,12 +174,12 @@ public class employer_homepage extends ActionBarActivity {
 
 
                 //Other Employees
-                list.add(new Employee((25.5282709+","+84.8541815),"Shifona","9006742501",1,".1.2.4."));
-                list.add(new Employee((25.5394474+","+84.8586603),"Abhishek","9005236215",2,".3."));
-                list.add(new Employee((25.5583262+","+84.8683597),"Zeeshan","7855221456",3,".3.4."));
-
-
-
+                for(int i=0;i <  adapt.getCount();i++) {
+                    Person person = adapt.getItem(i);
+                    if(person.getZip().equals(zip))
+                        list.add(new Employee((person.getLat()+","+person.getLon()),person.getName()
+                            ,person.getPhone(),person.getID(),person.getProfession()));
+                }
 
                 Intent intent = new Intent(getApplicationContext(),FindEmployee.class);
                 intent.putExtra("data",Employee.getEncoded(list));

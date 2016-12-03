@@ -24,7 +24,7 @@
         android:textColor="@color/text"
         android:paddingLeft="8dp"
         android:paddingTop="12dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:paddingBottom="12dp"
         android:elevation="200dp"
         android:background="@color/white"
@@ -32,7 +32,7 @@
         android:textSize="16sp"
         android:layout_below="@+id/name_text"
         android:inputType="textPersonName"
-        android:hint=" Username"/>
+        android:hint="  Name"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:elevation="200dp"
         android:drawableLeft="@drawable/phone_icon"
         android:paddingBottom="12dp"
-        android:hint=" PhoneNumber"
+        android:hint="  PhoneNumber"
         android:textSize="16sp"
         android:id="@+id/phone"
         android:textColor="@color/text"

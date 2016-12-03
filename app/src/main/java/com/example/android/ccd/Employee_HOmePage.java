@@ -422,6 +422,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         super.onResume();
         refreshText();
         updateJobs();
+        loadDP(false);
         if(goingforimageupdate) {
             goingforimageupdate = false;
             if(load_image==101) {

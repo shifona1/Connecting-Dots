@@ -233,6 +233,7 @@ public class employer_homepage extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         refreshText();
+        loadDP(false);
         if(goingforimageupdate) {
             goingforimageupdate = false;
             final ImageView img = (ImageView) findViewById(R.id.profile_image);

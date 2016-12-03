@@ -23,11 +23,11 @@ public class Registration_fragment extends Fragment {
 
 
     private static final String TAG = Registration_fragment.class.getName();
+    private String R_IMAGE_SMALL;
     private String R_NAME,R_PASS,R_ID,R_IMAGE,R_PHONE;
     private  Boolean R_TYPE;
     private View rootView;
     public static final String UPLOAD_URL = Upload_Image.BASE_URL+"/Registration.php";
-    public static final String UPLOAD_KEY = "image";
 
 
     @Override
@@ -36,7 +36,10 @@ public class Registration_fragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         this.rootView = rootView;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sp.edit().putString("img","").commit();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("img","");
+        editor.putString("img_small","");
+        editor.commit();
 
         Button pickPicture = (Button) rootView.findViewById(R.id.buttonLoadPicture);
         pickPicture.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +70,7 @@ public class Registration_fragment extends Fragment {
 
         R_TYPE=((RadioButton) rootView.findViewById(R.id.radio_employer)).isChecked();
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img","");
+        R_IMAGE_SMALL = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img_small","");
         Log.e(TAG, "ImageLength : " + R_IMAGE.length());
         Toast.makeText(getContext(),"ImageLength : "+R_IMAGE.length(),Toast.LENGTH_SHORT).show();
 
@@ -116,7 +120,8 @@ public class Registration_fragment extends Fragment {
                 data.put("IMEI",((MyApplication)(getActivity().getApplication())).getID());
                 data.put("Type",Type);
                 data.put("phone",R_PHONE);
-                data.put(UPLOAD_KEY, R_IMAGE);
+                data.put("image", R_IMAGE);
+                data.put("image_small", R_IMAGE_SMALL);
 
                 String result = rh.sendPostRequest(UPLOAD_URL,data);
                 Log.e(TAG,"DIB : "+result);

@@ -34,7 +34,6 @@
                 android:id="@+id/profile_image"
                 android:layout_margin="10dp">
             </ImageView>
-
         </LinearLayout>
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"

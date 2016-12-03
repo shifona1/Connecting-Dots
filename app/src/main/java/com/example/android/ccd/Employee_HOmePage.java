@@ -2,6 +2,7 @@ package com.example.android.ccd;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,6 +25,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -45,9 +51,15 @@ public class Employee_HOmePage extends AppCompatActivity {
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
     private String R_IMAGE;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
+    public static final String LOAD_WORKPIC_URL= Upload_Image.BASE_URL+"/loadworkImage.php" ;
+    public static final String CLEAR_WORKPIC_URL= Upload_Image.BASE_URL+"/clearworkImage.php" ;
+    public static final String UPDATE_WORKPIC_URL= Upload_Image.BASE_URL+"/updateworkImage.php" ;
+
     private boolean justShow;
     private  int person_id = -1;
     private String imei,contact,name;
+    private int load_image;
+    private ImageView tempIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +120,11 @@ public class Employee_HOmePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Employee_HOmePage.this, Upload_Image.class);
-                startActivityForResult(i,101);
+                load_image = 101;
+                startActivityForResult(i, 101);
 
             }
         });
-
-
-
 
         View update_button = (View) findViewById(R.id.update_profile_employee_button);
         update_button.setOnClickListener(new View.OnClickListener() {
@@ -126,8 +136,111 @@ public class Employee_HOmePage extends AppCompatActivity {
             }
         });
         loadDP(false);
+
+        final ImageView img[] = new ImageView[3];
+        img[0]=(ImageView) findViewById(R.id.Image_One);
+        for(int i=0;i<3;i++) {
+            final int it2= i;
+            img[i].setTag(false);
+            img[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.getTag() != null && v.getTag() == true) {
+                        ImageView iv = new ImageView(Employee_HOmePage.this);
+                        new MaterialDialog.Builder(Employee_HOmePage.this)
+                                .title("Title")
+                                .customView(iv, true)
+                                .positiveText("Ok")
+                                .neutralText("Delete")
+                                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        replaceWork(it2, false, img[it2]);
+                                    }
+                                }).show();
+                    } else {
+                        replaceWork(it2,true, img[it2]);
+                    }
+                }
+            });
+            loadWork(i, img[i],true);
+            }
         refreshSuggestion();
-   }
+    }
+
+    private void replaceWork(final int workid, boolean notclear, final ImageView imageView) {
+
+        if(notclear==false)
+        {
+            new AsyncTask<Void,Void,String>()
+            {
+                RequestHandler rh = new RequestHandler();
+                @Override
+                protected String doInBackground(Void... params) {
+                    HashMap<String,String> data = new HashMap<String, String>();
+                    data.put("index",workid+"");
+                    data.put("imei",imei);
+                    String result = rh.sendPostRequest(CLEAR_WORKPIC_URL,data);
+                    return result;
+                }
+
+                protected void onPostExecute(String result) {
+                    super.onPostExecute(result);
+                    Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                    if(result.contains("Success")) {
+                        final String url = LOAD_WORKPIC_URL + "?imei=" + imei + "&index=" + (workid + 1);
+
+                        //clear workid for given imei in database
+                        loadWork(workid, imageView, false);
+                    }
+                }
+            }.execute();
+
+
+        } else {
+                Intent i = new Intent(Employee_HOmePage.this,Upload_Image.class);
+            startActivityForResult(i, 102);
+            load_image=200+workid;
+            tempIV = imageView;
+            //open ImagePick activity and upload picked imaged
+            // on work id
+            // on success
+            // call loadWork("url",imageView,false)
+
+
+
+        }
+    }
+    private String getWorkImageUrl(int index) {
+        if(!justShow)
+            return  LOAD_WORKPIC_URL + "?imei=" + imei + "&index=" + (index + 1);
+
+        return  LOAD_WORKPIC_URL + "?id=" + person_id + "&index=" + (index + 1);
+
+    }
+    private void loadWork(int workid, final ImageView image,boolean cache){
+        Glide.with(this)
+                .load(getWorkImageUrl(workid))
+                .override(100, 100)
+                .centerCrop()
+                .skipMemoryCache(!cache)
+                .error(android.R.drawable.stat_notify_error)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        image.setTag(false);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        image.setTag(true);
+                        return true;
+                    }
+                })
+                .into(image);
+
+    }
 
     private void refreshText() {
         Intent intent = getIntent();
@@ -161,7 +274,7 @@ public class Employee_HOmePage extends AppCompatActivity {
 
 
         t = Picasso.with(this).load(url);
-        t.transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
+        t.transform(new BlurTransformation(this)).into((ImageView) findViewById(R.id.img_back));
 
     }
     private void refreshSuggestion() {
@@ -244,8 +357,40 @@ public class Employee_HOmePage extends AppCompatActivity {
         refreshText();
         if(goingforimageupdate) {
             goingforimageupdate = false;
-            final ImageView img = (ImageView) findViewById(R.id.profile_image);
-            updateImage(((MyApplication) getApplication()).getID(), img);
+            if(load_image==101) {
+                final ImageView img = (ImageView) findViewById(R.id.profile_image);
+                updateImage(((MyApplication) getApplication()).getID(), img);
+            } else {
+                final String img = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img","");
+                final int workid = load_image-200;
+
+
+                //upload and call loadWork("url",imageView,false)
+
+                new AsyncTask<Void,Void,String>()
+                {
+                    RequestHandler rh = new RequestHandler();
+                    @Override
+                    protected String doInBackground(Void... params) {
+                        HashMap<String,String> data = new HashMap<String, String>();
+                        data.put("index",workid+"");
+                        data.put("imei",imei);
+                        data.put("img",img);
+                        String result = rh.sendPostRequest(UPDATE_WORKPIC_URL,data);
+
+                        return result;
+                    }
+
+                    protected void onPostExecute(String result) {
+                        super.onPostExecute(result);
+                        Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                        if(result.contains("Success")) {
+                            //clear workid for given imei in database
+                            loadWork(workid, tempIV, false);
+                        }
+                    }
+                }.execute();
+            }
 
         }
     }

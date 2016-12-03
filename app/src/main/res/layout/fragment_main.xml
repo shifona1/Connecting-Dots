@@ -36,7 +36,6 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:hint="Name"
-                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:paddingLeft="8dp"
                 android:layout_below="@+id/name_text"

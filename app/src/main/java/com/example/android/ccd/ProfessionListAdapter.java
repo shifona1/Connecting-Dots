@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+
 import static com.example.android.ccd.Upload_Image.getBitmapFromString;
 
 public class ProfessionListAdapter extends ArrayAdapter<Person> {
@@ -26,6 +29,8 @@ public class ProfessionListAdapter extends ArrayAdapter<Person> {
         if(v==null) v= inflater.inflate(R.layout.list_item,null);
         ((TextView)v.findViewById(R.id.phone)).setText(getItem(position).getPhone());
         ((TextView)v.findViewById(R.id.name)).setText(getItem(position).getName());
+
+
         ((ImageView)v.findViewById(R.id.img)).setImageBitmap(getItem(position).getImg());
         return v;
     }
@@ -41,7 +46,7 @@ class Person {
     public Person(String name, String phone,String img) {
         this.name = name;
         this.phone = phone;
-        this.img = getBitmapFromString(img);
+        this.img = new CircleTransform().transform(getBitmapFromString(img));
     }
 
     public String getPhone() {

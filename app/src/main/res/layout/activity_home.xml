@@ -38,7 +38,7 @@
         android:visibility="invisible"
         android:layout_below="@+id/home_text"
         />
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_media_play"
@@ -47,5 +47,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/home_text"
         android:visibility="invisible" />
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

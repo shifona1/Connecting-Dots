@@ -174,12 +174,12 @@ public class GPSTracker extends Service {
                 Log.e(TAG, "Final ZIP CODE : "+found);
 
                 if(found!=null) {
-                    if(((MyApplication)getApplication()).getZIP().equals(""+found))
+                    if((MyApplication.getInstance()).getZIP().equals(""+found))
                         return found;
 
                     //Pushing ZIP to server
                     HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("IMEI", ((MyApplication) getApplication()).getID());
+                    map.put("IMEI", (MyApplication.getInstance()).getID());
                     map.put("zip", "" + found);
                     map.put("lat", "" + lat);
                     map.put("lon", "" + lon);

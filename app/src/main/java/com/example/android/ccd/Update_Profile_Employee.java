@@ -3,8 +3,6 @@ package com.example.android.ccd;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -53,18 +51,18 @@ public class Update_Profile_Employee extends AppCompatActivity  {
 
 
 
-        ((EditText)findViewById(R.id.name)).setText(((MyApplication) getApplication()).getUsername());
-        ((EditText)findViewById(R.id.phone)).setText(((MyApplication) getApplication()).getPhoneNo());
+        ((EditText)findViewById(R.id.name)).setText(MyApplication.getInstance().getUsername());
+        ((EditText)findViewById(R.id.phone)).setText(MyApplication.getInstance().getPhoneNo());
 
 
         TextView typeView = (TextView) findViewById(R.id.type);
-        typeView.setText(((MyApplication) getApplication()).getType());
+        typeView.setText(MyApplication.getInstance().getType());
 
         adapt = new JobListAdapter(this);
 
         /////////////////////////////////// ADDDED job in ADAPTED USING THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS ////////////////////////
         //FETCH MAX_JOBS
-        R_JOBIDs = ((MyApplication)getApplication()).getProfession();
+        R_JOBIDs = MyApplication.getInstance().getProfession();
 
         findViewById(R.id.button_job_image_select).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +140,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
             protected String doInBackground(Void... voids) {
                 RequestHandler rh = new RequestHandler();
                 HashMap<String,String> data = new HashMap<String,String>();
-                data.put("imei", ((MyApplication) getApplication()).getID());
+                data.put("imei", MyApplication.getInstance().getID());
                 data.put("username", name);
                 data.put("phone",phone);
                 data.put("Profession",profession);

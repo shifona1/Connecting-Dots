@@ -17,7 +17,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/background_"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.android.ccd.Update_Profile_Employee"
     tools:showIn="@layout/activity_update__profile__employee">
 

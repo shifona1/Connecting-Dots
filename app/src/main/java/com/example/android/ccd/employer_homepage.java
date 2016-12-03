@@ -59,9 +59,9 @@ public class employer_homepage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.v(Log_Tag, "Forecast entry: ");
         setContentView(R.layout.fragment_employer);
-        zip = ((MyApplication)getApplication()).getZIP();
-        R_NAME = ((MyApplication)getApplication()).getUsername();
-        R_PHONE = ((MyApplication)getApplication()).getPhoneNo();
+        zip = MyApplication.getInstance().getZIP();
+        R_NAME = MyApplication.getInstance().getUsername();
+        R_PHONE = MyApplication.getInstance().getPhoneNo();
 
 
         //  if (savedInstanceState == null) {
@@ -134,7 +134,7 @@ public class employer_homepage extends ActionBarActivity {
 
 
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
-        imei = ((MyApplication) getApplication()).getID();
+        imei = MyApplication.getInstance().getID();
         loadDP(false);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
@@ -193,8 +193,8 @@ public class employer_homepage extends ActionBarActivity {
     private void refreshText() {
         Intent intent = getIntent();
 
-        R_NAME = ((MyApplication) getApplication()).getUsername();
-        R_PHONE = ((MyApplication) getApplication()).getPhoneNo();
+        R_NAME = MyApplication.getInstance().getUsername();
+        R_PHONE = MyApplication.getInstance().getPhoneNo();
         TextView textView = (TextView) findViewById(R.id.employer_name);
         textView.setText(R_NAME);
         ((TextView)findViewById(R.id.contact)).setText(R_PHONE);
@@ -237,7 +237,7 @@ public class employer_homepage extends ActionBarActivity {
         if(goingforimageupdate) {
             goingforimageupdate = false;
             final ImageView img = (ImageView) findViewById(R.id.profile_image);
-            updateImage(((MyApplication) getApplication()).getID(), img);
+            updateImage(MyApplication.getInstance().getID(), img);
 
         }
     }

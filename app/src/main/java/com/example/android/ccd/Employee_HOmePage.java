@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,7 +70,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         Intent intent = getIntent();
         justShow = intent.getBooleanExtra("JUSTSHOW",false);
         refreshText();
-        joblist = ((MyApplication)getApplication()).getProfession();
+        joblist = MyApplication.getInstance().getProfession();
         if(justShow) {
             findViewById(R.id.update_profile_employee_button).setVisibility(View.GONE);
             findViewById(R.id.Update_dp).setVisibility(View.GONE);
@@ -98,7 +96,7 @@ public class Employee_HOmePage extends AppCompatActivity {
 
 
 
-        imei = ((MyApplication) getApplication()).getID();
+        imei = MyApplication.getInstance().getID();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
@@ -162,7 +160,7 @@ public class Employee_HOmePage extends AppCompatActivity {
 
     private void updateJobs() {
         if(!justShow)
-            joblist = ((MyApplication)getApplication()).getProfession();
+            joblist = MyApplication.getInstance().getProfession();
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_jobs);
@@ -291,8 +289,8 @@ public class Employee_HOmePage extends AppCompatActivity {
     private void refreshText() {
         Intent intent = getIntent();
 
-        name = ((MyApplication) getApplication()).getUsername();
-        contact = ((MyApplication) getApplication()).getPhoneNo();
+        name = MyApplication.getInstance().getUsername();
+        contact = MyApplication.getInstance().getPhoneNo();
         if(justShow) {
             name = intent.getStringExtra("name");
             contact = intent.getStringExtra("contact");
@@ -351,7 +349,7 @@ public class Employee_HOmePage extends AppCompatActivity {
             protected String doInBackground(Void... voids) {
                 Log.e(TAG,"Suggesting DIB ");
                 RequestHandler rh = new RequestHandler();
-                String jobs = ((MyApplication)getApplication()).getProfession();
+                String jobs = MyApplication.getInstance().getProfession();
                 Log.e(TAG,"JOBS \t"+jobs);
                 if(jobs.length()<2)
                     jobs="-1";
@@ -427,7 +425,7 @@ public class Employee_HOmePage extends AppCompatActivity {
             goingforimageupdate = false;
             if(load_image==101) {
                 final ImageView img = (ImageView) findViewById(R.id.profile_image);
-                updateImage(((MyApplication) getApplication()).getID(), img);
+                updateImage(MyApplication.getInstance().getID(), img);
             } else {
                 final String img = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img","");
                 final int workid = load_image-200;

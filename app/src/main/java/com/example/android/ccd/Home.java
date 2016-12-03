@@ -28,6 +28,7 @@ public class Home extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MyApplication.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ONE_TIME_PREF,false))

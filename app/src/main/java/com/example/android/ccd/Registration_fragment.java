@@ -117,7 +117,7 @@ public class Registration_fragment extends Fragment {
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put("username", R_NAME);
-                data.put("IMEI",((MyApplication)(getActivity().getApplication())).getID());
+                data.put("IMEI",MyApplication.getInstance().getID());
                 data.put("Type",Type);
                 data.put("phone",R_PHONE);
                 data.put("image", R_IMAGE);

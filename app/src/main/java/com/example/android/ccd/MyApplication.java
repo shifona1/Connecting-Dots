@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -55,7 +58,6 @@ public class MyApplication extends MultiDexApplication {
             System.exit(0);
             return;
         }
-        Toast.makeText(this,IMEI,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
         startService(intent);
 
@@ -131,5 +133,21 @@ public class MyApplication extends MultiDexApplication {
         }
     }
 
+
+    public static byte[] getBytes(InputStream inputStream)  {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        try {
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return byteBuffer.toByteArray();
+    }
 
 }

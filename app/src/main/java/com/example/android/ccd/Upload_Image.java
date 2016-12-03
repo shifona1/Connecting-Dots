@@ -23,6 +23,8 @@ import com.bumptech.glide.request.target.Target;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 
 public class Upload_Image extends AppCompatActivity implements View.OnClickListener {
@@ -106,26 +108,51 @@ public class Upload_Image extends AppCompatActivity implements View.OnClickListe
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             bitmap = null;
+            byte[] dat = null;
+            try {
+                dat = MyApplication.getBytes( getContentResolver().openInputStream(data.getData()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             Glide.with(this)
-                    .load(data.getData())
+                    .load(dat)
                     .centerCrop()
                     .crossFade()
                     .placeholder(android.R.drawable.progress_horizontal)
-                    .listener(new RequestListener<Uri, GlideDrawable>() {
+                    .listener(new RequestListener<byte[], GlideDrawable>() {
                         @Override
-                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onException(Exception e, byte[] model, Target<GlideDrawable> target, boolean isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(GlideDrawable resource, byte[] model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             bitmap = ((GlideBitmapDrawable)resource.getCurrent()).getBitmap();
                             imageView.setImageBitmap(bitmap);
+
                             Log.e(TAG,"new short image : "+getStringImage(bitmap).length());
                             return true;
                         }
-                    })
+
+                        })
                     .into(450,450);
+
+            Glide.with(Upload_Image.this)
+                    .load(dat)
+                    .listener(new RequestListener<byte[], GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, byte[] model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, byte[] model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            sp.edit().putString("img_small",getStringImage(((GlideBitmapDrawable)resource.getCurrent()).getBitmap())).commit();
+                            return true;
+                        }
+                    })
+                    .into(100,100);
 
         }
     }

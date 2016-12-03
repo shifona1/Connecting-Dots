@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +51,8 @@ public class employer_homepage extends ActionBarActivity {
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
     private static final String JobList_URL=Upload_Image.BASE_URL+"/jobList.php";
 
-    private String R_NAME,R_PHONE,R_IMAGE;
+    private String R_NAME,R_PHONE,R_IMAGE,R_IMAGE_SMALL;
+    private String imei;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +76,10 @@ public class employer_homepage extends ActionBarActivity {
         AutoCompleteTextView sr = (AutoCompleteTextView)findViewById(R.id.searchView);
         sr.setAdapter(adapter);
         sr.setThreshold(0);
-        sr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(employer_homepage.this, ">> " +position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(employer_homepage.this, "Not Selected", Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                updateList(i,adapt);
             }
         });
         new AsyncTask<Void,Void,ArrayList<String> >(){
@@ -91,15 +88,18 @@ public class employer_homepage extends ActionBarActivity {
             protected ArrayList<String> doInBackground(Void... params) {
                 RequestHandler rf = new RequestHandler();
                 String data =rf.sendPostRequest(JobList_URL, new HashMap<String, String>());
+                Log.e(TAG,"Fetching  "+JobList_URL);
                 try {
                     JSONArray arr = new JSONArray(data);
                     ArrayList<String> a = new ArrayList<String>();
                     for(int i=0;i<arr.length();i++) {
+                        Log.e(TAG,"> "+arr.getString(i));
                         a.add(arr.getString(i));
                     }
                     return a;
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(employer_homepage.this,"Please Connect to Internet!!",Toast.LENGTH_SHORT).show();
                 }
                 return null;
             }
@@ -114,9 +114,11 @@ public class employer_homepage extends ActionBarActivity {
                 adapter.notifyDataSetChanged();
             }
         }.execute();
+        Log.e(TAG,"Fetching Trying  "+JobList_URL);
 
 
-        Button update_button=(Button)findViewById(R.id.update_profile_employer_button);
+
+        View update_button=(View)findViewById(R.id.update_profile_employee_button);
         update_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,19 +129,17 @@ public class employer_homepage extends ActionBarActivity {
             }
         });
 
-
-        TextView textView = (TextView) findViewById(R.id.employer_name);
-        textView.setText(((MyApplication) getApplication()).getUsername());
+        refreshText();
 
 
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
-        String imei = ((MyApplication) getApplication()).getID();
-        String url = PIC_URL + "?IMEI=" + imei;
-        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
-        Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
-
+        imei = ((MyApplication) getApplication()).getID();
+        loadDP(false);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString("img", "").commit();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("img","");
+        editor.putString("img_small","");
+        editor.commit();
 
         ImageButton upload_dp = (ImageButton) findViewById(R.id.Update_dp);
         upload_dp.setOnClickListener(new View.OnClickListener() {
@@ -151,35 +151,10 @@ public class employer_homepage extends ActionBarActivity {
             }
         });
 
-//        adapt = new ProfessionListAdapter(this);
-//        final SearchView searchView = (SearchView) findViewById(R.id.searchView);
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                String search = query;
-//
-//                Log.v("**************<<<<", search);
-//                updateList(query, adapt);
-//                // Intent i = new Intent(employer_homepage.this, SearchFragment.class);
-//                //startActivity(i);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                String search = newText;
-//
-////                    TextView quantityTextView = (TextView) P.rootView.findViewById(
-////                            R.id.search);
-////                    quantityTextView.setText(search);
-//
-//                return true;
-//            }
-//        });
+        adapt = new ProfessionListAdapter(this);
 
 //        Log.v("**************<<<<", ":::::::::::::::::::::::;;");
-//        ((ListView)findViewById(R.id.listView)).setAdapter(adapt);
-
+        ((ListView)findViewById(R.id.listView)).setAdapter(adapt);
 
         findViewById(R.id.findemployee).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,9 +189,49 @@ public class employer_homepage extends ActionBarActivity {
     }
 
 
+    private void refreshText() {
+        Intent intent = getIntent();
+
+        R_NAME = ((MyApplication) getApplication()).getUsername();
+        R_PHONE = ((MyApplication) getApplication()).getPhoneNo();
+        TextView textView = (TextView) findViewById(R.id.employer_name);
+        textView.setText(R_NAME);
+        ((TextView)findViewById(R.id.contact)).setText(R_PHONE);
+    }
+
+    private  void loadDP(boolean skipcache) {
+        //.skipMemoryCache();
+        final ImageView img = (ImageView) findViewById(R.id.profile_image);
+        final String url = PIC_URL + "?IMEI=" + imei;
+        Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        Picasso.with(this).load(url).error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(employer_homepage.this, DisplayPic.class);
+                intent.putExtra("url",url);
+                startActivity(intent);
+            }
+        });
+        RequestCreator t = Picasso.with(this).load(url).error(R.drawable.pic);
+        if(skipcache)
+            t=t.skipMemoryCache();
+        t.placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
+        //final ImageView iv = new ImageView(this);
+
+
+        t = Picasso.with(this).load(url);
+        if(skipcache)
+            t=t.skipMemoryCache();
+        t.transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
+
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
+        refreshText();
         if(goingforimageupdate) {
             goingforimageupdate = false;
             final ImageView img = (ImageView) findViewById(R.id.profile_image);
@@ -226,30 +241,6 @@ public class employer_homepage extends ActionBarActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -258,6 +249,7 @@ public class employer_homepage extends ActionBarActivity {
     private void updateImage(final String imei, final ImageView img)
     {
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(employer_homepage.this).getString("img","");
+        R_IMAGE_SMALL = PreferenceManager.getDefaultSharedPreferences(employer_homepage.this).getString("img_small","");
         new AsyncTask<Void,Void,String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -265,6 +257,7 @@ public class employer_homepage extends ActionBarActivity {
                 HashMap<String,String> data = new HashMap<String,String>();
                 data.put("imei",imei);
                 data.put("img", R_IMAGE);
+                data.put("img_small", R_IMAGE_SMALL);
                 // Uploading DP
                 String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
                 return result;
@@ -277,8 +270,7 @@ public class employer_homepage extends ActionBarActivity {
                 // Showing Dp on Homepage
                 String url = PIC_URL + "?IMEI=" + imei;
                 Log.e(TAG, "Attempt Load Img " + url + " on " + img);
-                Picasso.with(employer_homepage.this).load(url).skipMemoryCache().error(R.drawable.pic).placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
-
+                loadDP(true);
             }
         }.execute();
 
@@ -291,9 +283,9 @@ public class employer_homepage extends ActionBarActivity {
 
 
 
-      private void updateList(String str, final ProfessionListAdapter adapt)
+      private void updateList(int jobid, final ProfessionListAdapter adapt)
       {
-          class UpdateList extends AsyncTask<String,Void,String> {
+          class UpdateList extends AsyncTask<String,Void,ArrayList<Person> > {
 
               ProgressDialog loading;
               RequestHandler rh = new RequestHandler();
@@ -305,42 +297,58 @@ public class employer_homepage extends ActionBarActivity {
               }
 
               @Override
-              protected void onPostExecute(String s) {
+              protected void onPostExecute(ArrayList<Person>  s) {
                   super.onPostExecute(s);
                   loading.dismiss();
-                  try {
-                      JSONArray arr = new JSONArray(s);
+                  if(s!=null) {
                       adapt.clear();
-                      for (int i=0;i<arr.length();i++) {
-                          JSONObject  obj = arr.getJSONObject(i);
-                          String name = obj.getString("name");
-                          String phone = obj.getString("phone");
-                           String prof = obj.getString("prof");
-                              String dp = obj.getString("img");
-                          Person p = new Person(name,phone,prof,dp);
-                          adapt.add(p);
-                      }
-                  } catch (JSONException e) {
-                      e.printStackTrace();
+                      adapt.addAll(s);
+                      adapt.notifyDataSetChanged();
+                  } else {
+                      Toast.makeText(employer_homepage.this, "Unable to Search", Toast.LENGTH_LONG).show();
                   }
-                  Toast.makeText(employer_homepage.this, s, Toast.LENGTH_LONG).show();
-              }
+               }
 
               @Override
-              protected String doInBackground(String... params) {
+              protected ArrayList<Person>  doInBackground(String... params) {
 
                   HashMap<String,String> data = new HashMap<>();
 
-                  data.put("job", params[0]);
-
+                  data.put("jobid", params[0]);
+                  ArrayList<Person> list = new ArrayList<>();
                   String result = rh.sendPostRequest(SEARCH_URL,data);
-
-                  return result;
+                  try {
+                      JSONArray arr = new JSONArray(result);
+                      if(arr.getInt(0)==0) {
+                          JSONArray data_ = arr.getJSONArray(1);
+                          for (int i = 0; i < data_.length(); i++) {
+                              JSONObject obj = data_.getJSONObject(i);
+                              String name = obj.getString("name");
+                              String phone = obj.getString("phone");
+                              String profession = obj.getString("prof");
+                              float lat = (float) obj.getDouble("lat");
+                              float lon = (float) obj.getDouble("lon");
+                              String zip =  obj.getString("zip");
+                              int eid =  obj.getInt("id");
+                              //Actually Small One
+                              String dp = obj.getString("img");
+                              Person p = new Person(eid,name, phone, dp,profession,lat,lon,zip);
+                              list.add(p);
+                              Log.e(TAG, "Added Employee : " + name);
+                          }
+                          return list;
+                      }
+                      Log.e(TAG,"Error in Search");
+                  } catch (JSONException e) {
+                      Log.e(TAG,e.toString());
+                      e.printStackTrace();
+                  }
+                  return null;
               }
           }
 
           UpdateList ui = new UpdateList();
-          ui.execute(str);
+          ui.execute(""+jobid);
       }
 
 

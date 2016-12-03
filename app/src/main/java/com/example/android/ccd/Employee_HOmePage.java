@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -49,7 +51,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     public static final String PIC_URL = Upload_Image.PIC_URL;
     public static final String URL_SUGGESTION = BASE_URL+"/job_sugg.php";
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
-    private String R_IMAGE;
+    private String R_IMAGE,R_IMAGE_SMALL;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYEE;
     public static final String LOAD_WORKPIC_URL= Upload_Image.BASE_URL+"/loadworkImage.php" ;
     public static final String CLEAR_WORKPIC_URL= Upload_Image.BASE_URL+"/clearworkImage.php" ;
@@ -70,40 +72,57 @@ public class Employee_HOmePage extends AppCompatActivity {
         justShow = intent.getBooleanExtra("JUSTSHOW",false);
         refreshText();
         String joblist = "";
-        ListView lv = (ListView) findViewById(R.id.list_jobs);
         if(justShow) {
             findViewById(R.id.update_profile_employee_button).setVisibility(View.GONE);
             findViewById(R.id.Update_dp).setVisibility(View.GONE);
             person_id = intent.getIntExtra("person_id",-1);
             joblist = intent.getStringExtra("jobs");
             findViewById(R.id.contact).setVisibility(View.VISIBLE);
-            ArrayAdapter adapter = new ArrayAdapter<Integer>(this,0){
-                @NonNull
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    if(convertView == null)
-                        convertView = new ImageView(parent.getContext());
-                    Job.fromId(getContext(), (ImageView) convertView, getItem(position));
 
-                    return convertView;
-                }
-            };
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_jobs);
+
+
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView.setLayoutManager(layoutManager);
+
             String[] datas = joblist.substring(1,joblist.length()-1).split("\\.");
+            final ArrayList<Integer> jobs = new ArrayList<>();
             for (int i=0;i<datas.length;i++) {
                 Log.e(TAG,"JOB List  > "+i);
-                adapter.add(Integer.parseInt(datas[i]));
+                jobs.add(Integer.parseInt(datas[i]));
             }
-
-
-            lv.setAdapter(adapter);
-            lv.setVisibility(View.VISIBLE);
             if(person_id==-1)
             {
                 finish();return;
             }
 
+            RecyclerView.Adapter<MyViewHolder> adapter = new RecyclerView.Adapter<MyViewHolder> (){
+               @Override
+                public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    ImageView v = new ImageView(Employee_HOmePage.this);
+                    return new MyViewHolder(v);
+                }
+
+                @Override
+                public void onBindViewHolder(MyViewHolder holder, int position) {
+                    Job.fromId(Employee_HOmePage.this, holder.v, jobs.get(position));
+
+                }
+
+                @Override
+                public int getItemCount() {
+                    return jobs.size();
+                }
+            };
+
+
+
+            recyclerView.setAdapter(adapter);
+
+
         } else  {
-            findViewById(R.id.list_jobs).setVisibility(View.GONE);
+            findViewById(R.id.card_jobs).setVisibility(View.GONE);
         }
 
 
@@ -113,7 +132,10 @@ public class Employee_HOmePage extends AppCompatActivity {
         imei = ((MyApplication) getApplication()).getID();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString("img", "").commit();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("img","");
+        editor.putString("img_small","");
+        editor.commit();
 
         ImageButton upload_dp = (ImageButton) findViewById(R.id.Update_dp);
         upload_dp.setOnClickListener(new View.OnClickListener() {
@@ -256,16 +278,33 @@ public class Employee_HOmePage extends AppCompatActivity {
         textView.setText(name);
         ((TextView)findViewById(R.id.contact)).setText(contact);
     }
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public ImageView v;
+        public MyViewHolder(ImageView v) {
+            super(v);
+            this.v = v;
+        }
+    }
 
     private  void loadDP(boolean skipcache) {
         //.skipMemoryCache();
         final ImageView img = (ImageView) findViewById(R.id.profile_image);
-        String url;
+        final String url;
         if(justShow)
             url = PIC_URL + "?id="+person_id;
         else
             url = PIC_URL + "?IMEI=" + imei;
+
         Log.e(TAG, "Attempt Load Img " + url + " on " + img);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Employee_HOmePage.this, DisplayPic.class);
+                intent.putExtra("url",url);
+                startActivity(intent);
+            }
+        });
         RequestCreator t = Picasso.with(this).load(url).error(R.drawable.pic);
         if(skipcache)
             t=t.skipMemoryCache();
@@ -275,6 +314,9 @@ public class Employee_HOmePage extends AppCompatActivity {
 
         t = Picasso.with(this).load(url);
         t.transform(new BlurTransformation(this)).into((ImageView) findViewById(R.id.img_back));
+        if(skipcache)
+            t=t.skipMemoryCache();
+        t.transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
 
     }
     private void refreshSuggestion() {
@@ -398,6 +440,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     private void updateImage(final String imei, final ImageView img)
     {
         R_IMAGE = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img","");
+        R_IMAGE_SMALL = PreferenceManager.getDefaultSharedPreferences(Employee_HOmePage.this).getString("img_small","");
         new AsyncTask<Void,Void,String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -405,6 +448,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                 HashMap<String,String> data = new HashMap<String,String>();
                 data.put("imei",imei);
                 data.put("img", R_IMAGE);
+                data.put("img_small", R_IMAGE_SMALL);
                 // Uploading DP
                 String result=rh.sendPostRequest(UPDATE_PIC_URL, data);
                 return result;

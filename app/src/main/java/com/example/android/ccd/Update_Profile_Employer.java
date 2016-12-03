@@ -27,6 +27,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ((EditText)findViewById(R.id.name)).setText(((MyApplication) getApplication()).getUsername());
         ((EditText)findViewById(R.id.phone)).setText(((MyApplication) getApplication()).getPhoneNo());
+        ((EditText)findViewById(R.id.job)).setText(((MyApplication) getApplication()).getProfession());
 
         TextView typeView = (TextView) findViewById(R.id.type);
         typeView.setText(((MyApplication) getApplication()).getType());
@@ -112,6 +113,10 @@ public class Update_Profile_Employer extends AppCompatActivity {
                    loading.dismiss();
 
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                if(s.contains("Success")) {
+                    MyApplication.saveToSP(Update_Profile_Employer.this, null,name,phone,profession);
+                    finish();
+                }
             }
         };
         updateProfile up=new updateProfile();

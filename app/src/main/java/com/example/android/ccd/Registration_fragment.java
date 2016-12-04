@@ -107,8 +107,11 @@ public class Registration_fragment extends Fragment {
                 super.onPostExecute(s);
                 loading.dismiss();
                 Toast.makeText(getActivity(),s,Toast.LENGTH_LONG).show();
-                if(s.contains("Success"))
+                if(s.contains("Success")) {
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(i);
                     getActivity().finish();
+                }
             }
 
             @Override

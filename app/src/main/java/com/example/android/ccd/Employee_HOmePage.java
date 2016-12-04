@@ -285,8 +285,10 @@ public class Employee_HOmePage extends AppCompatActivity {
 
     }
     private void loadWork(final int workid, final ImageView image, boolean cache){
+        String url = getWorkImageUrl(workid);
+        Log.e(TAG,"ATTEMPT : "+url);
         Glide.with(this)
-                .load(getWorkImageUrl(workid))
+                .load(url)
                 .override(100, 100)
                 .centerCrop()
                 .skipMemoryCache(!cache)
@@ -296,6 +298,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                         //image.setTag(10001,false);
                         worksbool[workid] = false;
+
                         return false;
                     }
 

@@ -142,7 +142,6 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
                 } else if(success!=null && success.getInt(0)==1){
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
-                    finish();
                     return;
                 } else {
                     Toast.makeText(getApplicationContext(),"Please Check Internet Connectivity",Toast.LENGTH_LONG).show();

@@ -111,6 +111,7 @@ public class Registration_fragment extends Fragment {
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     startActivity(i);
                     getActivity().finish();
+                    MyApplication.getInstance(getActivity().getApplicationContext()).getMAXJOBS();
                 }
             }
 

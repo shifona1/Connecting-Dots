@@ -37,7 +37,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
     private String R_NAME;
     private String R_TYPE;
     private String R_JOBIDs;
-    private int MAX_JOBS = 5;
+    private int MAX_JOBS;
 
     private ArrayList<Integer> jobs;
 
@@ -47,6 +47,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update__profile__employee);
+        MAX_JOBS = MyApplication.getInstance(getApplicationContext()).getMAXJOBS();
         jobs = new ArrayList<>();
 
 
@@ -110,7 +111,6 @@ public class Update_Profile_Employee extends AppCompatActivity  {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 final String msg = editText.getText().toString();
-                                Toast.makeText(Update_Profile_Employee.this,"Msg : "+msg,Toast.LENGTH_SHORT).show();
                                 new AsyncTask<Void,String,String>()
                                 {
                                     RequestHandler rh = new RequestHandler();
@@ -119,8 +119,23 @@ public class Update_Profile_Employee extends AppCompatActivity  {
                                           HashMap<String,String> data = new HashMap<String, String>();
                                           data.put("imei",(MyApplication.getInstance(Update_Profile_Employee.this)).getID());
                                           data.put("request",msg);
-                                          rh.sendPostRequest(SUBMIT_REQUEST_URL,data);
-                                        return null;
+
+                                        return rh.sendPostRequest(SUBMIT_REQUEST_URL,data);
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(String s) {
+                                        super.onPostExecute(s);
+                                        if(s==null) {
+                                            Toast.makeText(Update_Profile_Employee.this,"Cannot Connect to Internet!",Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        Toast.makeText(Update_Profile_Employee.this,s,Toast.LENGTH_SHORT).show();
+
+                                        if(s.contains("Success")) {
+                                            Toast.makeText(Update_Profile_Employee.this,"Please wait until the Admin Approves",Toast.LENGTH_SHORT).show();
+                                        }
+                                        Log.e(TAG,s);
                                     }
                                 }.execute();
                             }
@@ -188,6 +203,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 if(result.contains("Success")) {
                     MyApplication.saveToSP(Update_Profile_Employee.this, null,name,phone,profession);
+                    Employee_HOmePage.refreshSuggestion(null);
                     finish();
                 }
 

@@ -57,6 +57,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true"
         android:fillViewport="true">
     <LinearLayout
         android:layout_height="match_parent"
@@ -194,6 +195,8 @@
                 android:layout_margin="5dp"/>
             <ScrollView
                 android:layout_width="match_parent"
+                android:nestedScrollingEnabled="true"
+                android:fillViewport="true"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -221,6 +224,12 @@
                 android:layout_marginLeft="8dp"
                 android:layout_height="100dp"
                 />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Work Images"
+                        android:id="@+id/text_work_images"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

@@ -54,7 +54,7 @@ public class employer_homepage extends ActionBarActivity {
     public static final String PIC_URL = Upload_Image.PIC_URL;
     public static final String UPDATE_PIC_URL= Upload_Image.UPDATE_PIC_URL_EMPLOYER;
     private static final String TAG = Employee_HOmePage.class.getSimpleName();
-    private static final String JobList_URL=Upload_Image.BASE_URL+"/jobList.php";
+    public static final String JobList_URL=Upload_Image.BASE_URL+"/jobList.php";
 
     private String R_NAME,R_PHONE,R_IMAGE,R_IMAGE_SMALL;
     private String imei,zip;

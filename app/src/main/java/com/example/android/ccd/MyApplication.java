@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatDelegate;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import static com.example.android.ccd.GPSTracker.PREF_ZIP;
 
@@ -44,11 +46,15 @@ public class MyApplication {
     }
 
     private final static String TAG = MyApplication.class.getName();
+    private String URL_MAXJOBS= Upload_Image.BASE_URL+"/getcountJobs.php";
+
+
     private Context context;
     public static String PREF_LOGGED_IN     =   "LOGGEDIN";
     public static String LOG_TYPE_EMPLOYER  =   "Employer";
     public static String LOG_TYPE_EMPLOYEE  =   "Employee";
     public static String PREF_PROFESSION    =   "Profession";
+    public static String PREF_MAX_JOBS    =   "MAXJOBS";
     public static String PREF_PHONE         =   "phone";
     public static String PREF_IMEI         =   "IMEI";
 
@@ -78,6 +84,7 @@ public class MyApplication {
         }
         Intent intent = new Intent(context, GPSTracker.class);
         context.startService(intent);
+        getMAXJOBS();
 
     }
 
@@ -168,4 +175,36 @@ public class MyApplication {
         return byteBuffer.toByteArray();
     }
 
+    public int getMAXJOBS() {
+        int jobs = PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_MAX_JOBS,0);
+        new AsyncTask<Void,String,String>()
+        {
+            RequestHandler rh = new RequestHandler();
+            @Override
+            protected String doInBackground(Void... params) {
+
+                return rh.sendGetRequest(URL_MAXJOBS);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                try {
+                    if(s!=null) {
+                        Integer c = Integer.parseInt(s);
+                        Log.e(TAG, "NEW MAX JOBS : " + c);
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt(MyApplication.PREF_MAX_JOBS,c);
+                        editor.commit();
+
+                    }
+                }catch (Exception e) {
+
+                }
+            }
+        }.execute();
+
+        return jobs;
+    }
 }

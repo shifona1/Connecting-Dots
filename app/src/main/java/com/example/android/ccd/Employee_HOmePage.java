@@ -1,5 +1,6 @@
 package com.example.android.ccd;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -63,6 +64,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     private ImageView tempIV;
     private RecyclerView.Adapter<MyViewHolder> radapter;
     private boolean worksbool[];
+    private final ImageView img[] = new ImageView[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +130,6 @@ public class Employee_HOmePage extends AppCompatActivity {
         });
         loadDP(false);
 
-        final ImageView img[] = new ImageView[3];
         img[0]=(ImageView) findViewById(R.id.Image_One);
         img[1]=(ImageView) findViewById(R.id.Image_Two);
         img[2]=(ImageView) findViewById(R.id.Image_Three);
@@ -140,9 +141,6 @@ public class Employee_HOmePage extends AppCompatActivity {
                 //***********************************/
                 //If iamge is blank hide it
                 ///
-                if(!worksbool[i]) {
-                    img[i].setVisibility(View.GONE);
-                }else
                 img[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -161,7 +159,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                     if (worksbool[it2]) {
                         ImageView iv = new ImageView(Employee_HOmePage.this);
                         new MaterialDialog.Builder(Employee_HOmePage.this)
-                                .title("Title")
+                                .title("Remove Work")
                                 .customView(iv, true)
                                 .positiveText("Ok")
                                 .neutralText("Delete")
@@ -180,7 +178,7 @@ public class Employee_HOmePage extends AppCompatActivity {
             loadWork(i, img[i],true);
 
             }
-        refreshSuggestion();
+        refreshSuggestion(this);
     }
 
     private void updateJobs() {
@@ -289,7 +287,7 @@ public class Employee_HOmePage extends AppCompatActivity {
     }
     private void loadWork(final int workid, final ImageView image, boolean cache){
         final String url = getWorkImageUrl(workid);
-        Log.e(TAG,"ATTEMPT : "+url);
+        Log.e(TAG,"ATTEMPT > "+url);
         Picasso.with(this).load(url)
                 .error(android.R.drawable.ic_menu_add)
                 .skipMemoryCache()
@@ -298,12 +296,30 @@ public class Employee_HOmePage extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         worksbool[workid] = true;
+                        if(justShow)
+                        {
+                            findViewById(R.id.text_work_images).setVisibility(View.GONE);
+                            image.setVisibility(View.VISIBLE);
+                        }
+
+
+
 
                     }
 
                     @Override
                     public void onError() {
                         worksbool[workid] = false;
+                        if(justShow) {
+                            image.setVisibility(View.GONE);
+
+                            findViewById(R.id.text_work_images).setVisibility(View.VISIBLE);
+                            for (int i=0;i<3;i++)
+                                if(img[i].getVisibility()==View.VISIBLE) {
+                                    findViewById(R.id.text_work_images).setVisibility(View.GONE);
+                                }
+
+                        }
 
                     }
                 });
@@ -365,9 +381,10 @@ public class Employee_HOmePage extends AppCompatActivity {
         t.transform(new BlurTransformation(this)).into((ImageView)findViewById(R.id.img_back));
 
     }
-    private void refreshSuggestion() {
-        final ImageButton sugg = (ImageButton) findViewById(R.id.job_sug);
-        new AsyncTask<Void,Void,String>(){
+
+    //if employeehomepage == null just update data
+    public static void refreshSuggestion(final Activity employeehomepage) {
+         new AsyncTask<Void,Void,String>(){
 
             @Override
             protected String doInBackground(Void... voids) {
@@ -383,13 +400,19 @@ public class Employee_HOmePage extends AppCompatActivity {
                 String jobs_[] = jobs.split("\\.");
                 JSONArray param = null;
                 ArrayList<Integer> list = new ArrayList<>();
+                Log.e(TAG,"_job "+jobs);
                 for (String _job:jobs_) try{
                     list.add(Integer.parseInt(_job));
                 }catch (Exception e) {
                     Log.e(TAG,"ERROR PARSE INT "+_job+" > "+e);
                 }
                 param = new JSONArray(list);
-                String result = rh.sendGetRequest(URL_SUGGESTION+"?jobs="+param.toString());
+                String url = URL_SUGGESTION+"?jobs="+param.toString();
+
+                if(employeehomepage == null)
+                    url+="&newjobs="+param.toString();
+
+                String result = rh.sendGetRequest(url);
                 Log.e(TAG,"SUG R\t"+result);
                 return result;
             }
@@ -398,32 +421,38 @@ public class Employee_HOmePage extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 try{
+                    if(employeehomepage == null) {
+                        Log.e(TAG,"UPDATE TO ML "+s);
+                        return;
+                    }
 
                     Log.e(TAG,"Suggesting PE ");
                     final int id = Integer.parseInt(s.trim());
 
                     Log.e(TAG,"Suggested Job : "+id);
                     if(id>=0) {
-                        findViewById(R.id.job_sug_card).setVisibility(View.VISIBLE);
-                        Job.fromId(Employee_HOmePage.this, sugg, id);
+                        ImageButton sugg = (ImageButton) employeehomepage.findViewById(R.id.job_sug);
+                        employeehomepage.findViewById(R.id.job_sug_card).setVisibility(View.VISIBLE);
+                        Job.fromId(employeehomepage, sugg, id);
                         sugg.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                new MaterialDialog.Builder(Employee_HOmePage.this)
+                                new MaterialDialog.Builder(employeehomepage)
                                         .title("Job Selection")
-                                        .content("Can you also do '"+id+"' as a Job?")
+                                        .content("Can you also do this as a Job?")
                                         .positiveText("Yes")
                                         .negativeText("No")
                                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                Toast.makeText(Employee_HOmePage.this,"Picked "+id,Toast.LENGTH_SHORT).show();
+                                                Intent i = new Intent(employeehomepage, Update_Profile_Employee.class);
+                                                employeehomepage.startActivity(i);
                                             }
                                         })
                                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                    refreshSuggestion();
+                                                    refreshSuggestion(employeehomepage);
                                             }
                                         }).show();
 
@@ -436,6 +465,9 @@ public class Employee_HOmePage extends AppCompatActivity {
                 }
             }
         }.execute();
+
+
+
     }
 
 
@@ -444,7 +476,6 @@ public class Employee_HOmePage extends AppCompatActivity {
         super.onResume();
         refreshText();
         updateJobs();
-        loadDP(false);
         if(goingforimageupdate) {
             goingforimageupdate = false;
             if(load_image==101) {

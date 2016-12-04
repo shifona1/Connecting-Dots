@@ -270,7 +270,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                 .override(100, 100)
                 .centerCrop()
                 .skipMemoryCache(!cache)
-                .error(android.R.drawable.ic_input_add)
+                .error(android.R.drawable.ic_menu_add)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

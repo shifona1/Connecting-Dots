@@ -47,5 +47,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/home_text"
         android:visibility="invisible" />
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

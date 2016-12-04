@@ -65,7 +65,9 @@ class Person {
         this.name = name;
         this.phone = phone;
         this.ID = eid;
-        this.img = new CircleTransform().transform(getBitmapFromString(dp));
+        Bitmap tempdp = getBitmapFromString(dp);
+        if(tempdp!=null)
+            this.img = new CircleTransform().transform(tempdp);
         this.profession = profession;
         this.lat = lat;
         this.lon = lon;

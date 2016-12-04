@@ -25,12 +25,12 @@ public class Update_Profile_Employer extends AppCompatActivity {
         setContentView(R.layout.activity_update__profile__employer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ((EditText)findViewById(R.id.name)).setText(((MyApplication) getApplication()).getUsername());
-        ((EditText)findViewById(R.id.phone)).setText(((MyApplication) getApplication()).getPhoneNo());
-        ((EditText)findViewById(R.id.job)).setText(((MyApplication) getApplication()).getProfession());
+        ((EditText)findViewById(R.id.name)).setText(MyApplication.getInstance().getUsername());
+        ((EditText)findViewById(R.id.phone)).setText(MyApplication.getInstance().getPhoneNo());
+        ((EditText)findViewById(R.id.job)).setText(MyApplication.getInstance().getProfession());
 
         TextView typeView = (TextView) findViewById(R.id.type);
-        typeView.setText(((MyApplication) getApplication()).getType());
+        typeView.setText(MyApplication.getInstance().getType());
 
 
         //fetchData();
@@ -97,7 +97,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
             protected String doInBackground(Bitmap... params) {
 
                 HashMap data=new HashMap();
-                data.put("IMEI",((MyApplication)getApplication()).getID());
+                data.put("IMEI",MyApplication.getInstance().getID());
                 data.put("name",name);
                 data.put("phone",phone);
                 data.put("job",profession);
@@ -153,7 +153,7 @@ public class Update_Profile_Employer extends AppCompatActivity {
 //                //String img = PreferenceManager.getDefaultSharedPreferences(Update_Profile_Employer.this).getString("img","");
 //
 //                data.put("username", name);
-//                data.put("IMEI",((MyApplication)getApplication()).getID());
+//                data.put("IMEI",MyApplication.getInstance().getID());
 //                //data.put("img",img);
 //                data.put("phone",phone);
 //                data.put("profession",profession);

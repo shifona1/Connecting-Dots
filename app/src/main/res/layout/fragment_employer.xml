@@ -2,6 +2,8 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:background="@drawable/background_"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -102,6 +104,8 @@
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -118,7 +122,7 @@
                 android:layout_height="wrap_content" />
 
 
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
+            <com.example.android.ccd.InstantAutoComplete
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/searchView"
@@ -131,6 +135,9 @@
 
     </android.support.v7.widget.CardView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_gravity="center"
@@ -138,6 +145,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="10dp"
+        android:visibility="gone"
+        android:id="@+id/cv_sr"
         card_view:cardCornerRadius="4dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -148,6 +157,7 @@
                 android:layout_height="wrap_content"
                 android:padding="3dp"
                 android:text="Search Result"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -161,10 +171,13 @@
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                 android:id="@+id/listView"></ListView>
 
-                android:id="@+id/listView"></ListView>
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>

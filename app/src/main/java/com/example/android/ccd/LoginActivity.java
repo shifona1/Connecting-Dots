@@ -75,7 +75,7 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
 
     public void attemptLogin() {
         Log.e("TAG","Attempt Login");
-        String imei = ((MyApplication)(getApplication())).getID();
+        String imei = (MyApplication.getInstance()).getID();
         new UserLoginTask(imei).execute((Void) null);
     }
 

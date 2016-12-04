@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
@@ -29,37 +28,56 @@ import static com.example.android.ccd.GPSTracker.PREF_ZIP;
  * Created by scopeinfinity on 26/11/16.
  */
 
-public class MyApplication extends MultiDexApplication {
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-    private final static String TAG = MyApplication.class.getName();
+public class MyApplication {
+    private static MyApplication instance;
 
+
+    public static MyApplication getInstance(Context context) {
+        if(instance == null)
+            instance = new MyApplication(context);
+        return instance;
+    }
+
+
+    public static MyApplication getInstance() {
+        return instance;
+    }
+
+    private final static String TAG = MyApplication.class.getName();
+    private Context context;
     public static String PREF_LOGGED_IN     =   "LOGGEDIN";
     public static String LOG_TYPE_EMPLOYER  =   "Employer";
     public static String LOG_TYPE_EMPLOYEE  =   "Employee";
     public static String PREF_PROFESSION    =   "Profession";
     public static String PREF_PHONE         =   "phone";
+    public static String PREF_IMEI         =   "IMEI";
 
     public static String PREF_USERNAME =   "username";
 
 
     private TelephonyManager telephonyManager;
     private String IMEI;
-    @Override
-    public void onCreate() {
-        super.onCreate();
+
+    public MyApplication(Context context) {
+        this.context = context;
         Log.e(TAG,"Application Started");
-        telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-        IMEI = md5(telephonyManager.getDeviceId());
+        telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(context);
+        if(pm.contains(PREF_IMEI))
+            IMEI = pm.getString(PREF_IMEI,null);
+        if(IMEI==null)
+        {
+            IMEI = md5(telephonyManager.getDeviceId());
+            pm.edit().putString(PREF_IMEI,IMEI).commit();
+        }
         if(IMEI == null || IMEI.isEmpty()) {
-           Toast.makeText(getApplicationContext(),"Sorry! Application Not Supported : E101",Toast.LENGTH_SHORT).show();
+           Toast.makeText(context,"Sorry! Application Not Supported : E101",Toast.LENGTH_SHORT).show();
             System.runFinalizersOnExit(true);
             System.exit(0);
             return;
         }
-        Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
-        startService(intent);
+        Intent intent = new Intent(context, GPSTracker.class);
+        context.startService(intent);
 
     }
 
@@ -68,9 +86,9 @@ public class MyApplication extends MultiDexApplication {
     }
 
     public String getZIP() {
-        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(context);
         if(pm.contains(PREF_ZIP)) {
-            return pm.getString(PREF_LOGGED_IN,"");
+            return pm.getString(PREF_ZIP,"");
         }
 
         return "";
@@ -97,22 +115,22 @@ public class MyApplication extends MultiDexApplication {
 
 
     public String getUsername() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_USERNAME,"unnamed");
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_USERNAME,"unnamed");
     }
 
     public String getType() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_LOGGED_IN,"unnamed");
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LOGGED_IN,"unnamed");
     }
 
     public String getPhoneNo()
     {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_PHONE,"unnamed");
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_PHONE,"unnamed");
     }
 
 
 
     public String getProfession() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_PROFESSION,".");
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_PROFESSION,".");
     }
 
     public static void saveToSP(Context context,String type,String name,String phone, String profession) {

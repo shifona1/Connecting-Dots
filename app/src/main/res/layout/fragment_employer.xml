@@ -49,7 +49,7 @@
             android:id="@+id/update_profile_employee_button"
             android:src="@android:drawable/ic_menu_edit"/>
 
-        />
+
     </RelativeLayout>
 
 
@@ -167,14 +167,6 @@
                 android:background="@drawable/oval"
                 android:text="Find Employee"
                 android:id="@+id/findemployee"/>
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 android:id="@+id/listView"></ListView>
-
-
-
         </LinearLayout>
     </android.support.v7.widget.CardView>
     </LinearLayout>

@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -175,7 +176,9 @@ public class Employee_HOmePage extends AppCompatActivity {
                     }
                 }
             });
+
             loadWork(i, img[i],true);
+
             }
         refreshSuggestion();
     }
@@ -244,7 +247,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                 @Override
                 protected String doInBackground(Void... params) {
                     HashMap<String,String> data = new HashMap<String, String>();
-                    data.put("index",workid+"");
+                    data.put("index",(1+workid)+"");
                     data.put("imei",imei);
                     String result = rh.sendPostRequest(CLEAR_WORKPIC_URL,data);
                     return result;
@@ -285,31 +288,25 @@ public class Employee_HOmePage extends AppCompatActivity {
 
     }
     private void loadWork(final int workid, final ImageView image, boolean cache){
-        String url = getWorkImageUrl(workid);
+        final String url = getWorkImageUrl(workid);
         Log.e(TAG,"ATTEMPT : "+url);
-        Glide.with(this)
-                .load(url)
-                .override(100, 100)
-                .centerCrop()
-                .skipMemoryCache(!cache)
+        Picasso.with(this).load(url)
                 .error(android.R.drawable.ic_menu_add)
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .skipMemoryCache()
+                .placeholder(android.R.drawable.progress_horizontal)
+                .into(image, new Callback() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        //image.setTag(10001,false);
+                    public void onSuccess() {
+                        worksbool[workid] = true;
+
+                    }
+
+                    @Override
+                    public void onError() {
                         worksbool[workid] = false;
 
-                        return false;
                     }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        //image.setTag(10001,true);
-                        worksbool[workid] = true;
-                        return true;
-                    }
-                })
-                .into(image);
+                });
 
     }
 
@@ -466,7 +463,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                     @Override
                     protected String doInBackground(Void... params) {
                         HashMap<String,String> data = new HashMap<String, String>();
-                        data.put("index",workid+"");
+                        data.put("index",(1+workid)+"");
                         data.put("imei",imei);
                         data.put("img",img);
                         String result = rh.sendPostRequest(UPDATE_WORKPIC_URL,data);

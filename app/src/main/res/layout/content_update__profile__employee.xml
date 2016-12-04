@@ -108,6 +108,17 @@
         android:text="Modify Jobs"
         android:layout_gravity="center"/>
 
+    <Button
+        android:id="@+id/custom_job_others_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/skills"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/oval"
+        android:text="Others"
+        android:layout_gravity="center"/>
 
 
 

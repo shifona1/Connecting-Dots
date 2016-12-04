@@ -117,7 +117,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
                                     @Override
                                     protected String doInBackground(Void... params) {
                                           HashMap<String,String> data = new HashMap<String, String>();
-                                          data.put("imei",((MyApplication) getApplication()).getID());
+                                          data.put("imei",(MyApplication.getInstance(Update_Profile_Employee.this)).getID());
                                           data.put("request",msg);
                                           rh.sendPostRequest(SUBMIT_REQUEST_URL,data);
                                         return null;

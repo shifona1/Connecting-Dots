@@ -41,11 +41,6 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
         setContentView(R.layout.activity_login);
         tv_wait = (TextView) findViewById(R.id.pleasewait);
         attemptLogin();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if(sp.contains(MyApplication.PREF_LOGGED_IN) && !sp.getString(MyApplication.PREF_LOGGED_IN,"").isEmpty()) {
-            gotoActivity(sp.getString(MyApplication.PREF_LOGGED_IN,""));
-            return;
-        }
 
         animatePW();
     }
@@ -143,17 +138,26 @@ public class LoginActivity extends Activity implements com.nineoldandroids.anima
                     //((MyApplication)getApplication()).getUsername();
 
                     gotoActivity(type);
+                    return;
                 } else if(success!=null && success.getInt(0)==1){
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
+                    return;
                 } else {
                     Toast.makeText(getApplicationContext(),"Please Check Internet Connectivity",Toast.LENGTH_LONG).show();
                     tv_wait.setText("Please Connect to Internet!");
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                    if(sp.contains(MyApplication.PREF_LOGGED_IN) && !sp.getString(MyApplication.PREF_LOGGED_IN,"").isEmpty()) {
+                        gotoActivity(sp.getString(MyApplication.PREF_LOGGED_IN,""));
+                        return;
+                    }
+
                     LoginActivity.this.findViewById(R.id.login_progress).setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Toast.makeText(LoginActivity.this,"Poor Internet Connection!",Toast.LENGTH_LONG).show();
             }
         }
 

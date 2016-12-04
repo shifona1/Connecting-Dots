@@ -30,7 +30,7 @@ public class Update_Profile_Employee extends AppCompatActivity  {
     private static final String TAG = Update_Profile_Employee.class.getName();
     private JobListAdapter adapt;
     private String UPLOAD_URL_EMPLOYEE= Upload_Image.BASE_URL+"/employee_homepage.php";
-
+    private String SUBMIT_REQUEST_URL= Upload_Image.BASE_URL+"/submit_request.php";
     private ListView lv;
     private MaterialDialog dialog;
 
@@ -92,6 +92,39 @@ public class Update_Profile_Employee extends AppCompatActivity  {
 
                         .show();
 
+            }
+        });
+
+        Button Others = (Button) findViewById(R.id.custom_job_others_text);
+        Others.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText editText = new EditText(Update_Profile_Employee.this);
+                editText.setHint("Your Profession");
+                new MaterialDialog.Builder(Update_Profile_Employee.this)
+                        .title("Please type to submit the Request ? ")
+                        .customView(editText, true)
+                        .positiveText("Submit")
+                        .negativeText("Cancel")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                final String msg = editText.getText().toString();
+                                Toast.makeText(Update_Profile_Employee.this,"Msg : "+msg,Toast.LENGTH_SHORT).show();
+                                new AsyncTask<Void,String,String>()
+                                {
+                                    RequestHandler rh = new RequestHandler();
+                                    @Override
+                                    protected String doInBackground(Void... params) {
+                                          HashMap<String,String> data = new HashMap<String, String>();
+                                          data.put("imei",((MyApplication) getApplication()).getID());
+                                          data.put("request",msg);
+                                          rh.sendPostRequest(SUBMIT_REQUEST_URL,data);
+                                        return null;
+                                    }
+                                }.execute();
+                            }
+                        }).show();
             }
         });
 

@@ -47,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:id="@+id/update_profile_employee_button"
-            android:src="@android:drawable/ic_menu_info_details"/>
+            android:src="@android:drawable/ic_menu_edit"/>
 
         />
     </RelativeLayout>

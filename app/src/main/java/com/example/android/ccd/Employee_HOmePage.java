@@ -61,10 +61,12 @@ public class Employee_HOmePage extends AppCompatActivity {
     private int load_image;
     private ImageView tempIV;
     private RecyclerView.Adapter<MyViewHolder> radapter;
+    private boolean worksbool[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_employee__home_page);
         justShow = false;
         Intent intent = getIntent();
@@ -129,6 +131,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         img[0]=(ImageView) findViewById(R.id.Image_One);
         img[1]=(ImageView) findViewById(R.id.Image_Two);
         img[2]=(ImageView) findViewById(R.id.Image_Three);
+        worksbool = new boolean[3];
         for(int i=0;i<3;i++) {
             final int it2= i;
             if(justShow) {
@@ -136,12 +139,15 @@ public class Employee_HOmePage extends AppCompatActivity {
                 //***********************************/
                 //If iamge is blank hide it
                 ///
+                if(!worksbool[i]) {
+                    img[i].setVisibility(View.GONE);
+                }else
                 img[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //Show FULL SCREEN
                         Intent intent1 = new Intent(Employee_HOmePage.this, DisplayPic.class);
-                        intent1.putExtra("url", "+++++++++++++++++++++++++");
+                        intent1.putExtra("url", getWorkImageUrl(it2));
                         startActivity(intent1);
                     }
                 });
@@ -151,7 +157,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //Problem HERE
-                    if (false && v.getTag(10001) != null && (Boolean)v.getTag(10001) == true) {
+                    if (worksbool[it2]) {
                         ImageView iv = new ImageView(Employee_HOmePage.this);
                         new MaterialDialog.Builder(Employee_HOmePage.this)
                                 .title("Title")
@@ -278,7 +284,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         return  LOAD_WORKPIC_URL + "?id=" + person_id + "&index=" + (index + 1);
 
     }
-    private void loadWork(int workid, final ImageView image,boolean cache){
+    private void loadWork(final int workid, final ImageView image, boolean cache){
         Glide.with(this)
                 .load(getWorkImageUrl(workid))
                 .override(100, 100)
@@ -289,12 +295,14 @@ public class Employee_HOmePage extends AppCompatActivity {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                         //image.setTag(10001,false);
+                        worksbool[workid] = false;
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         //image.setTag(10001,true);
+                        worksbool[workid] = true;
                         return true;
                     }
                 })

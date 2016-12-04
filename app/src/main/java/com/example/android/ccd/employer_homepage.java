@@ -8,8 +8,13 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -53,7 +58,7 @@ public class employer_homepage extends ActionBarActivity {
 
     private String R_NAME,R_PHONE,R_IMAGE,R_IMAGE_SMALL;
     private String imei,zip;
-
+    private ArrayList<String> wordsjobs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +67,7 @@ public class employer_homepage extends ActionBarActivity {
         zip = MyApplication.getInstance().getZIP();
         R_NAME = MyApplication.getInstance().getUsername();
         R_PHONE = MyApplication.getInstance().getPhoneNo();
-
+        wordsjobs = new ArrayList<>();
 
         //  if (savedInstanceState == null) {
        //     getSupportFragmentManager().beginTransaction()
@@ -73,16 +78,63 @@ public class employer_homepage extends ActionBarActivity {
 
         Intent intent = getIntent();
         //final String data[] = new String[]{"A","Hello","Hi","Gagan","Gassss"};
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
-        AutoCompleteTextView sr = (AutoCompleteTextView)findViewById(R.id.searchView);
-        sr.setAdapter(adapter);
-        sr.setThreshold(0);
-        sr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1){
+            @NonNull
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                updateList(i,adapt);
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if(convertView==null)
+                    convertView =getLayoutInflater().inflate(R.layout.employee_dropdown,null);
+                ((TextView)convertView.findViewById(R.id.edd_name)).setText(getItem(position));
+                int jid = -1;
+                for (int i=0;i<wordsjobs.size();i++) {
+                    if(wordsjobs.get(i).equals(getItem(position)))
+                    {
+                        jid=i;break;
+                    }
+                }
+                Job.fromId(employer_homepage.this, (ImageView) convertView.findViewById(R.id.edd_iv), jid);
+                Log.e(TAG,"Showing "+position+" > "+getItem(position)+"\t"+jid);
+
+                return convertView;
+            }
+        };
+        final AutoCompleteTextView sr = (AutoCompleteTextView)findViewById(R.id.searchView);
+        sr.setAdapter(adapter);
+        sr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b)sr.showDropDown();
             }
         });
+        sr.setThreshold(0);
+
+        sr.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.e(TAG,"Typed "+charSequence);
+                for(int j=0;j<wordsjobs.size();j++) {
+                    //Log.e(TAG,"Matching with  "+adapter.getItem(j));
+                    if (wordsjobs.get(j).equalsIgnoreCase(charSequence.toString())) {
+                        Log.e(TAG,"Matched "+j);
+                        updateList(j, adapt);
+                        hidekeyboard(sr);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+            }
+        });
+
         new AsyncTask<Void,Void,ArrayList<String> >(){
 
             @Override
@@ -111,8 +163,11 @@ public class employer_homepage extends ActionBarActivity {
                 if(strings==null)
                     return;
                 adapter.clear();
+                wordsjobs.clear();
+                wordsjobs.addAll(strings);
                 adapter.addAll(strings);
                 adapter.notifyDataSetChanged();
+                //sr.showDropDown();
             }
         }.execute();
         Log.e(TAG,"Fetching Trying  "+JobList_URL);
@@ -176,9 +231,17 @@ public class employer_homepage extends ActionBarActivity {
                 //Other Employees
                 for(int i=0;i <  adapt.getCount();i++) {
                     Person person = adapt.getItem(i);
-                    if(person.getZip().equals(zip))
-                        list.add(new Employee((person.getLat()+","+person.getLon()),person.getName()
-                            ,person.getPhone(),person.getID(),person.getProfession()));
+                    try {
+                        if (Math.abs(Integer.parseInt(person.getZip()) - Integer.parseInt(zip)) <= 50) {
+                            list.add(new Employee((person.getLat() + "," + person.getLon()), person.getName()
+                                    , person.getPhone(), person.getID(), person.getProfession()));
+                            Log.e(TAG, "ADDED TO MAP  " + person.getName());
+                        } else
+                            Log.e(TAG, "INGORED TO MAP  " + person.getName() + " myZip" + zip + " \t " + person.getZip());
+                    }catch (Exception e) {
+                        Log.e(TAG,e.toString());
+                    }
+
                 }
 
                 Intent intent = new Intent(getApplicationContext(),FindEmployee.class);
@@ -188,7 +251,14 @@ public class employer_homepage extends ActionBarActivity {
         });
 
     }
-
+    public static void hidekeyboard(View v) {
+        v.clearFocus();
+        //
+        // Hide keyboard
+        //
+        InputMethodManager imm = (InputMethodManager)    v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
 
     private void refreshText() {
         Intent intent = getIntent();
@@ -306,6 +376,14 @@ public class employer_homepage extends ActionBarActivity {
                       adapt.clear();
                       adapt.addAll(s);
                       adapt.notifyDataSetChanged();
+                      if(adapt.getCount()==0) {
+                          findViewById(R.id.cv_sr).setVisibility(View.GONE);
+                          Toast.makeText(employer_homepage.this,"No Employee Found!!",Toast.LENGTH_SHORT).show();
+                      } else {
+
+                          findViewById(R.id.cv_sr).setVisibility(View.VISIBLE);
+                      }
+                      Log.e(TAG,"\tAdaptSize : "+adapt.getCount());
                   } else {
                       Toast.makeText(employer_homepage.this, "Unable to Search", Toast.LENGTH_LONG).show();
                   }
@@ -318,6 +396,7 @@ public class employer_homepage extends ActionBarActivity {
 
                   data.put("jobid", params[0]);
                   ArrayList<Person> list = new ArrayList<>();
+
                   String result = rh.sendPostRequest(SEARCH_URL,data);
                   try {
                       JSONArray arr = new JSONArray(result);

@@ -2,6 +2,7 @@ package com.example.android.ccd;
 
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+
+import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LAT;
+import static com.example.android.ccd.GPSTracker.PREF_LOCATION_LONG;
 
 public class FindEmployee extends FragmentActivity implements OnMapReadyCallback {
 
@@ -58,6 +62,12 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
         ArrayList<LatLng> markers = new ArrayList<>();
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        lat = PreferenceManager.getDefaultSharedPreferences(FindEmployee.this).getFloat(PREF_LOCATION_LAT,0);;
+        lon = PreferenceManager.getDefaultSharedPreferences(FindEmployee.this).getFloat(PREF_LOCATION_LONG,0);
+        builder.include(new LatLng(lat,lon));
+
+
         for (int i=0;i<list.size();i++) {
             Employee emp = list.get(i);
             pos = emp.getPos().split(",");
@@ -75,7 +85,6 @@ public class FindEmployee extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng marker : markers) {
             builder.include(marker);
         }

@@ -50,6 +50,7 @@ public class MyApplication {
     public static String LOG_TYPE_EMPLOYEE  =   "Employee";
     public static String PREF_PROFESSION    =   "Profession";
     public static String PREF_PHONE         =   "phone";
+    public static String PREF_IMEI         =   "IMEI";
 
     public static String PREF_USERNAME =   "username";
 
@@ -61,7 +62,14 @@ public class MyApplication {
         this.context = context;
         Log.e(TAG,"Application Started");
         telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        IMEI = md5(telephonyManager.getDeviceId());
+        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(context);
+        if(pm.contains(PREF_IMEI))
+            IMEI = pm.getString(PREF_IMEI,null);
+        if(IMEI==null)
+        {
+            IMEI = md5(telephonyManager.getDeviceId());
+            pm.edit().putString(PREF_IMEI,IMEI).commit();
+        }
         if(IMEI == null || IMEI.isEmpty()) {
            Toast.makeText(context,"Sorry! Application Not Supported : E101",Toast.LENGTH_SHORT).show();
             System.runFinalizersOnExit(true);
@@ -80,7 +88,7 @@ public class MyApplication {
     public String getZIP() {
         SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(context);
         if(pm.contains(PREF_ZIP)) {
-            return pm.getString(PREF_LOGGED_IN,"");
+            return pm.getString(PREF_ZIP,"");
         }
 
         return "";

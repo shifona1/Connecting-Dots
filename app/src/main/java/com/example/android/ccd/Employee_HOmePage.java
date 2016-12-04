@@ -131,6 +131,22 @@ public class Employee_HOmePage extends AppCompatActivity {
         img[2]=(ImageView) findViewById(R.id.Image_Three);
         for(int i=0;i<3;i++) {
             final int it2= i;
+            if(justShow) {
+
+                //***********************************/
+                //If iamge is blank hide it
+                ///
+                img[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Show FULL SCREEN
+                        Intent intent1 = new Intent(Employee_HOmePage.this, DisplayPic.class);
+                        intent1.putExtra("url", "+++++++++++++++++++++++++");
+                        startActivity(intent1);
+                    }
+                });
+            }
+            else
             img[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

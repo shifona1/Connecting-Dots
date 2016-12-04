@@ -174,7 +174,7 @@ public class GPSTracker extends Service {
                 Log.e(TAG, "Final ZIP CODE : "+found);
 
                 if(found!=null) {
-                    if((MyApplication.getInstance()).getZIP().equals(""+found))
+                    if((MyApplication.getInstance(getApplicationContext())).getZIP().equals(""+found))
                         return found;
 
                     //Pushing ZIP to server

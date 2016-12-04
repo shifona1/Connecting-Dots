@@ -86,7 +86,7 @@
     <TextView
         android:id="@+id/job_image_select_text"
         android:layout_marginTop="32dp"
-        android:text="Your Profession: Select By Images "
+        android:text="Your Profession "
         android:textStyle="bold"
         android:textColor="@color/white"
         android:paddingLeft="8dp"
@@ -105,22 +105,35 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:background="@drawable/oval"
-        android:text="Modify Jobs"
+        android:text="Choose Jobs"
         android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+    <TextView
+        android:text="If your Job is not available click"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_below="@+id/job_text"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <Button
         android:id="@+id/custom_job_others_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/skills"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:background="@drawable/oval"
-        android:text="Others"
-        android:layout_gravity="center"/>
+        android:textSize="16sp"
+        android:textColor="#00E5FF"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="Others" />
 
-
+    </LinearLayout>
 
     <Button
         android:id="@+id/Save_Details"

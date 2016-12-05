@@ -170,10 +170,16 @@ public class Upload_Image extends AppCompatActivity implements View.OnClickListe
         return encodedImage;
     }
     public static Bitmap getBitmapFromString(String str){
-        byte[] data =  Base64.decode(str, Base64.DEFAULT);
-        ByteArrayInputStream baos = new ByteArrayInputStream(data);
-        Bitmap bitmap = BitmapFactory.decodeStream(baos);
-        return bitmap;
+        if(str==null)
+            return null;
+        try {
+            byte[] data = Base64.decode(str, Base64.DEFAULT);
+            ByteArrayInputStream baos = new ByteArrayInputStream(data);
+            Bitmap bitmap = BitmapFactory.decodeStream(baos);
+            return bitmap;
+        }catch (Exception e) {
+            return null;
+        }
     }
 
 

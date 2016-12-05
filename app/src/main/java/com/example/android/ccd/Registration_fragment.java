@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -83,12 +84,30 @@ public class Registration_fragment extends Fragment {
             return;
         }
 
+        ((ImageView)getActivity().findViewById(R.id.tempiv)).setVisibility(View.GONE);
 
 
         doRegister();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e(TAG,"REGISTRAION RESUME");
+        String img =  PreferenceManager.getDefaultSharedPreferences(getContext()).getString("img_small","");
 
+        Bitmap bmp = Upload_Image.getBitmapFromString(img);
+        if(bmp!=null) {
+            Log.e(TAG,"NN");
+            ((ImageView)getActivity().findViewById(R.id.tempiv)).setVisibility(View.VISIBLE);
+            ((ImageView) getActivity().findViewById(R.id.tempiv)).setImageBitmap(bmp);
+        }
+        else {
+
+            Log.e(TAG,"Null");
+            ((ImageView) getActivity().findViewById(R.id.tempiv)).setVisibility(View.GONE);
+        }
+    }
 
     private void doRegister(){
         class UploadImage extends AsyncTask<Bitmap,Void,String> {

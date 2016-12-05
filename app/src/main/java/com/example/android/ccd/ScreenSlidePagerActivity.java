@@ -32,12 +32,15 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
      * The pager adapter, which provides the pages to the view pager widget.
      */
     private PagerAdapter mPagerAdapter;
+    private boolean justfinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
-
+        if(getIntent().hasExtra("JUSTSHOW"))
+            justfinish = true;
+        else justfinish =false;
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -73,9 +76,11 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if(position==NUM_PAGES){
-                Intent i = new Intent(ScreenSlidePagerActivity.this, LoginActivity.class);
-                startActivity(i);
+            if(position==NUM_PAGES) {
+                if (!justfinish) {
+                    Intent i = new Intent(ScreenSlidePagerActivity.this, LoginActivity.class);
+                    startActivity(i);
+                }
                 finish();
                 PreferenceManager.getDefaultSharedPreferences(ScreenSlidePagerActivity.this)
                         .edit().putBoolean(ONE_TIME_PREF,true).commit();

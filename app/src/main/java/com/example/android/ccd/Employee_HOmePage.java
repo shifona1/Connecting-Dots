@@ -77,6 +77,7 @@ public class Employee_HOmePage extends AppCompatActivity {
         refreshText();
         joblist = MyApplication.getInstance().getProfession();
         if(justShow) {
+            findViewById(R.id.emp_help).setVisibility(View.GONE);
             findViewById(R.id.update_profile_employee_button).setVisibility(View.GONE);
             findViewById(R.id.Update_dp).setVisibility(View.GONE);
             person_id = intent.getIntExtra("person_id",-1);
@@ -545,6 +546,13 @@ public class Employee_HOmePage extends AppCompatActivity {
         }.execute();
 
 
+    }
+
+    public void openhelp(View v) {
+        Intent intent
+                 = new Intent(this,ScreenSlidePagerActivity.class);
+        intent.putExtra("JUSTSHOW",true);
+        startActivity(intent);
     }
 
 }

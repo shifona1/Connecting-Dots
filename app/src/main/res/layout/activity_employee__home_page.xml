@@ -7,7 +7,19 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.android.ccd.Employee_HOmePage">
 
-    <include layout="@layout/content_employee__home_page" />
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+       <include layout="@layout/content_employee__home_page" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_help"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="3dp"
+            android:id="@+id/emp_help"
+            android:onClick="openhelp"/>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

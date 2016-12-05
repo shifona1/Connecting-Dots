@@ -30,9 +30,7 @@ import java.util.HashMap;
 public class LoginActivity extends Activity implements com.nineoldandroids.animation.Animator.AnimatorListener {
     private static final String TAG = LoginActivity.class.getName();
 
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
+
     private final String UPLOAD_URL= Upload_Image.BASE_URL +"/login.php";
     private TextView tv_wait;
     @Override

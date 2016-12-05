@@ -29,7 +29,7 @@ import java.io.InputStream;
 
 public class Upload_Image extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String BASE_URL = "http://172.16.26.196/ccd";
+    public static final String BASE_URL = "https://connectingdots1.000webhostapp.com";
     private static final String TAG = Upload_Image.class.getName();
     public static final String PIC_URL = Upload_Image.BASE_URL + "/getImage.php";
     public static final String UPDATE_PIC_URL_EMPLOYEE = Upload_Image.BASE_URL + "/uploadDpEmployee.php";

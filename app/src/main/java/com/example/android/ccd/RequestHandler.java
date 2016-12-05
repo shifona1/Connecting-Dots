@@ -85,7 +85,8 @@ public class RequestHandler {
                 }
                 response = sb.toString();
             } else {
-                response = "Error Registering";
+
+                response = "Error in Connection";
             }
         } catch (Exception e) {
             e.printStackTrace();

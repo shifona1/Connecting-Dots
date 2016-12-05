@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class GPSTracker extends Service {
     private final static String TAG = GPSTracker.class.getName();
     private LocationManager manager;
-    private long INTERVAL = 1000*60*30;
+    private long INTERVAL = 1000*60*5;
     private float DISTANCE = 10f;
 
     public static String PREF_LOCATION_LAT = "Latitude";
@@ -174,8 +174,8 @@ public class GPSTracker extends Service {
                 Log.e(TAG, "Final ZIP CODE : "+found);
 
                 if(found!=null) {
-                    if((MyApplication.getInstance(getApplicationContext())).getZIP().equals(""+found))
-                        return found;
+//                    if((MyApplication.getInstance(getApplicationContext())).getZIP().equals(""+found))
+//                        return found;
 
                     //Pushing ZIP to server
                     HashMap<String, String> map = new HashMap<String, String>();

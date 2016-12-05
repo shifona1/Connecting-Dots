@@ -106,6 +106,8 @@ public class Registration_fragment extends Fragment {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
+                if(s==null || s.isEmpty())
+                    s  = "Please Check Internet Connection";
                 Toast.makeText(getActivity(),s,Toast.LENGTH_LONG).show();
                 if(s.contains("Success")) {
                     Intent i = new Intent(getActivity(), LoginActivity.class);
@@ -121,12 +123,25 @@ public class Registration_fragment extends Fragment {
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put("username", R_NAME);
-                data.put("IMEI",MyApplication.getInstance().getID());
+                Log.e(TAG,"username : "+R_NAME);
+
+                String imei = MyApplication.getInstance().getID();
+                data.put("IMEI",imei);
+                Log.e(TAG,"IMEI : "+imei);
+
                 data.put("Type",Type);
+                Log.e(TAG,"Type : "+Type);
+
                 data.put("phone",R_PHONE);
+                Log.e(TAG,"phone : "+R_PHONE);
+
+                Log.e(TAG,"imagel : "+R_IMAGE.length());
                 data.put("image", R_IMAGE);
+
+                Log.e(TAG,"image_smallL : "+R_IMAGE_SMALL.length());
                 data.put("image_small", R_IMAGE_SMALL);
 
+                Log.e(TAG,"REG URL : "+UPLOAD_URL);
                 String result = rh.sendPostRequest(UPLOAD_URL,data);
                 Log.e(TAG,"DIB : "+result);
                 return result;

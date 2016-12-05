@@ -161,10 +161,8 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:isScrollContainer="true"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
-                 android:id="@+id/listView"></ListView>
+                android:layout_height="400dp"
+                android:id="@+id/listView"></ListView>
 
             <Button
                 android:layout_width="wrap_content"

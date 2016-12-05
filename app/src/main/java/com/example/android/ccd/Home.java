@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -105,9 +107,7 @@ public class Home extends Activity {
                     })
                     .playOn(findViewById(R.id.home_internet));
         }
-        YoYo.with(Techniques.FadeInUp)
-                .duration(1000)
-                .playOn(findViewById(R.id.home_text));
+        findViewById(R.id.home_text).setAnimation(AnimationUtils.loadAnimation(this,R.anim.fadein));
         if(networkGood) {
             Log.e(TAG,"NetworkGood : FadeOut HomeInternet");
 

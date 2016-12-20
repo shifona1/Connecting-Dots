@@ -197,7 +197,9 @@
                 android:layout_width="match_parent"
                 android:nestedScrollingEnabled="true"
                 android:fillViewport="true"
-                android:layout_height="wrap_content">
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                android:layout_height="wrap_content"
+                android:padding="2dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -111,7 +111,10 @@ public class Update_Profile_Employer extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                    loading.dismiss();
-
+                if(s==null || s.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please Check Internet Connectivity", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
                 if(s.contains("Success")) {
                     MyApplication.saveToSP(Update_Profile_Employer.this, null,name,phone,profession);

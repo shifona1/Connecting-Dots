@@ -45,7 +45,14 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 finish();
+                if(!justfinish) {
+                    Intent i = new Intent(ScreenSlidePagerActivity.this, LoginActivity.class);
+                    startActivity(i);
+                    PreferenceManager.getDefaultSharedPreferences(ScreenSlidePagerActivity.this)
+                            .edit().putBoolean(ONE_TIME_PREF, true).commit();
+                }
             }
         });
         if(!justfinish)
@@ -86,15 +93,11 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if(position==NUM_PAGES) {
-                if (!justfinish) {
-                    Intent i = new Intent(ScreenSlidePagerActivity.this, LoginActivity.class);
-                    startActivity(i);
-                }
+            if(position==NUM_PAGES-1) {
+                if(!justfinish)
+                    findViewById(R.id.fab_close).setVisibility(View.VISIBLE);
 
-                //finish();
-                PreferenceManager.getDefaultSharedPreferences(ScreenSlidePagerActivity.this)
-                        .edit().putBoolean(ONE_TIME_PREF,true).commit();
+
             }
 
             return ScreenSlidePageFragment.create(position);
@@ -103,7 +106,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return NUM_PAGES+1;
+            return NUM_PAGES;
         }
 
 

@@ -1,5 +1,6 @@
 package com.connecting_dots.android.ccd;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -179,7 +180,17 @@ public class Update_Profile_Employee extends AppCompatActivity  {
 
     private void UpdateProfile(final String name,final String phone, final String profession)
     {
+
         new AsyncTask<Void,Void,String>() {
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(Update_Profile_Employee.this, "Updating the profile ", "Please wait...",true,true);
+
+            }
+
             @Override
             protected String doInBackground(Void... voids) {
                 RequestHandler rh = new RequestHandler();
@@ -196,10 +207,15 @@ public class Update_Profile_Employee extends AppCompatActivity  {
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
+                loading.dismiss();
+                if(result==null || result.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please Check Internet Connectivity", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 if(result.contains("Success")) {
                     MyApplication.saveToSP(Update_Profile_Employee.this, null,name,phone,profession);
-                    Employee_HOmePage.refreshSuggestion(null);
+                    Employee_HOmePage.refreshSuggestion(null,Update_Profile_Employee.this);
                     finish();
                 }
 

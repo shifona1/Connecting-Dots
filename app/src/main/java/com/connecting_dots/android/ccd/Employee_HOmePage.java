@@ -1,6 +1,7 @@
 package com.connecting_dots.android.ccd;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -165,7 +166,7 @@ public class Employee_HOmePage extends AppCompatActivity {
             loadWork(i, img[i],true);
 
             }
-        refreshSuggestion(this);
+        refreshSuggestion(this,Employee_HOmePage.this);
     }
 
     private void updateJobs() {
@@ -370,14 +371,14 @@ public class Employee_HOmePage extends AppCompatActivity {
     }
 
     //if employeehomepage == null just update data
-    public static void refreshSuggestion(final Activity employeehomepage) {
+    public static void refreshSuggestion(final Activity employeehomepage, final Context context) {
          new AsyncTask<Void,Void,String>(){
 
             @Override
             protected String doInBackground(Void... voids) {
                 Log.e(TAG,"Suggesting DIB ");
                 RequestHandler rh = new RequestHandler();
-                String jobs = MyApplication.getInstance(employeehomepage.getApplicationContext()).getProfession();
+                String jobs = MyApplication.getInstance(context.getApplicationContext()).getProfession();
                 Log.e(TAG,"JOBS \t"+jobs);
                 if(jobs.length()<2)
                     jobs="-1";
@@ -439,7 +440,7 @@ public class Employee_HOmePage extends AppCompatActivity {
                                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                    refreshSuggestion(employeehomepage);
+                                                    refreshSuggestion(employeehomepage,context);
                                             }
                                         }).show();
 

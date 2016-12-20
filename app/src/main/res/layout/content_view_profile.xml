@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.example.android.ccd.ViewProfile"
+    tools:context="com.connecting_dots.android.ccd.ViewProfile"
     tools:showIn="@layout/activity_view_profile">
 
 

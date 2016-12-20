@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content" />
 
 
-            <com.example.android.ccd.InstantAutoComplete
+            <com.connecting_dots.android.ccd.InstantAutoComplete
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/searchView"

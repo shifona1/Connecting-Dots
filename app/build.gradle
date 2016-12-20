@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '24.0.3'
     defaultConfig {
-        applicationId "com.example.android.ccd"
+        applicationId "com.connecting_dots.android.ccd"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -12,8 +12,7 @@ android {
         multiDexEnabled true
     }
     dexOptions {
-        incremental true
-        javaMaxHeapSize "4g"
+         javaMaxHeapSize "4g"
     }
     buildTypes {
         release {

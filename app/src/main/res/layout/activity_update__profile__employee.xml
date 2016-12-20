@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.android.ccd.Update_Profile_Employee">
+    tools:context="com.connecting_dots.android.ccd.Update_Profile_Employee">
 
     <include layout="@layout/content_update__profile__employee" />
 

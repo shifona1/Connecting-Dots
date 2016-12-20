@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background_"
-    tools:context="com.example.android.ccd.Employee_HOmePage"
+    tools:context="com.connecting_dots.android.ccd.Employee_HOmePage"
     tools:showIn="@layout/activity_employee__home_page">
 <!--
 

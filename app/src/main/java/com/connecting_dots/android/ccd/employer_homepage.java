@@ -279,6 +279,7 @@ public class employer_homepage extends ActionBarActivity {
         RequestCreator t = Picasso.with(this).load(url).error(R.drawable.pic);
         if(skipcache)
             t=t.skipMemoryCache();
+
         t.placeholder(android.R.drawable.progress_horizontal).transform(new CircleTransform()).into(img);
         //final ImageView iv = new ImageView(this);
 
@@ -295,7 +296,7 @@ public class employer_homepage extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         refreshText();
-        loadDP(false);
+        loadDP(true);
         if(goingforimageupdate) {
             goingforimageupdate = false;
             final ImageView img = (ImageView) findViewById(R.id.profile_image);

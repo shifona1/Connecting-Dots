@@ -12,7 +12,7 @@
 
 		 	if(mysqli_num_rows($check)>=1)
    		  	{
-				$sql = "UPDATE ImeiZip SET ZipCode='$zip' where IMEI='$imei'"; 				    				 
+				$sql = "UPDATE ImeiZip SET ZipCode='$zip',Latitude='$lat',Longitude='$long' where IMEI='$imei'"; 				    				 
 				$check=$con->query($sql);					 
 				//echo $con->error;
    		  	}
